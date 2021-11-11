@@ -1,0 +1,34 @@
+{
+  "commands": [
+    {
+      "command": "commands.refresh",
+      "text": "$(sync)",
+      "tooltip": "Refresh commands",
+      "color": "#FFCC00"
+    },
+    {
+      "text": "$(terminal) Start",
+      "command": "terminals.runTerminalByName",
+      "arguments": ["Android Start"],
+      "tooltip": "Android Start"
+    },
+    {
+      "text": "$(terminal) Start clrChache",
+      "command": "terminals.runTerminalByName",
+      "arguments": ["Android Start with clear chache"],
+      "tooltip": "Android Start"
+    },
+    {
+      "text": "$(terminal) Build APK",
+      "command": "terminals.runTerminalByName",
+      "arguments": ["Build APK"],
+      "tooltip": "Android Start"
+    },
+    {
+      "text": "$(terminal) Build AAB",
+      "command": "terminals.runTerminalByName",
+      "arguments": ["Build AAB"],
+      "tooltip": "Android Start"
+    }
+  ]
+}
