@@ -81,6 +81,9 @@ export default function App() {
     isDarkTheme: false,
     startCalcOnLoad: false,
     separateChar: '.',
+    forceType: 'date',
+    forceNumber: '0',
+    forceDateDelay: 40,
   })
 
   const storeSettings = (data) => storeJsonData('settings', data)
@@ -148,6 +151,7 @@ export default function App() {
           isDarkTheme={settings.isDarkTheme}
           goToSettings={() => setScreen('settings')}
           separateChar={settings.separateChar}
+          settings={settings}
         />
       )}
       {/* </View> */}
