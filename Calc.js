@@ -123,11 +123,7 @@ const config = {
   directionalOffsetThreshold: 80,
 }
 
-export default function Calc({
-  goToSettings,
-  isDarkTheme,
-  separateChar = '.',
-}) {
+export default function Calc({ goToSettings, settings, separateChar = '.' }) {
   const [text, setText] = useState('')
   const [minus, setMinus] = useState(false)
   const [activeFunc, setActiveFunc] = useState(null)
@@ -142,7 +138,12 @@ export default function Calc({
   let preparedResult
   let neededFunc = '+'
   if (nextResultIsPrepared) {
-    preparedResult = formatDateTime(Date.now() + 60000)
+    if (settings.forceType === 'date')
+      preparedResult = formatDateTime(
+        Date.now() + settings.forceDateDelay * 1000
+      )
+    if (settings.forceType === 'number') preparedResult = settings.forceNumber
+
     result = String(
       Number(preparedResult) - Number(hiddenActiveFunc ? prevText : text)
     )
@@ -292,7 +293,12 @@ export default function Calc({
   }
 
   return (
-    <View style={{ backgroundColor: isDarkTheme ? 'black' : 'white', flex: 1 }}>
+    <View
+      style={{
+        backgroundColor: settings.isDarkTheme ? 'black' : 'white',
+        flex: 1,
+      }}
+    >
       <View
         style={{
           position: 'relative',
@@ -335,7 +341,7 @@ export default function Calc({
           <Text
             style={{
               // flex: 1,
-              color: isDarkTheme ? 'white' : 'black',
+              color: settings.isDarkTheme ? 'white' : 'black',
               width: '100%',
               // backgroundColor: 'black',
               // borderWidth: 1,
