@@ -205,7 +205,6 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
         startNewNumber ||
         secongArgString.length < (secongArgString.includes(',') ? 10 : 9)
       ) {
-        console.log(`text + char`, text + char)
         const newText = (startNewNumber || text === '0' ? '' : text) + char
         setText(newText)
 
