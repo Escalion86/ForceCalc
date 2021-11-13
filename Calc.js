@@ -143,7 +143,17 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
     )
 
   const toggleMinus = () => {
-    if (!nextResultIsPrepared) setMinus(!minus)
+    if (!nextResultIsPrepared) {
+      if (startNewNumber) {
+        setText('0')
+        setMinus(true)
+        setSecondArg(0)
+      } else {
+        setMinus(!minus)
+        setSecondArg(Math.abs(secondArg) * (!minus ? -1 : 1))
+      }
+      setStartNewNumber(false)
+    }
   }
 
   const useFunc = (func) => {
@@ -169,7 +179,8 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
         setText(secondArgTemp)
         setSecondArg(parseFloat(secondArgTemp) * (minus ? -1 : 1))
         setStartNewNumber(false)
-        setMinus(false)
+
+        // setMinus(false)
       } else {
         if (activeText.length < result.length) {
           secondArgTemp = activeText + result[activeText.length]
@@ -186,7 +197,7 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
         setText('0,')
         setSecondArg(0)
         setStartNewNumber(false)
-        setMinus(false)
+        // setMinus(false)
         return
       }
       const secongArgString = String(Math.abs(secondArg))
@@ -194,10 +205,12 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
         startNewNumber ||
         secongArgString.length < (secongArgString.includes(',') ? 10 : 9)
       ) {
-        const newText = (startNewNumber ? '' : text) + char
+        console.log(`text + char`, text + char)
+        const newText = (startNewNumber || text === '0' ? '' : text) + char
         setText(newText)
 
         if (startNewNumber) {
+          setMinus(false)
           setSecondArg(parseFloat(newText.replace(',', '.')))
           setMinus(false)
           setStartNewNumber(false)
@@ -208,7 +221,11 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
     }
   }
 
-  const deleteChar = () => setText(text.substr(0, text.length - 1))
+  const deleteChar = () => {
+    const newText = text.substr(0, text.length - 1)
+    setSecondArg(parseFloat(newText.replace(',', '.')))
+    setText(newText)
+  }
 
   const getResult = () => {
     if (nextResultIsPrepared) setNextResultIsPrepared(false)
@@ -281,7 +298,8 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
           }}
           onPress={() => setNextResultIsPrepared((state) => !state)}
         >
-          {String(firstArg ?? 0) +
+          {(startNewNumber ? 'true   ' : 'false   ') +
+            String(firstArg ?? 0) +
             ' ' +
             activeFunc +
             ' ' +
