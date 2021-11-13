@@ -16,6 +16,7 @@ import {
 
 import Settings from './Settings'
 import Calc from './Calc'
+import About from './About'
 
 async function loadApplication() {
   await Font.loadAsync({
@@ -151,6 +152,13 @@ export default function App() {
           isDarkTheme={settings.isDarkTheme}
           goToSettings={() => setScreen('settings')}
           separateChar={settings.separateChar}
+          settings={settings}
+        />
+      )}
+      {screen === 'about' && (
+        <About
+          setScreen={setScreen}
+          // updateSettings={updateSettings}
           settings={settings}
         />
       )}

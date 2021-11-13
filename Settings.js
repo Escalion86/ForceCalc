@@ -1,10 +1,6 @@
-import { StatusBar } from 'expo-status-bar'
-import React, { useState } from 'react'
-import * as Font from 'expo-font'
-import AppLoading from 'expo-app-loading'
+import React from 'react'
 
 import {
-  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -14,11 +10,12 @@ import {
 } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 
-import RadioButtonRN from 'radio-buttons-react-native'
+// import RadioButtonRN from 'radio-buttons-react-native'
 
-import Icon from 'react-native-vector-icons/FontAwesome'
+// import Icon from 'react-native-vector-icons/FontAwesome'
 
 import Checkbox from 'expo-checkbox'
+import Button from './components/Button'
 
 const ItemSwitch = ({ title, onValueChange, value, isDarkTheme }) => (
   <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -140,26 +137,41 @@ export default function Settings({ setScreen, settings, updateSettings }) {
         >
           Разделитель тысяч
         </Text>
-        <Picker
-          selectedValue={settings.separateChar}
+        <View
           style={{
-            height: 50,
-            width: 200,
-            color: settings.isDarkTheme ? 'white' : 'black',
-            // borderWidth: 1,
-            // borderColor: 'white',
+            height: 40,
+            borderWidth: 1,
+            borderColor: settings.isDarkTheme ? 'white' : 'black',
+            borderRadius: 10,
           }}
-          onValueChange={(itemValue, itemIndex) =>
-            updateSettings({ separateChar: itemValue })
-          }
         >
-          <Picker.Item label="Без разделения" value="" />
-          <Picker.Item label="Точка" value="." />
-          <Picker.Item label="Пробел" value=" " />
-        </Picker>
+          <Picker
+            selectedValue={settings.separateChar}
+            style={{
+              // maxHeight: 30,
+              marginTop: -8,
+              width: 190,
+              color: settings.isDarkTheme ? 'white' : 'black',
+              borderWidth: 1,
+              borderLeftColor: 'blue',
+              borderLeftWidth: 2,
+              // backgroundColor: 'blue',
+            }}
+            onValueChange={(itemValue, itemIndex) =>
+              updateSettings({ separateChar: itemValue })
+            }
+            mode="dropdown"
+            dropdownIconColor={settings.isDarkTheme ? 'white' : 'black'}
+          >
+            <Picker.Item label="Без разделения" value="" />
+            <Picker.Item label="Точка" value="." />
+            <Picker.Item label="Пробел" value=" " />
+          </Picker>
+        </View>
       </View>
       <View
         style={{
+          marginTop: 10,
           width: '100%',
           display: 'flex',
           flexDirection: 'row',
@@ -216,12 +228,15 @@ export default function Settings({ setScreen, settings, updateSettings }) {
         icon={<Icon name="check-circle" size={25} color="#2c9dd1" />}
       /> */}
       <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-        <TouchableOpacity
+        <Button
+          title="Запустить калькулятор"
           onPress={() => setScreen('calc')}
-          style={styles.button}
-        >
-          <Text style={styles.textButton}>Запустить калькулятор</Text>
-        </TouchableOpacity>
+        />
+        <Button
+          color="#aa77ff"
+          title="О приложении"
+          onPress={() => setScreen('about')}
+        />
       </View>
     </View>
   )
@@ -245,18 +260,5 @@ const styles = StyleSheet.create({
   text: {
     // fontWeight: 'bold',
     fontSize: 16,
-  },
-  button: {
-    fontSize: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    backgroundColor: '#ff9933',
-    paddingHorizontal: 30,
-    paddingVertical: 10,
-    marginVertical: 10,
-  },
-  textButton: {
-    fontSize: 18,
   },
 })

@@ -1,32 +1,9 @@
-import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
-import * as Font from 'expo-font'
-import AppLoading from 'expo-app-loading'
 
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
-import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
+import GestureRecognizer from 'react-native-swipe-gestures'
 import formatDateTime from './helpers/formatDateTime'
-
-const onSwipe = (gestureName, gestureState) => {
-  const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections
-  // this.setState({gestureName: gestureName});
-  switch (gestureName) {
-    case SWIPE_UP:
-      // this.setState({backgroundColor: 'red'});
-      console.log(`swipeUp`)
-      break
-    case SWIPE_DOWN:
-      console.log(`swipeDown`)
-      break
-    case SWIPE_LEFT:
-      console.log(`swipeLeft`)
-      break
-    case SWIPE_RIGHT:
-      console.log(`swipeRight`)
-      break
-  }
-}
 
 const formatText = (text, separateChar) => {
   if (!text) return '0'
@@ -49,12 +26,6 @@ const formatText = (text, separateChar) => {
   return newText
 }
 
-const textToFloat = (text) =>
-  text ? parseFloat(text.replace(/[^\,\d]/g, '').replace(',', separateChar)) : 0
-
-const calcPercent = (text) =>
-  text ? String(parseFloat(text) / 100).replace(separateChar, ',') : '0'
-
 const FuncButton = ({
   title,
   style = {},
@@ -65,7 +36,7 @@ const FuncButton = ({
 }) => {
   let timer
   const setTimer = () => {
-    timer = setTimeout(() => onLongPress(), 3000)
+    timer = setTimeout(() => onLongPress(), 2000)
   }
 
   return (
@@ -123,17 +94,30 @@ const config = {
   directionalOffsetThreshold: 80,
 }
 
+const calcArgs = (firstArg = 0, secondArg = 0, func) => {
+  switch (func) {
+    case '+':
+      return parseFloat(firstArg) + parseFloat(secondArg)
+    case '-':
+      return parseFloat(firstArg) - parseFloat(secondArg)
+    case '*':
+      return parseFloat(firstArg) * parseFloat(secondArg)
+    case '/':
+      return parseFloat(firstArg) / parseFloat(secondArg)
+    default:
+      return 0
+  }
+}
+
 export default function Calc({ goToSettings, settings, separateChar = '.' }) {
-  const [text, setText] = useState('')
+  const [text, setText] = useState('0')
+  const [firstArg, setFirstArg] = useState(null)
+  const [secondArg, setSecondArg] = useState(null)
   const [minus, setMinus] = useState(false)
+  const [startNewNumber, setStartNewNumber] = useState(true)
   const [activeFunc, setActiveFunc] = useState(null)
-  const [hiddenActiveFunc, setHiddenActiveFunc] = useState(null)
-  const [lastUsedFunc, setLastUsedFunc] = useState(null)
-  const [prevText, setPrevText] = useState(null)
   const [nextResultIsPrepared, setNextResultIsPrepared] = useState(false)
 
-  // console.log(`nextResultIsPrepared`, nextResultIsPrepared)
-  // console.log(`Date.now().getSeconds()`, new Date(Date.now()).getSeconds())
   let result
   let preparedResult
   let neededFunc = '+'
@@ -144,151 +128,112 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
       )
     if (settings.forceType === 'number') preparedResult = settings.forceNumber
 
-    result = String(
-      Number(preparedResult) - Number(hiddenActiveFunc ? prevText : text)
-    )
+    result = String(Number(preparedResult) - firstArg)
     if (result < 0) {
       neededFunc = '-'
       result = String(-result)
     }
   }
 
+  const calcPercent = () =>
+    setText(
+      text
+        ? String(parseFloat(text.replace(',', '.')) / 100).replace('.', ',')
+        : '0'
+    )
+
   const toggleMinus = () => {
     if (!nextResultIsPrepared) setMinus(!minus)
   }
 
   const useFunc = (func) => {
-    if (!nextResultIsPrepared || func === '-' || func === '+') {
-      setLastUsedFunc(activeFunc)
+    if (!nextResultIsPrepared || startNewNumber) {
+      if (activeFunc && !startNewNumber) {
+        getResult()
+      } else {
+        setFirstArg(parseFloat(text.replace(',', '.')) * (minus ? -1 : 1))
+      }
       setActiveFunc(func)
+      setStartNewNumber(true)
+      // setMinus(false)
     }
   }
 
   const addChar = (char) => {
     let activeText = text
-    if (activeFunc) {
-      setHiddenActiveFunc(activeFunc)
-      setActiveFunc(null)
-      setPrevText(text)
-      activeText = '0'
-    }
 
     if (nextResultIsPrepared) {
-      if (activeFunc) {
-        setText(result[0])
+      let secondArgTemp
+      if (startNewNumber) {
+        secondArgTemp = result[0]
+        setText(secondArgTemp)
+        setSecondArg(parseFloat(secondArgTemp) * (minus ? -1 : 1))
+        setStartNewNumber(false)
+        setMinus(false)
       } else {
-        if (activeText.length < result.length)
-          setText(activeText + result[activeText.length])
+        if (activeText.length < result.length) {
+          secondArgTemp = activeText + result[activeText.length]
+          setText(secondArgTemp)
+          setSecondArg(
+            parseFloat(secondArgTemp.replace(',', '.')) * (minus ? -1 : 1)
+          )
+          setStartNewNumber(false)
+        }
       }
-      // setText(
-      //   (activeText === '0' ? '' : activeText) +
-      //     String(Number(preparedResult) - Number(activeFunc ? text : prevText))[
-      //       activeText === '0' ? 0 : activeText.length
-      //     ]
-      // )
     } else {
+      if (char === '0' && (!text || text === '0')) return
+      if (char === ',' && (!text || text === '0')) {
+        setText('0,')
+        setSecondArg(0)
+        setStartNewNumber(false)
+        setMinus(false)
+        return
+      }
+      const secongArgString = String(Math.abs(secondArg))
       if (
-        char === '0' &&
-        (!activeText[0] || activeText === '0') &&
-        activeText[1] !== ','
-      )
-        return text !== activeText ? setText(activeText) : null
-      if (char === ',' && (!activeText[0] || activeText === '0'))
-        return setText('0,')
-      if (activeText.length < (activeText.includes(',') ? 10 : 9))
-        setText((activeText === '0' ? '' : activeText) + char)
+        startNewNumber ||
+        secongArgString.length < (secongArgString.includes(',') ? 10 : 9)
+      ) {
+        const newText = (startNewNumber ? '' : text) + char
+        setText(newText)
+
+        if (startNewNumber) {
+          setSecondArg(parseFloat(newText.replace(',', '.')))
+          setMinus(false)
+          setStartNewNumber(false)
+        } else {
+          setSecondArg(parseFloat(newText.replace(',', '.')) * (minus ? -1 : 1))
+        }
+      }
     }
   }
 
   const deleteChar = () => setText(text.substr(0, text.length - 1))
 
   const getResult = () => {
-    if (!nextResultIsPrepared || result.length === text.length) {
-      if (nextResultIsPrepared) setNextResultIsPrepared(false)
-      setLastUsedFunc('=')
-      let result = '0'
-      if (prevText) {
-        const prevText2 = prevText
-        if (lastUsedFunc !== '=') {
-          setPrevText(text)
-        }
+    if (nextResultIsPrepared) setNextResultIsPrepared(false)
+    if (!activeFunc) return
+    const calcResult = calcArgs(firstArg, secondArg, activeFunc)
+    let result = String(Math.abs(calcResult)).replace('.', ',')
 
-        if (hiddenActiveFunc === '+')
-          result = String(parseFloat(prevText2) + parseFloat(text)).replace(
-            separateChar,
-            ','
-          )
-
-        if (hiddenActiveFunc === '-')
-          result = String(parseFloat(prevText2) - parseFloat(text)).replace(
-            separateChar,
-            ','
-          )
-
-        if (hiddenActiveFunc === '*')
-          result = String(parseFloat(prevText2) * parseFloat(text)).replace(
-            separateChar,
-            ','
-          )
-
-        if (hiddenActiveFunc === '/')
-          result = String(parseFloat(prevText2) / parseFloat(text)).replace(
-            separateChar,
-            ','
-          )
-        // }
-      } else {
-        let prevText2 = text
-        if (lastUsedFunc !== '=') {
-          setPrevText(text)
-          // setLastUsedFunc(hiddenActiveFunc)
-        } else {
-          prevText2 = prevText
-        }
-
-        if (activeFunc === '+')
-          result = String(parseFloat(prevText2) + parseFloat(text)).replace(
-            separateChar,
-            ','
-          )
-
-        if (activeFunc === '-')
-          result = String(parseFloat(prevText2) - parseFloat(text)).replace(
-            separateChar,
-            ','
-          )
-
-        if (activeFunc === '*')
-          result = String(parseFloat(prevText2) * parseFloat(text)).replace(
-            separateChar,
-            ','
-          )
-
-        if (activeFunc === '/')
-          result = String(parseFloat(prevText2) / parseFloat(text)).replace(
-            separateChar,
-            ','
-          )
-      }
-
-      if (result.includes(',')) result = result.substr(0, 10)
-      else result = result.substr(0, 9)
-
-      setText(result)
-      setHiddenActiveFunc(null)
-      setActiveFunc(null)
-    }
+    // Обрезаем лишние цифры что не влезли
+    if (result.includes(',')) result = result.substr(0, 10)
+    else result = result.substr(0, 9)
+    setFirstArg(calcResult)
+    setText(result)
+    setStartNewNumber(true)
+    setMinus(calcResult < 0)
   }
 
   const reset = () => {
     if (!nextResultIsPrepared) {
-      setHiddenActiveFunc(null)
       setActiveFunc(null)
-      setPrevText(null)
-      setMinus(false)
       setText('0')
-      setLastUsedFunc(null)
       setNextResultIsPrepared(false)
+      setStartNewNumber(true)
+      setMinus(false)
+      setFirstArg(0)
+      setSecondArg(0)
     }
   }
 
@@ -324,6 +269,24 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
             }}
           />
         )}
+        {/* <Text
+          style={{
+            color: settings.isDarkTheme ? 'white' : 'black',
+            width: 'auto',
+            minHeight: 40,
+            marginHorizontal: 8,
+            fontSize: 34,
+            textAlign: 'right',
+            fontFamily: 'helvetica-thin',
+          }}
+          onPress={() => setNextResultIsPrepared((state) => !state)}
+        >
+          {String(firstArg ?? 0) +
+            ' ' +
+            activeFunc +
+            ' ' +
+            String(secondArg ?? 0)}
+        </Text> */}
         <GestureRecognizer
           // onSwipe={(direction, state) => onSwipe(direction, state)}
           // onSwipeUp={(state) => onSwipe(state)}
@@ -365,13 +328,13 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
           <FuncButton
             onPress={reset}
             onLongPress={goToSettings}
-            title={!text || text === '0' ? 'AC' : 'C'}
+            title={!secondArg && !firstArg ? 'AC' : 'C'}
             alt
           />
           <FuncButton onPress={toggleMinus} title="±" alt />
           <FuncButton
             onPress={() => {
-              if (!nextResultIsPrepared) setText(calcPercent())
+              if (!nextResultIsPrepared) calcPercent()
             }}
             title="%"
             alt
