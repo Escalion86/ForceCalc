@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
 
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native'
 
 import GestureRecognizer from 'react-native-swipe-gestures'
 import formatDateTime from './helpers/formatDateTime'
@@ -70,10 +76,16 @@ const FuncButton = ({
   )
 }
 
-const NumButton = ({ title, style = {}, onPress, big = false }) => (
+const NumButton = ({
+  title,
+  style = {},
+  textStyle = {},
+  onPress,
+  big = false,
+}) => (
   <TouchableOpacity
     onPress={onPress}
-    style={big ? styles.bigNumButton : styles.numButton}
+    style={{ ...(big ? styles.bigNumButton : styles.numButton), ...style }}
   >
     <View
       style={{
@@ -84,7 +96,7 @@ const NumButton = ({ title, style = {}, onPress, big = false }) => (
         justifyContent: 'center',
       }}
     >
-      <Text style={{ ...styles.numButtonText, ...style }}>{title}</Text>
+      <Text style={{ ...styles.numButtonText, ...textStyle }}>{title}</Text>
     </View>
   </TouchableOpacity>
 )
@@ -168,6 +180,21 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
       // setMinus(false)
     }
   }
+  console.log(`result`, result)
+  console.log(`text`, text)
+
+  const nextResultNumsCountToReady = settings.highlightNumber
+    ? nextResultIsPrepared
+      ? startNewNumber
+        ? String(result ?? 0).length
+        : (result ?? 0) - (text ? Number(text) : 0) === 0
+        ? 0
+        : String((result ?? 0) - (text ? Number(text) : 0)).length -
+          (text ? text.length : 0)
+      : -1
+    : -1
+
+  console.log(`nextResultNumsCountToReady`, nextResultNumsCountToReady)
 
   const addChar = (char) => {
     let activeText = text
@@ -253,6 +280,8 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
     }
   }
 
+  console.log(`nextResultNumsCountToReady`, nextResultNumsCountToReady)
+
   return (
     <View
       style={{
@@ -281,7 +310,12 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
               left: 0,
               height: 3,
               width: 3,
-              backgroundColor: neededFunc === '+' ? 'green' : 'red',
+              backgroundColor:
+                nextResultNumsCountToReady === 0
+                  ? '#888888'
+                  : neededFunc === '+'
+                  ? 'green'
+                  : 'red',
             }}
           />
         )}
@@ -312,6 +346,7 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
           onSwipeRight={(state) => deleteChar()}
           config={config}
           style={{
+            position: 'relative',
             width: 'auto',
             minHeight: 80,
             marginHorizontal: 8,
@@ -334,10 +369,31 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
             }}
             numberOfLines={1}
             adjustsFontSizeToFit
-            onPress={() => setNextResultIsPrepared((state) => !state)}
+            // onPress={() => {
+            //   if (!nextResultIsPrepared)
+            //     setNextResultIsPrepared((state) => !state)
+            // }}
           >
             {(minus ? '-' : '') + formatText(text, separateChar)}
           </Text>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (!nextResultIsPrepared)
+                setNextResultIsPrepared((state) => !state)
+            }}
+          >
+            <View
+              style={{
+                // borderWidth: 1,
+                // borderColor: 'blue',
+                width: '90%',
+                position: 'absolute',
+                left: '5%',
+                height: '100%',
+                zIndex: 10,
+              }}
+            />
+          </TouchableWithoutFeedback>
         </GestureRecognizer>
       </View>
       <View style={{ backgroundColor: 'white' }}>
@@ -363,9 +419,21 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
           />
         </View>
         <View style={styles.bottonsRow}>
-          <NumButton onPress={() => addChar('7')} title="7" />
-          <NumButton onPress={() => addChar('8')} title="8" />
-          <NumButton onPress={() => addChar('9')} title="9" />
+          <NumButton
+            style={nextResultNumsCountToReady === 7 ? styles.trigger : {}}
+            onPress={() => addChar('7')}
+            title="7"
+          />
+          <NumButton
+            style={nextResultNumsCountToReady === 8 ? styles.trigger : {}}
+            onPress={() => addChar('8')}
+            title="8"
+          />
+          <NumButton
+            style={nextResultNumsCountToReady === 9 ? styles.trigger : {}}
+            onPress={() => addChar('9')}
+            title="9"
+          />
           <FuncButton
             onPress={() => useFunc('*')}
             title="×"
@@ -373,9 +441,21 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
           />
         </View>
         <View style={styles.bottonsRow}>
-          <NumButton onPress={() => addChar('4')} title="4" />
-          <NumButton onPress={() => addChar('5')} title="5" />
-          <NumButton onPress={() => addChar('6')} title="6" />
+          <NumButton
+            style={nextResultNumsCountToReady === 4 ? styles.trigger : {}}
+            onPress={() => addChar('4')}
+            title="4"
+          />
+          <NumButton
+            style={nextResultNumsCountToReady === 5 ? styles.trigger : {}}
+            onPress={() => addChar('5')}
+            title="5"
+          />
+          <NumButton
+            style={nextResultNumsCountToReady === 6 ? styles.trigger : {}}
+            onPress={() => addChar('6')}
+            title="6"
+          />
           <FuncButton
             onPress={() => useFunc('-')}
             title="-"
@@ -383,9 +463,21 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
           />
         </View>
         <View style={styles.bottonsRow}>
-          <NumButton onPress={() => addChar('1')} title="1" />
-          <NumButton onPress={() => addChar('2')} title="2" />
-          <NumButton onPress={() => addChar('3')} title="3" />
+          <NumButton
+            style={nextResultNumsCountToReady === 1 ? styles.trigger : {}}
+            onPress={() => addChar('1')}
+            title="1"
+          />
+          <NumButton
+            style={nextResultNumsCountToReady === 2 ? styles.trigger : {}}
+            onPress={() => addChar('2')}
+            title="2"
+          />
+          <NumButton
+            style={nextResultNumsCountToReady === 3 ? styles.trigger : {}}
+            onPress={() => addChar('3')}
+            title="3"
+          />
           <FuncButton
             onPress={() => useFunc('+')}
             title="+"
@@ -393,7 +485,12 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
           />
         </View>
         <View style={styles.bottonsRow}>
-          <NumButton onPress={() => addChar('0')} title="0" big />
+          <NumButton
+            style={nextResultNumsCountToReady === 0 ? styles.trigger : {}}
+            onPress={() => addChar('0')}
+            title="0"
+            big
+          />
           <NumButton
             onPress={() => {
               if (!text.includes(',')) addChar(',')
@@ -459,6 +556,9 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: '#222222',
     fontFamily: 'helvetica-light',
+  },
+  trigger: {
+    backgroundColor: '#c6c6c8',
   },
   funcButtonText: {
     fontSize: 32,

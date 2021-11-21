@@ -106,7 +106,7 @@ export default function Settings({ setScreen, settings, updateSettings }) {
           color: settings.isDarkTheme ? 'white' : 'black',
         }}
       >
-        Настройки
+        Настройки общие
       </Text>
       <ItemSwitch
         title="Темная тема"
@@ -169,6 +169,14 @@ export default function Settings({ setScreen, settings, updateSettings }) {
           </Picker>
         </View>
       </View>
+      <Text
+        style={{
+          ...styles.title,
+          color: settings.isDarkTheme ? 'white' : 'black',
+        }}
+      >
+        Настройки форсирования
+      </Text>
       <View
         style={{
           marginTop: 10,
@@ -208,6 +216,12 @@ export default function Settings({ setScreen, settings, updateSettings }) {
           isDarkTheme={settings.isDarkTheme}
         />
       )}
+      <ItemSwitch
+        title="Слегка подсвечивать цифру, для демонстрации кол-ва оставшихся цифр необходимых для введения форсированного числа"
+        onValueChange={(value) => updateSettings({ highlightNumber: value })}
+        value={settings.highlightNumber}
+        isDarkTheme={settings.isDarkTheme}
+      />
       <View style={{ flex: 1, justifyContent: 'flex-end' }}>
         <Button
           title="Запустить калькулятор"
@@ -237,6 +251,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
     fontSize: 22,
+    paddingTop: 16,
   },
   text: {
     // fontWeight: 'bold',
