@@ -14,10 +14,6 @@ import {
 } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 
-import RadioButtonRN from 'radio-buttons-react-native'
-
-import Icon from 'react-native-vector-icons/FontAwesome'
-
 import Checkbox from 'expo-checkbox'
 
 const ItemSwitch = ({ title, onValueChange, value, isDarkTheme }) => (
@@ -196,25 +192,6 @@ export default function Settings({ setScreen, settings, updateSettings }) {
           isDarkTheme={settings.isDarkTheme}
         />
       )}
-      {/* <RadioButtonRN
-        data={[
-          {
-            label: 'data 1',
-            // accessibilityLabel: 'Your label',
-          },
-          {
-            label: 'data 2',
-            // accessibilityLabel: 'Your label',
-          },
-        ]}
-        selectedBtn={(e) => console.log(e)}
-        // box={false}
-        textColor="#ffffff"
-        circleSize={16}
-        style={{ width: '100%' }}
-        textStyle={{ height: 30 }}
-        icon={<Icon name="check-circle" size={25} color="#2c9dd1" />}
-      /> */}
       <View style={{ flex: 1, justifyContent: 'flex-end' }}>
         <TouchableOpacity
           onPress={() => setScreen('calc')}
