@@ -180,8 +180,6 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
       // setMinus(false)
     }
   }
-  console.log(`result`, result)
-  console.log(`text`, text)
 
   const nextResultNumsCountToReady = settings.highlightNumber
     ? nextResultIsPrepared
@@ -193,8 +191,6 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
           (text ? text.length : 0)
       : -1
     : -1
-
-  console.log(`nextResultNumsCountToReady`, nextResultNumsCountToReady)
 
   const addChar = (char) => {
     let activeText = text
@@ -254,18 +250,20 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
   }
 
   const getResult = () => {
-    if (nextResultIsPrepared) setNextResultIsPrepared(false)
-    if (!activeFunc) return
-    const calcResult = calcArgs(firstArg, secondArg, activeFunc)
-    let result = String(Math.abs(calcResult)).replace('.', ',')
+    if (!nextResultIsPrepared || text.length >= result.length) {
+      if (nextResultIsPrepared) setNextResultIsPrepared(false)
+      if (!activeFunc) return
+      const calcResult = calcArgs(firstArg, secondArg, activeFunc)
+      let result = String(Math.abs(calcResult)).replace('.', ',')
 
-    // Обрезаем лишние цифры что не влезли
-    if (result.includes(',')) result = result.substr(0, 10)
-    else result = result.substr(0, 9)
-    setFirstArg(calcResult)
-    setText(result)
-    setStartNewNumber(true)
-    setMinus(calcResult < 0)
+      // Обрезаем лишние цифры что не влезли
+      if (result.includes(',')) result = result.substr(0, 10)
+      else result = result.substr(0, 9)
+      setFirstArg(calcResult)
+      setText(result)
+      setStartNewNumber(true)
+      setMinus(calcResult < 0)
+    }
   }
 
   const reset = () => {
