@@ -10,10 +10,13 @@ import {
 } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 
+<<<<<<< HEAD
 // import RadioButtonRN from 'radio-buttons-react-native'
 
 // import Icon from 'react-native-vector-icons/FontAwesome'
 
+=======
+>>>>>>> bca268a0ebb688baaed0f39c91f1f3b4444b5dfe
 import Checkbox from 'expo-checkbox'
 import Button from './components/Button'
 
@@ -216,12 +219,15 @@ export default function Settings({ setScreen, settings, updateSettings }) {
           isDarkTheme={settings.isDarkTheme}
         />
       )}
+<<<<<<< HEAD
       <ItemSwitch
         title="Слегка подсвечивать цифру, для демонстрации кол-ва оставшихся цифр необходимых для введения форсированного числа"
         onValueChange={(value) => updateSettings({ highlightNumber: value })}
         value={settings.highlightNumber}
         isDarkTheme={settings.isDarkTheme}
       />
+=======
+>>>>>>> bca268a0ebb688baaed0f39c91f1f3b4444b5dfe
       <View style={{ flex: 1, justifyContent: 'flex-end' }}>
         <Button
           title="Запустить калькулятор"
