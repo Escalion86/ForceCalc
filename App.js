@@ -11,11 +11,12 @@ import {
   Text,
   TouchableOpacity,
   View,
-  useColorScheme,
+  // useColorScheme,
 } from 'react-native'
 
 import Settings from './Settings'
 import Calc from './Calc'
+import About from './About'
 
 async function loadApplication() {
   await Font.loadAsync({
@@ -74,7 +75,7 @@ const getJsonData = async (key) => {
 }
 
 export default function App() {
-  const colorScheme = useColorScheme()
+  // const colorScheme = useColorScheme()
   const [isReady, setIsReady] = useState(false)
   const [screen, setScreen] = useState('settings')
   const [settings, setSettings] = useState({
@@ -84,6 +85,7 @@ export default function App() {
     forceType: 'date',
     forceNumber: '0',
     forceDateDelay: 40,
+    highlightNumber: true,
   })
 
   const storeSettings = (data) => storeJsonData('settings', data)
@@ -151,6 +153,13 @@ export default function App() {
           isDarkTheme={settings.isDarkTheme}
           goToSettings={() => setScreen('settings')}
           separateChar={settings.separateChar}
+          settings={settings}
+        />
+      )}
+      {screen === 'about' && (
+        <About
+          setScreen={setScreen}
+          // updateSettings={updateSettings}
           settings={settings}
         />
       )}
