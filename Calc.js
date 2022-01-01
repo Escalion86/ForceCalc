@@ -178,6 +178,8 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
       setActiveFunc(func)
       setStartNewNumber(true)
       // setMinus(false)
+    } else if (nextResultIsPrepared && !startNewNumber) {
+      addChar()
     }
   }
 
@@ -263,22 +265,20 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
       setText(result)
       setStartNewNumber(true)
       setMinus(calcResult < 0)
+    } else {
+      addChar()
     }
   }
 
   const reset = () => {
-    if (!nextResultIsPrepared) {
-      setActiveFunc(null)
-      setText('0')
-      setNextResultIsPrepared(false)
-      setStartNewNumber(true)
-      setMinus(false)
-      setFirstArg(0)
-      setSecondArg(0)
-    }
+    setActiveFunc(null)
+    setText('0')
+    setNextResultIsPrepared(false)
+    setStartNewNumber(true)
+    setMinus(false)
+    setFirstArg(0)
+    setSecondArg(0)
   }
-
-  console.log(`nextResultNumsCountToReady`, nextResultNumsCountToReady)
 
   return (
     <View
@@ -397,15 +397,26 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
       <View style={{ backgroundColor: 'white' }}>
         <View style={styles.bottonsRow}>
           <FuncButton
-            onPress={reset}
+            onPress={() => {
+              if (!nextResultIsPrepared) reset()
+              else addChar()
+            }}
             onLongPress={goToSettings}
             title={!secondArg && !firstArg ? 'AC' : 'C'}
             alt
           />
-          <FuncButton onPress={toggleMinus} title="±" alt />
+          <FuncButton
+            onPress={() => {
+              if (!nextResultIsPrepared) toggleMinus()
+              else addChar()
+            }}
+            title="±"
+            alt
+          />
           <FuncButton
             onPress={() => {
               if (!nextResultIsPrepared) calcPercent()
+              else addChar()
             }}
             title="%"
             alt
