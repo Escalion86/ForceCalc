@@ -7,6 +7,7 @@ import {
   View,
   Switch,
   TextInput,
+  ScrollView,
 } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 
@@ -16,14 +17,22 @@ import { Picker } from '@react-native-picker/picker'
 
 import Checkbox from 'expo-checkbox'
 import Button from './components/Button'
+import formatDateTime from './helpers/formatDateTime'
 
 const ItemSwitch = ({ title, onValueChange, value, isDarkTheme }) => (
-  <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+  <View
+    style={{
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+    }}
+  >
     <Text
       style={{
         ...styles.text,
         flex: 1,
         color: isDarkTheme ? 'white' : 'black',
+        paddingVertical: 4,
       }}
     >
       {title}
@@ -31,7 +40,7 @@ const ItemSwitch = ({ title, onValueChange, value, isDarkTheme }) => (
     <Switch
       trackColor={{ false: '#767577', true: '#ffbb66' }}
       thumbColor={value ? '#ff9933' : '#f4f3f4'}
-      ios_backgroundColor="#3e3e3e"
+      // ios_backgroundColor="#3e3e3e"
       onValueChange={onValueChange}
       value={value}
     />
@@ -65,7 +74,13 @@ const ItemCheckBox = ({ title, isDarkTheme, value, onValueChange }) => (
   </View>
 )
 
-const ItemInputNumber = ({ title, number, onChangeNumber, isDarkTheme }) => (
+const ItemInputNumber = ({
+  title,
+  number,
+  onChangeNumber,
+  isDarkTheme,
+  inputStyle,
+}) => (
   <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
     <Text
       style={{
@@ -78,9 +93,10 @@ const ItemInputNumber = ({ title, number, onChangeNumber, isDarkTheme }) => (
     </Text>
     <TextInput
       style={{
+        width: 80,
         height: 40,
         // width: 60,
-        margin: 12,
+        margin: 4,
         borderWidth: 1,
         padding: 10,
         color: isDarkTheme ? 'white' : 'black',
@@ -88,18 +104,59 @@ const ItemInputNumber = ({ title, number, onChangeNumber, isDarkTheme }) => (
         borderWidth: 1,
         borderRadius: 8,
         fontSize: 16,
+        ...inputStyle,
       }}
       onChangeText={(value) => onChangeNumber(parseInt(value))}
       value={!!number ? String(number) : '0'}
-      placeholder="useless placeholder"
+      // placeholder="useless placeholder"
       keyboardType="numeric"
+    />
+  </View>
+)
+
+const ItemInputText = ({
+  title,
+  text,
+  onChangeText,
+  isDarkTheme,
+  inputStyle,
+}) => (
+  <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+    <Text
+      style={{
+        ...styles.text,
+        flex: 1,
+        color: isDarkTheme ? 'white' : 'black',
+      }}
+    >
+      {title}
+    </Text>
+    <TextInput
+      style={{
+        flex: 1,
+        height: 40,
+        // width: 60,
+        margin: 4,
+        borderWidth: 1,
+        padding: 10,
+        color: isDarkTheme ? 'white' : 'black',
+        borderColor: isDarkTheme ? 'white' : 'black',
+        borderWidth: 1,
+        borderRadius: 8,
+        fontSize: 16,
+        ...inputStyle,
+      }}
+      onChangeText={onChangeText}
+      value={text}
+      // placeholder="useless placeholder"
+      // keyboardType="text"
     />
   </View>
 )
 
 export default function Settings({ setScreen, settings, updateSettings }) {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text
         style={{
           ...styles.title,
@@ -200,12 +257,48 @@ export default function Settings({ setScreen, settings, updateSettings }) {
         />
       </View>
       {settings.forceType === 'date' && (
-        <ItemInputNumber
-          title="Отклонение от даты на, сек"
-          number={settings.forceDateDelay}
-          onChangeNumber={(value) => updateSettings({ forceDateDelay: value })}
-          isDarkTheme={settings.isDarkTheme}
-        />
+        <>
+          <ItemInputNumber
+            title="Отклонение от даты на, сек"
+            number={settings.forceDateDelay}
+            onChangeNumber={(value) =>
+              updateSettings({ forceDateDelay: value })
+            }
+            isDarkTheme={settings.isDarkTheme}
+          />
+          <ItemInputText
+            title="Формат даты*"
+            text={settings.dateFormat}
+            onChangeText={(value) => updateSettings({ dateFormat: value })}
+            isDarkTheme={settings.isDarkTheme}
+          />
+          <Text
+            style={{
+              ...styles.text,
+              flex: 1,
+              fontSize: 14,
+              marginBottom: 8,
+              // marginTop: -4,
+              color: settings.isDarkTheme ? 'white' : 'black',
+            }}
+          >
+            Итоговый результат:{' '}
+            {formatDateTime(Date.now(), settings.dateFormat)}
+          </Text>
+          <Text
+            style={{
+              ...styles.text,
+              flex: 1,
+              fontSize: 12,
+              marginBottom: 12,
+              // marginTop: -10,
+              color: settings.isDarkTheme ? 'white' : 'black',
+            }}
+          >
+            * d, dd - день; M, MM - месяц; y, yy - год; m, mm - минуты; h, hh -
+            часы
+          </Text>
+        </>
       )}
 
       {settings.forceType === 'number' && (
@@ -214,12 +307,21 @@ export default function Settings({ setScreen, settings, updateSettings }) {
           number={settings.forceNumber}
           onChangeNumber={(value) => updateSettings({ forceNumber: value })}
           isDarkTheme={settings.isDarkTheme}
+          inputStyle={{ flex: 1 }}
         />
       )}
       <ItemSwitch
         title="Слегка подсвечивать цифру, для демонстрации кол-ва оставшихся цифр необходимых для введения форсированного числа"
         onValueChange={(value) => updateSettings({ highlightNumber: value })}
         value={settings.highlightNumber}
+        isDarkTheme={settings.isDarkTheme}
+      />
+      <ItemSwitch
+        title="При активном триггере подсвечивать нажатия триггерных кнопок (а не фактически нажатых)"
+        onValueChange={(value) =>
+          updateSettings({ pressTriggerButtons: value })
+        }
+        value={settings.pressTriggerButtons}
         isDarkTheme={settings.isDarkTheme}
       />
       <View style={{ flex: 1, justifyContent: 'flex-end' }}>
@@ -233,7 +335,7 @@ export default function Settings({ setScreen, settings, updateSettings }) {
           onPress={() => setScreen('about')}
         />
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -241,7 +343,7 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    // alignItems: 'center',
     flex: 1,
     paddingVertical: 4,
     paddingHorizontal: 6,
@@ -252,6 +354,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 22,
     paddingTop: 16,
+    textAlign: 'center',
   },
   text: {
     // fontWeight: 'bold',

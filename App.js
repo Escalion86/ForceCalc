@@ -86,6 +86,8 @@ export default function App() {
     forceNumber: '0',
     forceDateDelay: 40,
     highlightNumber: true,
+    dateFormat: 'ddMMhhmm',
+    pressTriggerButtons: false,
   })
 
   const storeSettings = (data) => storeJsonData('settings', data)

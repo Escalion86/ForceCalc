@@ -44,7 +44,7 @@ const AboutScreen = ({ setScreen, settings }) => {
   // }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.content}>
         <Text
           style={{
@@ -180,7 +180,7 @@ const AboutScreen = ({ setScreen, settings }) => {
         <Text style={{ fontSize: 16, color: textColor }}>Версия: 1.0.0</Text>
       </TouchableOpacity>
       {/* {modal} */}
-    </View>
+    </ScrollView>
   )
 }
 
