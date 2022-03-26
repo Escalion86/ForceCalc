@@ -142,7 +142,7 @@ const AboutScreen = ({ setScreen, settings }) => {
           color="#aa77ff"
           onPress={() =>
             Linking.openURL(
-              'https://money.alfabank.ru/p2p/web/transfer/abelinskii3048'
+              'https://www.tinkoff.ru/rm/belinskiy.aleksey5/5Yi7i79252'
             )
           }
         />
@@ -177,7 +177,7 @@ const AboutScreen = ({ setScreen, settings }) => {
         //   )
         // }
       >
-        <Text style={{ fontSize: 16, color: textColor }}>Версия: 1.0.0</Text>
+        <Text style={{ fontSize: 16, color: textColor }}>Версия: 1.1.0</Text>
       </TouchableOpacity>
       {/* {modal} */}
     </ScrollView>
