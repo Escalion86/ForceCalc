@@ -112,7 +112,6 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
       }
       if (triggerFuncIsActive) {
         if (!triggerFirstCharIsSet) {
-          console.log('neededNumber[0]', neededNumber[0])
           settings.pressTriggerButtons && setIsButtonPressed(neededNumber[0])
           addChar(neededNumber[0])
           setTriggerFirstCharIsSet(true)
