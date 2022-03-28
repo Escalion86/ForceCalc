@@ -49,6 +49,7 @@ function CalcVertical({
           justifyContent: 'flex-end',
           width: '100%',
           backgroundColor: '#202020',
+          // backgroundColor: settings.isDarkTheme ? '#202020' : '#efefef',
           // borderWidth: 1,
           // borderColor: 'blue',
         }}

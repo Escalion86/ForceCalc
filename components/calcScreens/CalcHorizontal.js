@@ -36,8 +36,6 @@ function CalcHorizontal({
   setTimer,
   clearTimer,
 }) {
-  console.log('isButtonPressed', isButtonPressed)
-
   return (
     <>
       <View
@@ -49,6 +47,7 @@ function CalcHorizontal({
           justifyContent: 'flex-end',
           width: '100%',
           backgroundColor: '#202020',
+          // backgroundColor: settings.isDarkTheme ? '#202020' : '#efefef',
           // borderWidth: 1,
           // borderColor: 'blue',
         }}
@@ -155,7 +154,7 @@ function CalcHorizontal({
           display: 'flex',
           height: '64%',
           marginLeft: 0,
-          backgroundColor: 'white',
+          backgroundColor: '#202020',
         }}
       >
         <View style={styles.bottonsRow}>
