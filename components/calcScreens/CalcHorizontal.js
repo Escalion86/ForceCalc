@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import {
   StyleSheet,
   Text,
@@ -12,6 +12,8 @@ import formatDateTime from '../../helpers/formatDateTime'
 import formatText from '../../helpers/formatText'
 import FuncButton from '../FuncButton'
 import NumButton from '../NumButton'
+
+const HorizontalButton = (props) => <FuncButton orientation="h" {...props} />
 
 function CalcHorizontal({
   btnClick,
@@ -29,7 +31,13 @@ function CalcHorizontal({
   firstArg,
   config,
   highlightFunc,
+  isButtonPressed,
+  setIsButtonPressed,
+  setTimer,
+  clearTimer,
 }) {
+  console.log('isButtonPressed', isButtonPressed)
+
   return (
     <>
       <View
@@ -40,7 +48,7 @@ function CalcHorizontal({
           // alignItems: 'flex-end',
           justifyContent: 'flex-end',
           width: '100%',
-          // backgroundColor: 'black',
+          backgroundColor: '#202020',
           // borderWidth: 1,
           // borderColor: 'blue',
         }}
@@ -145,210 +153,518 @@ function CalcHorizontal({
       <View
         style={{
           display: 'flex',
-          height: '70%',
+          height: '64%',
           marginLeft: 0,
           backgroundColor: 'white',
         }}
       >
         <View style={styles.bottonsRow}>
-          <FuncButton onPress={() => btnClick('(')} iconName="(" colorNum={1} />
-          <FuncButton onPress={() => btnClick(')')} iconName=")" colorNum={1} />
-          <FuncButton
+          <HorizontalButton
+            func="("
+            onPress={() => btnClick('(')}
+            // iconName="("
+            // title="("
+            colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick(')')}
+            // iconName=")"
+            func=")"
+            colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
             onPress={() => btnClick('mc')}
-            iconName={'mc'}
+            // iconName={'mc'}
+            func="mc"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
+          <HorizontalButton
             onPress={() => btnClick('m+')}
-            iconName={'m+'}
+            func="m+"
+            // iconName={'m+'}
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
+          <HorizontalButton
             onPress={() => btnClick('m-')}
-            iconName={'m-'}
+            // iconName={'m-'}
+            func="m-"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
+          <HorizontalButton
             onPress={() => btnClick('mr')}
-            iconName={'mr'}
+            // iconName={'mr'}
+            func="mr"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick('c')}
-            onLongPress={goToSettings}
-            iconName="ac"
+          <HorizontalButton
+            onPress={() => {
+              !trigger && !secondArg && !firstArg && setTimer()
+              btnClick('C')
+            }}
+            // onLongPress={goToSettings}
+            // iconName="ac"
+            func={!secondArg && !firstArg ? 'AC' : 'C'}
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
+          <HorizontalButton
             onPress={() => btnClick('±')}
-            iconName="+-"
+            // iconName="+-"
+            func="􀅺"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton onPress={() => btnClick('%')} iconName="%" colorNum={1} />
-          <FuncButton
+          <HorizontalButton
+            onPress={() => btnClick('%')}
+            // iconName="%"
+            func="%"
+            colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
             onPress={() => btnClick('÷')}
             active={highlightFunc === '/'}
-            colorNum={1}
-            iconName="/"
-          />
-        </View>
-        <View style={styles.bottonsRow}>
-          <FuncButton
-            onPress={() => btnClick('(')}
-            iconName={'2nd'}
-            colorNum={1}
-          />
-          <FuncButton
-            onPress={() => btnClick(')')}
-            iconName={'x2'}
-            colorNum={1}
-          />
-          <FuncButton
-            onPress={() => btnClick('mc')}
-            iconName={'x3'}
-            colorNum={1}
-          />
-          <FuncButton
-            onPress={() => btnClick('m+')}
-            iconName={'xy'}
-            colorNum={1}
-          />
-          <FuncButton
-            onPress={() => btnClick('m-')}
-            iconName={'ex'}
-            colorNum={1}
-          />
-          <FuncButton
-            onPress={() => btnClick('mr')}
-            iconName={'10x'}
-            colorNum={1}
-          />
-          <FuncButton onPress={() => btnClick('mr')} iconName={'7'} />
-          <FuncButton onPress={() => btnClick('mr')} iconName={'8'} />
-          <FuncButton onPress={() => btnClick('mr')} iconName={'9'} />
-          <FuncButton
-            onPress={() => btnClick('mr')}
-            iconName={'*'}
             colorNum={2}
+            // iconName="/"
+            func="􀅿"
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
         </View>
         <View style={styles.bottonsRow}>
-          <FuncButton
-            onPress={() => btnClick('(')}
-            iconName={'1/x'}
+          <HorizontalButton
+            onPress={() => btnClick('2nd')}
+            // iconName={'2nd'}
+            func="2nd"
+            component={({ style }) => (
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  // marginTop: 10,
+                }}
+              >
+                <Text style={style}>2</Text>
+                <Text style={{ marginBottom: 12, fontSize: 8 }}>nd</Text>
+              </View>
+            )}
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick(')')}
-            iconName={'2sqrx'}
+          <HorizontalButton
+            onPress={() => btnClick('x2')}
+            func={'x2'}
+            component={({ style }) => (
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  // marginTop: 10,
+                }}
+              >
+                <Text style={style}>x</Text>
+                <Text style={{ marginBottom: 12, fontSize: 8 }}>2</Text>
+              </View>
+            )}
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick('mc')}
+          <HorizontalButton
+            onPress={() => btnClick('x3')}
+            func="x3"
+            component={({ style }) => (
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  // marginTop: 10,
+                }}
+              >
+                <Text style={style}>x</Text>
+                <Text style={{ marginBottom: 12, fontSize: 8 }}>3</Text>
+              </View>
+            )}
+            colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick('xy')}
+            func="xy"
+            component={({ style }) => (
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  // marginTop: 10,
+                }}
+              >
+                <Text style={style}>x</Text>
+                <Text style={{ marginBottom: 12, fontSize: 8 }}>y</Text>
+              </View>
+            )}
+            colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick('ex')}
+            func="ex"
+            component={({ style }) => (
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  // marginTop: 10,
+                }}
+              >
+                <Text style={style}>e</Text>
+                <Text style={{ marginBottom: 12, fontSize: 8 }}>x</Text>
+              </View>
+            )}
+            colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick('10x')}
+            func="10x"
+            component={({ style }) => (
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  // marginTop: 10,
+                }}
+              >
+                <Text style={style}>10</Text>
+                <Text style={{ marginBottom: 12, fontSize: 8 }}>x</Text>
+              </View>
+            )}
+            colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            style={{ fontSize: 20 }}
+            onPress={() => btnClick('7')}
+            func="7"
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick('8')}
+            func="8"
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick('9')}
+            func="9"
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick('*')}
+            func="􀅾"
+            colorNum={2}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+        </View>
+        <View style={styles.bottonsRow}>
+          <HorizontalButton
+            onPress={() => btnClick('1/x')}
+            func="1/x"
+            iconName="1/x"
+            colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick('2sqrx')}
+            func="2sqrx"
+            iconName="2sqrx"
+            colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick('3sqrx')}
+            func="3sqrx"
             iconName={'3sqrx'}
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick('m+')}
+          <HorizontalButton
+            onPress={() => btnClick('ysqrx')}
+            func="ysqrx"
             iconName={'ysqrx'}
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick('m-')}
-            iconName={'ln'}
+          <HorizontalButton
+            onPress={() => btnClick('ln')}
+            func="ln"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick('mr')}
-            iconName={'log10'}
+          <HorizontalButton
+            onPress={() => btnClick('log10')}
+            func="log10"
+            component={({ style }) => (
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  // marginTop: 10,
+                }}
+              >
+                <Text style={style}>log</Text>
+                <Text style={{ marginBottom: -12, fontSize: 8 }}>10</Text>
+              </View>
+            )}
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton onPress={() => btnClick('mr')} iconName={'4'} />
-          <FuncButton onPress={() => btnClick('mr')} iconName={'5'} />
-          <FuncButton onPress={() => btnClick('mr')} iconName={'6'} />
-          <FuncButton
-            onPress={() => btnClick('mr')}
-            iconName={'-'}
+          <HorizontalButton
+            onPress={() => btnClick('4')}
+            func="4"
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick('5')}
+            func="5"
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick('6')}
+            func="6"
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick('-')}
+            func="—"
+            // titleStyle={{ fontSize: 18 }}
             colorNum={2}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
         </View>
         <View style={styles.bottonsRow}>
-          <FuncButton
-            onPress={() => btnClick('(')}
-            iconName={'x!'}
+          <HorizontalButton
+            onPress={() => btnClick('x!')}
+            func="x!"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick(')')}
-            iconName={'sin'}
+          <HorizontalButton
+            onPress={() => btnClick('sin')}
+            func="sin"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick('mc')}
-            iconName={'cos'}
+          <HorizontalButton
+            onPress={() => btnClick('cos')}
+            func="cos"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick('m+')}
-            iconName={'tan'}
+          <HorizontalButton
+            onPress={() => btnClick('tan')}
+            func="tan"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick('m-')}
-            iconName={'e'}
+          <HorizontalButton
+            onPress={() => btnClick('e')}
+            func="e"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick('mr')}
-            iconName={'ee'}
+          <HorizontalButton
+            onPress={() => btnClick('ee')}
+            func="EE"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton onPress={() => btnClick('mr')} iconName={'1'} />
-          <FuncButton onPress={() => btnClick('mr')} iconName={'2'} />
-          <FuncButton onPress={() => btnClick('mr')} iconName={'3'} />
-          <FuncButton
-            onPress={() => btnClick('mr')}
-            iconName={'+'}
+          <HorizontalButton
+            onPress={() => btnClick('1')}
+            func="1"
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick('2')}
+            func="2"
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick('3')}
+            func="3"
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick('+')}
+            func="+"
+            titleStyle={{ fontSize: 24 }}
             colorNum={2}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
         </View>
         <View style={styles.bottonsRow}>
-          <FuncButton
-            onPress={() => btnClick('(')}
-            iconName={'deg'}
+          <HorizontalButton
+            onPress={() => btnClick('deg')}
+            func="Deg"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick(')')}
-            iconName={'sinh'}
+          <HorizontalButton
+            onPress={() => btnClick('sinh')}
+            func="sinh"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick('mc')}
-            iconName={'cosh'}
+          <HorizontalButton
+            onPress={() => btnClick('cosh')}
+            func="cosh"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick('m+')}
-            iconName={'tanh'}
+          <HorizontalButton
+            onPress={() => btnClick('tanh')}
+            func="tanh"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick('m-')}
-            iconName={'pi'}
+          <HorizontalButton
+            onPress={() => btnClick('pi')}
+            func="π"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton
-            onPress={() => btnClick('mr')}
-            iconName={'rand'}
+          <HorizontalButton
+            onPress={() => btnClick('rand')}
+            func="Rand"
             colorNum={1}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
-          <FuncButton onPress={() => btnClick('mr')} iconName={'0'} big />
-          <FuncButton onPress={() => btnClick('mr')} iconName={','} />
-          <FuncButton
-            onPress={() => btnClick('mr')}
-            iconName={'='}
+          <HorizontalButton onPress={() => btnClick('0')} func="0" big />
+          <HorizontalButton
+            onPress={() => btnClick(',')}
+            func=","
+            // titleStyle={{ fontSize: 20 }}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
+          />
+          <HorizontalButton
+            onPress={() => btnClick('=')}
+            func="="
+            titleStyle={{ fontSize: 22 }}
             colorNum={2}
+            isButtonPressed={isButtonPressed}
+            setIsButtonPressed={setIsButtonPressed}
+            onTouchEnd={clearTimer}
           />
         </View>
       </View>
@@ -362,7 +678,8 @@ const styles = StyleSheet.create({
   bottonsRow: {
     display: 'flex',
     flexDirection: 'row',
-    flex: 1,
+    // flex: 1,
+    height: '20%',
   },
   trigger: {
     backgroundColor: '#c6c6c8',

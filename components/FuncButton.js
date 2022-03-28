@@ -89,7 +89,7 @@ const icons = {
     'm+': <IconH4 fill="#000000" height="100%" />,
     'm-': <IconH5 fill="#000000" height="100%" />,
     mr: <IconH6 fill="#000000" height="100%" />,
-    ac: <IconH7 fill="#000000" height="100%" />,
+    AC: <IconH7 fill="#000000" height="100%" />,
     '+-': <IconH8 fill="#000000" height="100%" />,
     '%': <IconH9 fill="#000000" height="100%" />,
     '/': <IconH10 fill="#000000" height="100%" />,
@@ -134,8 +134,8 @@ const icons = {
     '=': <IconH49 fill="#000000" height="100%" />,
   },
   v: {
-    ac: <IconV1 fill="#000000" height="100%" />,
-    c: <IconV1_1 fill="#000000" height="100%" />,
+    AC: <IconV1 fill="#000000" height="100%" />,
+    C: <IconV1_1 fill="#000000" height="100%" />,
     '+-': <IconV2 fill="#000000" height="100%" />,
     '%': <IconV3 fill="#000000" height="100%" />,
     '/': <IconV4 fill="#ffffff" height="100%" />,
@@ -160,8 +160,9 @@ const icons = {
 const colors = ['#d2d3d5', '#c4c5c7', '#f88a11']
 
 const FuncButton = ({
-  title,
+  func,
   iconName,
+  component,
   style = {},
   onPress,
   active = false,
@@ -174,12 +175,13 @@ const FuncButton = ({
   isButtonPressed,
   setIsButtonPressed,
   onTouchEnd,
+  titleStyle = {},
 }) => {
   const fadeAnim = useRef(new Animated.Value(1)).current
 
   const fadeIn = () => {
     // Will change fadeAnim value to 1 in 5 seconds
-    setIsButtonPressed && setIsButtonPressed(iconName)
+    setIsButtonPressed && setIsButtonPressed(func)
     // Animated.timing(fadeAnim, {
     //   toValue: 0.88,
     //   duration: 0,
@@ -187,7 +189,7 @@ const FuncButton = ({
     // }).start()
   }
 
-  if (isButtonPressed === iconName) {
+  if (isButtonPressed === func) {
     Animated.timing(fadeAnim, {
       toValue: 0.88,
       duration: 0,
@@ -210,6 +212,20 @@ const FuncButton = ({
     setIsButtonPressed && setIsButtonPressed(null)
   }
 
+  const itsNumber = [
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    ',',
+  ].includes(func)
+
   // useEffect(() => {
   //   clearTimeout(timer)
   // }, [setIsButtonPressed])
@@ -217,7 +233,7 @@ const FuncButton = ({
   return (
     <Animated.View
       style={{
-        ...styles.funcButton,
+        fontFamily: 'sf-regular',
         position: 'relative',
         flex: big ? 2 : 1,
         backgroundColor: colors[colorNum],
@@ -229,7 +245,7 @@ const FuncButton = ({
       onTouchStart={() => {
         // onLongPress && setTimer()
         fadeIn()
-        onPress()
+        onPress && onPress()
       }}
       onTouchEnd={() => {
         onTouchEnd && onTouchEnd()
@@ -279,17 +295,7 @@ const FuncButton = ({
           borderColor: '#000000',
         }}
       >
-        {/* {title && (
-          <Text
-            style={{
-              ...(alt ? styles.altFuncButtonText : styles.funcButtonText),
-              ...style,
-            }}
-          >
-            {title}
-          </Text>
-        )}
-        {imageSource && (
+        {/* {imageSource && (
           <Image
             style={{
               width: '100%',
@@ -300,6 +306,7 @@ const FuncButton = ({
             resizeMode="cover"
           />
         )} */}
+
         <View
           style={{
             // borderWidth: 1,
@@ -310,6 +317,28 @@ const FuncButton = ({
             // borderColor: 'red',
           }}
         >
+          {!component && !(iconName && orientation) && (
+            <Text
+              style={{
+                fontFamily: 'sf-regular',
+                fontSize: itsNumber ? 22 : 16,
+                color: colorNum === 2 ? 'white' : 'black',
+                marginTop: itsNumber ? 0 : -2,
+                ...titleStyle,
+              }}
+            >
+              {func}
+            </Text>
+          )}
+          {component &&
+            component({
+              style: {
+                fontFamily: 'sf-regular',
+                fontSize: 16,
+                color: colorNum === 2 ? 'white' : 'black',
+                marginTop: -2,
+              },
+            })}
           {iconName && orientation && icons[orientation][iconName]}
         </View>
       </View>
@@ -319,27 +348,3 @@ const FuncButton = ({
 }
 
 export default FuncButton
-
-const styles = StyleSheet.create({
-  funcButton: {
-    // flex: 1,
-    // backgroundColor: '#ff9933',
-    // padding: 20,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // aspectRatio: 1,
-    fontFamily: 'helvetica-thin',
-    // borderColor: '#333333',
-    // borderWidth: 1,
-  },
-  funcButtonText: {
-    fontSize: 32,
-    color: 'white',
-    fontFamily: 'helvetica-light',
-  },
-  altFuncButtonText: {
-    fontSize: 30,
-    color: '#222222',
-    fontFamily: 'helvetica-thin',
-  },
-})

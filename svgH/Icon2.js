@@ -1,16 +1,16 @@
 import * as React from 'react'
-import Svg, { Path } from 'react-native-svg'
+import Svg, { G, Path } from 'react-native-svg'
 
-const Icon1 = (props) => (
+const SvgComponent = (props) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
-    width={192}
-    height={192}
-    viewBox="0 0 144 144"
+    viewBox="0 0 167.98 167.98"
+    width={144}
+    height={144}
     {...props}
   >
-    <Path d="M72 53.2c-5.8 9.4-6.5 23.7-1.7 34.1 2.4 5.2 4.9 7.8 6.3 6.4.3-.3-.1-1.6-.9-2.9C73.2 87 71 78 71 71.9c0-5.8 3.2-18.3 5-19.4 1.5-.9 1.2-2.5-.5-2.5-.8 0-2.4 1.5-3.5 3.2z" />
+    <Path d="M78.45 59.09C84.71 60.25 90 73.28 89.77 84.54 89.52 96 84.39 108 78.65 108.72c9.4-16.48 9.66-32.82-.2-49.63Z" />
   </Svg>
 )
 
-export default Icon1
+export default SvgComponent

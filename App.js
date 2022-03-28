@@ -28,7 +28,13 @@ async function loadApplication() {
     'helvetica-medium': require('./assets/fonts/HelveticaMedium.ttf'),
     'helvetica-regular': require('./assets/fonts/HelveticaRegular.ttf'),
     'helvetica-thin': require('./assets/fonts/HelveticaThin.ttf'),
-    'helvetica-ultralight': require('./assets/fonts/HelveticaUltraLight.ttf'),
+    'sf-ultralight': require('./assets/fonts/HelveticaUltraLight.ttf'),
+    'sf-bold': require('./assets/fonts/SF-Pro-Display-Bold.otf'),
+    'sf-semibold': require('./assets/fonts/SF-Pro-Display-Semibold.otf'),
+    'sf-light': require('./assets/fonts/SF-Pro-Display-Light.otf'),
+    'sf-medium': require('./assets/fonts/SF-Pro-Display-Medium.otf'),
+    'sf-regular': require('./assets/fonts/SF-Pro-Display-Regular.otf'),
+    'sf-thin': require('./assets/fonts/SF-Pro-Display-Thin.otf'),
   })
   return await getJsonData('settings')
 }
@@ -86,8 +92,9 @@ export default function App() {
     forceNumber: '0',
     forceDateDelay: 40,
     highlightNumber: true,
-    dateFormat: 'ddMMhhmm',
+    dateFormat: 'dMMhhmm',
     pressTriggerButtons: false,
+    screenOrientation: 'auto',
   })
 
   const storeSettings = (data) => storeJsonData('settings', data)

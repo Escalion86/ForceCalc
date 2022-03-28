@@ -154,10 +154,11 @@ function CalcVertical({
           <FuncButton
             onPress={() => {
               !trigger && !secondArg && !firstArg && setTimer()
-              btnClick('c')
+              btnClick('C')
             }}
+            func="c"
             // onLongPress={goToSettings}
-            iconName={!secondArg && !firstArg ? 'ac' : 'c'}
+            iconName={!secondArg && !firstArg ? 'AC' : 'C'}
             colorNum={1}
             isButtonPressed={isButtonPressed}
             setIsButtonPressed={setIsButtonPressed}
@@ -166,6 +167,7 @@ function CalcVertical({
           />
           <FuncButton
             onPress={() => btnClick('±')}
+            func="+-"
             iconName={'+-'}
             colorNum={1}
             isButtonPressed={isButtonPressed}
@@ -174,6 +176,7 @@ function CalcVertical({
           />
           <FuncButton
             onPress={() => btnClick('%')}
+            func="%"
             iconName={'%'}
             colorNum={1}
             isButtonPressed={isButtonPressed}
@@ -182,6 +185,7 @@ function CalcVertical({
           />
           <FuncButton
             onPress={() => btnClick('÷')}
+            func="/"
             iconName={'/'}
             active={highlightFunc === '/'}
             colorNum={2}
@@ -206,6 +210,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('7')}
+            func="7"
             iconName={'7'}
             isButtonPressed={isButtonPressed}
             setIsButtonPressed={setIsButtonPressed}
@@ -218,6 +223,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('8')}
+            func="8"
             iconName={'8'}
             isButtonPressed={isButtonPressed}
             setIsButtonPressed={setIsButtonPressed}
@@ -230,6 +236,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('9')}
+            func="9"
             iconName={'9'}
             isButtonPressed={isButtonPressed}
             setIsButtonPressed={setIsButtonPressed}
@@ -238,6 +245,7 @@ function CalcVertical({
           <FuncButton
             onPress={() => btnClick('*')}
             iconName={'*'}
+            func="*"
             colorNum={2}
             isButtonPressed={isButtonPressed}
             setIsButtonPressed={setIsButtonPressed}
@@ -277,6 +285,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('4')}
+            func="4"
             iconName={'4'}
             isButtonPressed={isButtonPressed}
             setIsButtonPressed={setIsButtonPressed}
@@ -289,6 +298,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('5')}
+            func="5"
             iconName={'5'}
             isButtonPressed={isButtonPressed}
             setIsButtonPressed={setIsButtonPressed}
@@ -301,6 +311,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('6')}
+            func="6"
             iconName={'6'}
             isButtonPressed={isButtonPressed}
             setIsButtonPressed={setIsButtonPressed}
@@ -308,6 +319,7 @@ function CalcVertical({
           />
           <FuncButton
             onPress={() => btnClick('-')}
+            func="-"
             iconName={'-'}
             active={highlightFunc === '-'}
             colorNum={2}
@@ -348,6 +360,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('1')}
+            func="1"
             iconName={'1'}
             isButtonPressed={isButtonPressed}
             setIsButtonPressed={setIsButtonPressed}
@@ -360,6 +373,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('2')}
+            func="2"
             iconName={'2'}
             isButtonPressed={isButtonPressed}
             setIsButtonPressed={setIsButtonPressed}
@@ -372,6 +386,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('3')}
+            func="3"
             iconName={'3'}
             isButtonPressed={isButtonPressed}
             setIsButtonPressed={setIsButtonPressed}
@@ -380,6 +395,7 @@ function CalcVertical({
           <FuncButton
             onPress={() => btnClick('+')}
             iconName={'+'}
+            func="+"
             colorNum={2}
             active={highlightFunc === '+'}
             isButtonPressed={isButtonPressed}
@@ -419,6 +435,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('0')}
+            func="0"
             iconName={'0'}
             isButtonPressed={isButtonPressed}
             setIsButtonPressed={setIsButtonPressed}
@@ -427,6 +444,7 @@ function CalcVertical({
           />
           <FuncButton
             onPress={() => btnClick(',')}
+            func=","
             iconName={','}
             isButtonPressed={isButtonPressed}
             setIsButtonPressed={setIsButtonPressed}
@@ -435,6 +453,7 @@ function CalcVertical({
           <FuncButton
             onPress={() => btnClick('=')}
             iconName={'='}
+            func="="
             colorNum={2}
             isButtonPressed={isButtonPressed}
             setIsButtonPressed={setIsButtonPressed}

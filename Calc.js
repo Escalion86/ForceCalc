@@ -43,7 +43,7 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
   const [trigger, setTrigger] = useState(false)
   const [triggerFuncIsActive, setTriggerFuncIsActive] = useState(false)
   const [triggerFirstCharIsSet, setTriggerFirstCharIsSet] = useState(false)
-  // const [screenOrientation, setScreenOrientation] = useState('vertical')
+  const [screenOrientation, setScreenOrientation] = useState('vertical')
 
   const timer = useRef(null)
   const setTimer = () => {
@@ -61,17 +61,25 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
   // console.log(`startNewNumber`, startNewNumber)
   // console.log(`activeFunc`, activeFunc)
 
-  // useEffect(() => {
-  //   ScreenOrientation.getOrientationAsync().then((o) => {
-  //     if (o === 3 || o === 4) setScreenOrientation('horizontal')
-  //     if (o === 1 || o === 2) setScreenOrientation('vertical')
-  //   })
-  //   ScreenOrientation.addOrientationChangeListener((e) => {
-  //     const o = e.orientationInfo.orientation
-  //     if (o === 3 || o === 4) setScreenOrientation('horizontal')
-  //     if (o === 1 || o === 2) setScreenOrientation('vertical')
-  //   })
-  // }, [])
+  useEffect(() => {
+    ScreenOrientation.getOrientationAsync().then((o) => {
+      if (o === 3 || o === 4) setScreenOrientation('horizontal')
+      if (o === 1 || o === 2) setScreenOrientation('vertical')
+    })
+    ScreenOrientation.addOrientationChangeListener((e) => {
+      const o = e.orientationInfo.orientation
+      if (settings.screenOrientation === 'vertical') {
+        setScreenOrientation('vertical')
+        return
+      }
+      if (settings.screenOrientation === 'horizontal') {
+        setScreenOrientation('horizontal')
+        return
+      }
+      if (o === 3 || o === 4) setScreenOrientation('horizontal')
+      if (o === 1 || o === 2) setScreenOrientation('vertical')
+    })
+  }, [])
 
   let nextResultNumsCountToReady = -1
   let neededFunc = '+'
@@ -152,7 +160,7 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
         if (!text.includes(',')) addChar(',')
         return
       }
-      case 'c':
+      case 'C':
         return reset()
       default:
         return
@@ -290,8 +298,8 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
     clearTimer,
   }
 
-  // const CalcScreen =
-  //   screenOrientation === 'vertical' ? CalcVertical : CalcHorizontal
+  const CalcScreen =
+    screenOrientation === 'vertical' ? CalcVertical : CalcHorizontal
 
   return (
     <View
@@ -300,7 +308,7 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
         flex: 1,
       }}
     >
-      <CalcVertical {...calcProps} />
+      <CalcScreen {...calcProps} />
     </View>
   )
 }
