@@ -113,7 +113,8 @@ function CalcHorizontal({
             <Text
               style={{
                 // flex: 1,
-                color: settings.isDarkTheme ? 'white' : 'black',
+                // color: settings.isDarkTheme ? 'white' : 'black',
+                color: 'white',
                 width: '100%',
                 // backgroundColor: 'black',
                 // borderWidth: 1,

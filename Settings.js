@@ -258,7 +258,7 @@ const SettingsTheme = ({ setScreen, settings, updateSettings }) => {
               // maxHeight: 30,
               marginTop: -8,
               width: 200,
-              color: settings.screenOrientation ? 'white' : 'black',
+              color: settings.isDarkTheme ? 'white' : 'black',
               borderWidth: 1,
               borderLeftColor: 'blue',
               borderLeftWidth: 2,
