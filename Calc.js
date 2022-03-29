@@ -45,6 +45,19 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
   const [triggerFirstCharIsSet, setTriggerFirstCharIsSet] = useState(false)
   const [screenOrientation, setScreenOrientation] = useState('vertical')
 
+  useEffect(() => {
+    if (trigger)
+      console.log('state', {
+        trigger,
+        firstArg,
+        secondArg,
+        startNewNumber,
+        activeFunc,
+        triggerFuncIsActive,
+        triggerFirstCharIsSet,
+      })
+  }, [trigger])
+
   const timer = useRef(null)
   const setTimer = () => {
     // setTimeStartPress(Date.now())
@@ -113,9 +126,18 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
   const btnClick = (char) => {
     if (trigger) {
       if (!triggerFuncIsActive) {
+        // Если до этого небыло набрано ни одной цифры
+        if (!secondArg) {
+          settings.pressTriggerButtons && setIsButtonPressed(neededNumber[0])
+          addChar(neededNumber[0])
+          setTriggerFuncIsActive(true)
+          setTriggerFirstCharIsSet(true)
+          return
+        }
         useFunc(neededFunc)
         settings.pressTriggerButtons && setIsButtonPressed(neededFunc)
         setTriggerFuncIsActive(true)
+
         return
       }
       if (triggerFuncIsActive) {
