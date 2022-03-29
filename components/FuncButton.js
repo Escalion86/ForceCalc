@@ -279,7 +279,7 @@ const FuncButton = ({
       <View
         style={{
           position: 'absolute',
-          borderWidth: active ? 2 : 0.25,
+          borderWidth: active ? 2 : 0.5,
           width: '100%',
           height: '100%',
           borderColor: active ? 'black' : '#666666',
