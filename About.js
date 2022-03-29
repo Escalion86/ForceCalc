@@ -19,6 +19,8 @@ import { ContactIcon } from './components/infoComponents'
 // import { ModalChangeLog } from '../components/Modals'
 // import * as appJson from '../../app.json'
 // import { setSettings } from '../store/actions/app'
+// import { appJson } from './app.json'
+const appJson = require('./app.json')
 
 const AboutScreen = ({ setScreen, settings }) => {
   // const { colors } = useTheme()
@@ -191,7 +193,9 @@ const AboutScreen = ({ setScreen, settings }) => {
         //   )
         // }
       >
-        <Text style={{ fontSize: 16, color: textColor }}>Версия: 1.1.0</Text>
+        <Text style={{ fontSize: 16, color: textColor }}>
+          Версия: {appJson.expo.version}
+        </Text>
       </TouchableOpacity>
       {/* {modal} */}
     </View>
