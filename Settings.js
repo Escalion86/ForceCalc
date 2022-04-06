@@ -9,6 +9,7 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native'
+import { Icon } from '@rneui/themed'
 import { Picker } from '@react-native-picker/picker'
 
 // import RadioButtonRN from 'radio-buttons-react-native'
@@ -23,6 +24,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { HeaderBackButton } from '@react-navigation/elements'
 import AboutScreen from './About'
+import decryptText from './helpers/decryptText'
 
 const Stack = createNativeStackNavigator()
 
@@ -103,7 +105,7 @@ const ItemInputNumber = ({
         width: 80,
         height: 40,
         // width: 60,
-        margin: 4,
+        marginTop: 4,
         borderWidth: 1,
         padding: 10,
         color: isDarkTheme ? 'white' : 'black',
@@ -143,7 +145,7 @@ const ItemInputText = ({
         flex: 1,
         height: 40,
         // width: 60,
-        margin: 4,
+        marginTop: 4,
         borderWidth: 1,
         padding: 10,
         color: isDarkTheme ? 'white' : 'black',
@@ -248,20 +250,22 @@ const SettingsTheme = ({ setScreen, settings, updateSettings }) => {
           style={{
             height: 40,
             borderWidth: 1,
+
             borderColor: settings.isDarkTheme ? 'white' : 'black',
-            borderRadius: 10,
+            borderRadius: 8,
           }}
         >
           <Picker
             selectedValue={settings.screenOrientation}
             style={{
               // maxHeight: 30,
+              marginRight: -8,
               marginTop: -8,
               width: 200,
               color: settings.isDarkTheme ? 'white' : 'black',
-              borderWidth: 1,
-              borderLeftColor: 'blue',
-              borderLeftWidth: 2,
+              // borderWidth: 1,
+              // borderLeftColor: 'blue',
+              // borderLeftWidth: 2,
               // backgroundColor: 'blue',
             }}
             onValueChange={(itemValue, itemIndex) =>
@@ -306,13 +310,14 @@ const SettingsTheme = ({ setScreen, settings, updateSettings }) => {
             height: 40,
             borderWidth: 1,
             borderColor: settings.isDarkTheme ? 'white' : 'black',
-            borderRadius: 10,
+            borderRadius: 8,
           }}
         >
           <Picker
             selectedValue={settings.separateChar}
             style={{
               // maxHeight: 30,
+              marginRight: -8,
               marginTop: -8,
               width: 200,
               color: settings.isDarkTheme ? 'white' : 'black',
@@ -368,6 +373,58 @@ const SettingsForce = ({ setScreen, settings, updateSettings }) => {
           justifyContent: 'space-between',
         }}
       >
+        <View
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Text
+            style={{
+              ...styles.text,
+              flex: 1,
+              color: settings.isDarkTheme ? 'white' : 'black',
+            }}
+          >
+            Тип форсирования
+          </Text>
+          <View
+            style={{
+              height: 40,
+              borderWidth: 1,
+              borderColor: settings.isDarkTheme ? 'white' : 'black',
+              borderRadius: 8,
+            }}
+          >
+            <Picker
+              selectedValue={settings.forceType}
+              style={{
+                // maxHeight: 30,
+                marginRight: -8,
+                marginTop: -8,
+                width: 200,
+                color: settings.isDarkTheme ? 'white' : 'black',
+                borderWidth: 1,
+                borderLeftColor: 'blue',
+                borderLeftWidth: 2,
+                // backgroundColor: 'blue',
+              }}
+              onValueChange={(itemValue, itemIndex) =>
+                updateSettings({ forceType: itemValue })
+              }
+              mode="dropdown"
+              dropdownIconColor={settings.isDarkTheme ? 'white' : 'black'}
+            >
+              <Picker.Item label="Дата" value="date" />
+              <Picker.Item label="Число" value="number" />
+              <Picker.Item label="Криптотекст" value="cryptotext" />
+            </Picker>
+          </View>
+        </View>
+      </View>
+      {/* </View>
         <ItemCheckBox
           title="Форс даты"
           value={settings.forceType === 'date'}
@@ -380,7 +437,13 @@ const SettingsForce = ({ setScreen, settings, updateSettings }) => {
           onValueChange={() => updateSettings({ forceType: 'number' })}
           isDarkTheme={settings.isDarkTheme}
         />
-      </View>
+        <ItemCheckBox
+          title="Форс криптотекста"
+          value={settings.forceType === 'cryptotext'}
+          onValueChange={() => updateSettings({ forceType: 'cryptotext' })}
+          isDarkTheme={settings.isDarkTheme}
+        />
+      </View> */}
       {settings.forceType === 'date' && (
         <>
           <ItemInputNumber
@@ -407,8 +470,7 @@ const SettingsForce = ({ setScreen, settings, updateSettings }) => {
               color: settings.isDarkTheme ? 'white' : 'black',
             }}
           >
-            Итоговый результат:{' '}
-            {formatDateTime(Date.now(), settings.dateFormat)}
+            Результат: {formatDateTime(Date.now(), settings.dateFormat)}
           </Text>
           <Text
             style={{
@@ -433,6 +495,58 @@ const SettingsForce = ({ setScreen, settings, updateSettings }) => {
           isDarkTheme={settings.isDarkTheme}
           inputStyle={{ flex: 1 }}
         />
+      )}
+      {settings.forceType === 'cryptotext' && (
+        <>
+          <ItemInputText
+            title="Форсируемое слово"
+            text={settings.forceCryptotext}
+            onChangeText={(value) => updateSettings({ forceCryptotext: value })}
+            isDarkTheme={settings.isDarkTheme}
+            inputStyle={{ flex: 1 }}
+          />
+          <Text
+            style={{
+              ...styles.text,
+              flex: 1,
+              fontSize: 14,
+              marginBottom: 8,
+              // marginTop: -4,
+              color: settings.isDarkTheme ? 'white' : 'black',
+            }}
+          >
+            Результат: {decryptText(settings.forceCryptotext)}
+          </Text>
+          <Text
+            style={{
+              ...styles.text,
+              flex: 1,
+              fontSize: 14,
+              marginBottom: 8,
+              // marginTop: -4,
+              color: settings.isDarkTheme ? 'white' : 'black',
+            }}
+          >
+            Как написать:
+          </Text>
+          <Text
+            style={{
+              ...styles.text,
+              flex: 1,
+              textAlign: 'center',
+              fontSize: 70,
+              marginBottom: 8,
+              // marginTop: -4,
+              fontFamily: 'cryptext',
+              transform: [{ rotate: '180deg' }],
+              color: settings.isDarkTheme ? 'white' : 'black',
+            }}
+            numberOfLines={1}
+            adjustsFontSizeToFit
+          >
+            {settings.forceCryptotext.toUpperCase()}
+          </Text>
+        </>
       )}
     </ScrollView>
   )
@@ -474,6 +588,48 @@ export default function Settings(generalProps) {
                 onPress={() => generalProps.setScreen('calc')}
               />
             ),
+            headerRight: (props) => (
+              <View
+                {...props}
+                style={{
+                  marginRight: -4,
+                  height: 40,
+                  width: 40,
+                  borderRadius: 40,
+                  overflow: 'hidden',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  // borderWidth: 1,
+                }}
+                // onPress={() => generalProps.setScreen('calc')}
+              >
+                <Icon
+                  // {...props}
+                  // containerStyle={styles.icon}
+                  type="ionicon"
+                  name="calculator"
+                  color="white"
+                  style={{
+                    borderRadius: 40,
+                    // alignItems: 'center',
+                    // overflow: 'hidden',
+                    // borderColor: 'blue',
+                    // borderWidth: 1,
+                    height: 40,
+                    width: 40,
+                    paddingTop: 7,
+                    overflow: 'hidden',
+                  }}
+                  onPress={() => generalProps.setScreen('calc')}
+                />
+              </View>
+              // <HeaderBackButton
+              //   {...props}
+              //   style={{ marginLeft: 0, marginRight: 25 }}
+              //   onPress={() => generalProps.setScreen('calc')}
+              // />
+            ),
             ...screenProps,
           }}
         >
@@ -499,189 +655,6 @@ export default function Settings(generalProps) {
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
-  )
-
-  return (
-    <ScrollView style={styles.container}>
-      <Text
-        style={{
-          ...styles.title,
-          color: settings.isDarkTheme ? 'white' : 'black',
-        }}
-      >
-        Настройки общие
-      </Text>
-      <ItemSwitch
-        title="Темная тема"
-        onValueChange={(value) => updateSettings({ isDarkTheme: value })}
-        value={settings.isDarkTheme}
-        isDarkTheme={settings.isDarkTheme}
-      />
-      <ItemSwitch
-        title="При запуске открывать калькулятор"
-        onValueChange={(value) => updateSettings({ startCalcOnLoad: value })}
-        value={settings.startCalcOnLoad}
-        isDarkTheme={settings.isDarkTheme}
-      />
-      <View
-        style={{
-          // flex: 1,
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
-      >
-        <Text
-          style={{
-            ...styles.text,
-            flex: 1,
-            color: settings.isDarkTheme ? 'white' : 'black',
-          }}
-        >
-          Разделитель тысяч
-        </Text>
-        <View
-          style={{
-            height: 40,
-            borderWidth: 1,
-            borderColor: settings.isDarkTheme ? 'white' : 'black',
-            borderRadius: 10,
-          }}
-        >
-          <Picker
-            selectedValue={settings.separateChar}
-            style={{
-              // maxHeight: 30,
-              marginTop: -8,
-              width: 190,
-              color: settings.isDarkTheme ? 'white' : 'black',
-              borderWidth: 1,
-              borderLeftColor: 'blue',
-              borderLeftWidth: 2,
-              // backgroundColor: 'blue',
-            }}
-            onValueChange={(itemValue, itemIndex) =>
-              updateSettings({ separateChar: itemValue })
-            }
-            mode="dropdown"
-            dropdownIconColor={settings.isDarkTheme ? 'white' : 'black'}
-          >
-            <Picker.Item label="Без разделения" value="" />
-            <Picker.Item label="Точка" value="." />
-            <Picker.Item label="Пробел" value=" " />
-          </Picker>
-        </View>
-      </View>
-      <Text
-        style={{
-          ...styles.title,
-          color: settings.isDarkTheme ? 'white' : 'black',
-        }}
-      >
-        Настройки форсирования
-      </Text>
-      <View
-        style={{
-          marginTop: 10,
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}
-      >
-        <ItemCheckBox
-          title="Форс даты"
-          value={settings.forceType === 'date'}
-          onValueChange={() => updateSettings({ forceType: 'date' })}
-          isDarkTheme={settings.isDarkTheme}
-        />
-        <ItemCheckBox
-          title="Форс числа"
-          value={settings.forceType === 'number'}
-          onValueChange={() => updateSettings({ forceType: 'number' })}
-          isDarkTheme={settings.isDarkTheme}
-        />
-      </View>
-      {settings.forceType === 'date' && (
-        <>
-          <ItemInputNumber
-            title="Отклонение от даты на, сек"
-            number={settings.forceDateDelay}
-            onChangeNumber={(value) =>
-              updateSettings({ forceDateDelay: value })
-            }
-            isDarkTheme={settings.isDarkTheme}
-          />
-          <ItemInputText
-            title="Формат даты*"
-            text={settings.dateFormat}
-            onChangeText={(value) => updateSettings({ dateFormat: value })}
-            isDarkTheme={settings.isDarkTheme}
-          />
-          <Text
-            style={{
-              ...styles.text,
-              flex: 1,
-              fontSize: 14,
-              marginBottom: 8,
-              // marginTop: -4,
-              color: settings.isDarkTheme ? 'white' : 'black',
-            }}
-          >
-            Итоговый результат:{' '}
-            {formatDateTime(Date.now(), settings.dateFormat)}
-          </Text>
-          <Text
-            style={{
-              ...styles.text,
-              flex: 1,
-              fontSize: 12,
-              marginBottom: 12,
-              // marginTop: -10,
-              color: settings.isDarkTheme ? 'white' : 'black',
-            }}
-          >
-            * d, dd - день; M, MM - месяц; y, yy - год; m, mm - минуты; h, hh -
-            часы
-          </Text>
-        </>
-      )}
-
-      {settings.forceType === 'number' && (
-        <ItemInputNumber
-          title="Форсируемое число"
-          number={settings.forceNumber}
-          onChangeNumber={(value) => updateSettings({ forceNumber: value })}
-          isDarkTheme={settings.isDarkTheme}
-          inputStyle={{ flex: 1 }}
-        />
-      )}
-      <ItemSwitch
-        title="Слегка подсвечивать цифру, для демонстрации кол-ва оставшихся цифр необходимых для введения форсированного числа"
-        onValueChange={(value) => updateSettings({ highlightNumber: value })}
-        value={settings.highlightNumber}
-        isDarkTheme={settings.isDarkTheme}
-      />
-      <ItemSwitch
-        title="При активном триггере подсвечивать нажатия триггерных кнопок (а не фактически нажатых)"
-        onValueChange={(value) =>
-          updateSettings({ pressTriggerButtons: value })
-        }
-        value={settings.pressTriggerButtons}
-        isDarkTheme={settings.isDarkTheme}
-      />
-      <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-        <Button
-          title="Запустить калькулятор"
-          onPress={() => setScreen('calc')}
-        />
-        <Button
-          color="#aa77ff"
-          title="О приложении"
-          onPress={() => setScreen('about')}
-        />
-      </View>
-    </ScrollView>
   )
 }
 

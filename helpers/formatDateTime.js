@@ -19,7 +19,7 @@ function formatDateTime(dateTime = Date.now(), format = 'ddMMhhmm') {
     .replace(/m/g, minutes)
     .replace(/[^\d]/g, '')
 
-  return formatedData
+  return String(parseInt(formatedData))
 }
 
 export default formatDateTime

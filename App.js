@@ -35,6 +35,7 @@ async function loadApplication() {
     'sf-medium': require('./assets/fonts/SF-Pro-Display-Medium.otf'),
     'sf-regular': require('./assets/fonts/SF-Pro-Display-Regular.otf'),
     'sf-thin': require('./assets/fonts/SF-Pro-Display-Thin.otf'),
+    cryptext: require('./assets/fonts/Cryptext-ru.ttf'),
   })
   return await getJsonData('settings')
 }
@@ -95,6 +96,7 @@ export default function App() {
     dateFormat: 'dMMhhmm',
     pressTriggerButtons: false,
     screenOrientation: 'auto',
+    forceCryptotext: '',
   })
 
   const storeSettings = (data) => storeJsonData('settings', data)

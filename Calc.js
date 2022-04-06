@@ -9,6 +9,7 @@ import NumButton from './components/NumButton'
 import FuncButton from './components/FuncButton'
 import CalcVertical from './components/calcScreens/CalcVertical'
 import CalcHorizontal from './components/calcScreens/CalcHorizontal'
+import decryptText from './helpers/decryptText'
 
 const config = {
   velocityThreshold: 0.3,
@@ -105,10 +106,14 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
         Date.now() + settings.forceDateDelay * 1000,
         settings.dateFormat
       )
+    if (settings.forceType === 'cryptotext')
+      neededResult = decryptText(settings.forceCryptotext)
     if (settings.forceType === 'number') neededResult = settings.forceNumber
 
-    neededNumber = String(Number(neededResult) - firstArg)
-    if (neededNumber < 0) {
+    neededNumber = String(
+      Number(neededResult) - (firstArg ? firstArg : secondArg)
+    )
+    if (Number(neededNumber) < 0) {
       neededFunc = '-'
       neededNumber = String(-neededNumber)
     }
