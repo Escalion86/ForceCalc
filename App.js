@@ -6,6 +6,14 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil'
+
+import {
   Image,
   StyleSheet,
   Text,
@@ -91,12 +99,12 @@ export default function App() {
     separateChar: '.',
     forceType: 'date',
     forceNumber: '0',
-    forceDateDelay: 40,
+    forceDateDelay: 60,
     highlightNumber: true,
     dateFormat: 'dMMhhmm',
     pressTriggerButtons: false,
     screenOrientation: 'auto',
-    forceCryptotext: '',
+    forceCryptotext: 'Семья',
   })
 
   const storeSettings = (data) => storeJsonData('settings', data)
@@ -129,13 +137,14 @@ export default function App() {
     )
 
   return (
-    <SafeAreaView
-      style={{
-        ...styles.container,
-        backgroundColor: settings.isDarkTheme ? 'black' : 'white',
-      }}
-    >
-      {/* <View
+    <RecoilRoot>
+      <SafeAreaView
+        style={{
+          ...styles.container,
+          backgroundColor: settings.isDarkTheme ? 'black' : 'white',
+        }}
+      >
+        {/* <View
         style={{
           position: 'absolute',
           top: 0,
@@ -150,32 +159,34 @@ export default function App() {
       >
         <Text style={{ color: 'blue', fontSize: 10 }}>21</Text>
       </View> */}
-      {/* <View style={styles.container}> */}
-      <StatusBar style={settings.isDarkTheme ? 'light' : 'dark'} />
-      {screen === 'settings' && (
-        <Settings
-          setScreen={setScreen}
-          updateSettings={updateSettings}
-          settings={settings}
-        />
-      )}
-      {screen === 'calc' && (
-        <Calc
-          isDarkTheme={settings.isDarkTheme}
-          goToSettings={() => setScreen('settings')}
-          separateChar={settings.separateChar}
-          settings={settings}
-        />
-      )}
-      {screen === 'about' && (
-        <About
-          setScreen={setScreen}
-          // updateSettings={updateSettings}
-          settings={settings}
-        />
-      )}
-      {/* </View> */}
-    </SafeAreaView>
+        {/* <View style={styles.container}> */}
+        <StatusBar style={settings.isDarkTheme ? 'light' : 'dark'} />
+        {screen === 'settings' && (
+          <Settings
+            setScreen={setScreen}
+            updateSettings={updateSettings}
+            settings={settings}
+          />
+        )}
+        {screen === 'calc' && (
+          <Calc
+            isDarkTheme={settings.isDarkTheme}
+            goToSettings={() => setScreen('settings')}
+            separateChar={settings.separateChar}
+            settings={settings}
+          />
+        )}
+        {screen === 'about' && (
+          <About
+            setScreen={setScreen}
+            // updateSettings={updateSettings}
+            settings={settings}
+          />
+        )}
+
+        {/* </View> */}
+      </SafeAreaView>
+    </RecoilRoot>
   )
 }
 

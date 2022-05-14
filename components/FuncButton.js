@@ -7,6 +7,12 @@ import {
   Image,
   Animated,
 } from 'react-native'
+
+import { useRecoilState, useRecoilValue } from 'recoil'
+import pressedButtonAtomFamily from '../state/atoms/pressedButtonAtomFamily'
+import pressedTriggeredButtonAtom from '../state/atoms/pressedTriggeredButtonAtom'
+import triggerAtom from '../state/atoms/triggerAtom'
+
 import {
   // IconH1,
   // IconH2,
@@ -172,16 +178,28 @@ const FuncButton = ({
   colorNum = 0,
   big = false,
   orientation = 'v',
-  isButtonPressed,
-  setIsButtonPressed,
   onTouchEnd,
   titleStyle = {},
 }) => {
+  // const [pressed, setPressed] = useRecoilState(pressedButtonAtomFamily(func))
+  const [pressed, setPressed] = useState(false)
+  const [pressedTriggeredButton, setPressedTriggeredButton] = useRecoilState(
+    pressedTriggeredButtonAtom
+  )
+  const trigger = useRecoilValue(triggerAtom)
+
   const fadeAnim = useRef(new Animated.Value(1)).current
 
   const fadeIn = () => {
     // Will change fadeAnim value to 1 in 5 seconds
-    setIsButtonPressed && setIsButtonPressed(func)
+    // if (!trigger) {
+    setPressed(true)
+    // }
+    // else
+    // {
+
+    // }
+    // setIsButtonPressed && setIsButtonPressed(func)
     // Animated.timing(fadeAnim, {
     //   toValue: 0.88,
     //   duration: 0,
@@ -189,9 +207,10 @@ const FuncButton = ({
     // }).start()
   }
 
-  if (isButtonPressed === func) {
+  // if (isButtonPressed === func) {
+  if ((!trigger && pressed) || (trigger && pressedTriggeredButton === func)) {
     Animated.timing(fadeAnim, {
-      toValue: 0.88,
+      toValue: 0.84,
       duration: 0,
       useNativeDriver: true,
     }).start()
@@ -204,7 +223,11 @@ const FuncButton = ({
   }
 
   const fadeOut = () => {
-    setIsButtonPressed && setIsButtonPressed(null)
+    setPressed(false)
+    if (trigger) {
+      setPressedTriggeredButton(null)
+    }
+    // setIsButtonPressed && setIsButtonPressed(null)
   }
 
   const itsNumber = [

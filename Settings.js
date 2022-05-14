@@ -572,6 +572,49 @@ export default function Settings(generalProps) {
     animation: 'slide_from_right',
   }
 
+  const headerRight = (props) => (
+    <View
+      {...props}
+      style={{
+        marginRight: -4,
+        height: 40,
+        width: 40,
+        borderRadius: 40,
+        overflow: 'hidden',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        // borderWidth: 1,
+      }}
+      // onPress={() => generalProps.setScreen('calc')}
+    >
+      <Icon
+        // {...props}
+        // containerStyle={styles.icon}
+        type="ionicon"
+        name="calculator"
+        color="white"
+        style={{
+          borderRadius: 40,
+          // alignItems: 'center',
+          // overflow: 'hidden',
+          // borderColor: 'blue',
+          // borderWidth: 1,
+          height: 40,
+          width: 40,
+          paddingTop: 7,
+          overflow: 'hidden',
+        }}
+        onPress={() => generalProps.setScreen('calc')}
+      />
+    </View>
+    // <HeaderBackButton
+    //   {...props}
+    //   style={{ marginLeft: 0, marginRight: 25 }}
+    //   onPress={() => generalProps.setScreen('calc')}
+    // />
+  )
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -588,48 +631,7 @@ export default function Settings(generalProps) {
                 onPress={() => generalProps.setScreen('calc')}
               />
             ),
-            headerRight: (props) => (
-              <View
-                {...props}
-                style={{
-                  marginRight: -4,
-                  height: 40,
-                  width: 40,
-                  borderRadius: 40,
-                  overflow: 'hidden',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  // borderWidth: 1,
-                }}
-                // onPress={() => generalProps.setScreen('calc')}
-              >
-                <Icon
-                  // {...props}
-                  // containerStyle={styles.icon}
-                  type="ionicon"
-                  name="calculator"
-                  color="white"
-                  style={{
-                    borderRadius: 40,
-                    // alignItems: 'center',
-                    // overflow: 'hidden',
-                    // borderColor: 'blue',
-                    // borderWidth: 1,
-                    height: 40,
-                    width: 40,
-                    paddingTop: 7,
-                    overflow: 'hidden',
-                  }}
-                  onPress={() => generalProps.setScreen('calc')}
-                />
-              </View>
-              // <HeaderBackButton
-              //   {...props}
-              //   style={{ marginLeft: 0, marginRight: 25 }}
-              //   onPress={() => generalProps.setScreen('calc')}
-              // />
-            ),
+            headerRight,
             ...screenProps,
           }}
         >
@@ -637,19 +639,23 @@ export default function Settings(generalProps) {
         </Stack.Screen>
         <Stack.Screen
           name="Theme"
-          options={{ title: 'Внешний вид', ...screenProps }}
+          options={{ title: 'Внешний вид', headerRight, ...screenProps }}
         >
           {(props) => <SettingsTheme {...props} {...generalProps} />}
         </Stack.Screen>
         <Stack.Screen
           name="Force"
-          options={{ title: 'Параметры форсирования', ...screenProps }}
+          options={{
+            title: 'Параметры форсирования',
+            headerRight,
+            ...screenProps,
+          }}
         >
           {(props) => <SettingsForce {...props} {...generalProps} />}
         </Stack.Screen>
         <Stack.Screen
           name="About"
-          options={{ title: 'О приложении', ...screenProps }}
+          options={{ title: 'О приложении', headerRight, ...screenProps }}
         >
           {(props) => <AboutScreen {...props} {...generalProps} />}
         </Stack.Screen>

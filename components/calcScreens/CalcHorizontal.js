@@ -31,8 +31,6 @@ function CalcHorizontal({
   firstArg,
   config,
   highlightFunc,
-  isButtonPressed,
-  setIsButtonPressed,
   setTimer,
   clearTimer,
 }) {
@@ -165,8 +163,6 @@ function CalcHorizontal({
             // iconName="("
             // title="("
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -174,8 +170,6 @@ function CalcHorizontal({
             // iconName=")"
             func=")"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -183,8 +177,6 @@ function CalcHorizontal({
             // iconName={'mc'}
             func="mc"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -192,8 +184,6 @@ function CalcHorizontal({
             func="m+"
             // iconName={'m+'}
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -201,8 +191,6 @@ function CalcHorizontal({
             // iconName={'m-'}
             func="m-"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -210,8 +198,6 @@ function CalcHorizontal({
             // iconName={'mr'}
             func="mr"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -223,8 +209,6 @@ function CalcHorizontal({
             // iconName="ac"
             func={!secondArg && !firstArg ? 'AC' : 'C'}
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -232,8 +216,6 @@ function CalcHorizontal({
             // iconName="+-"
             func="􀅺"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -241,8 +223,6 @@ function CalcHorizontal({
             // iconName="%"
             func="%"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -251,8 +231,6 @@ function CalcHorizontal({
             colorNum={2}
             // iconName="/"
             func="􀅿"
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
         </View>
@@ -276,8 +254,6 @@ function CalcHorizontal({
               </View>
             )}
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -298,8 +274,6 @@ function CalcHorizontal({
               </View>
             )}
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -320,8 +294,6 @@ function CalcHorizontal({
               </View>
             )}
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -342,8 +314,6 @@ function CalcHorizontal({
               </View>
             )}
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -364,8 +334,6 @@ function CalcHorizontal({
               </View>
             )}
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -386,38 +354,28 @@ function CalcHorizontal({
               </View>
             )}
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             style={{ fontSize: 20 }}
             onPress={() => btnClick('7')}
             func="7"
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('8')}
             func="8"
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('9')}
             func="9"
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('*')}
             func="􀅾"
             colorNum={2}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
         </View>
@@ -427,8 +385,6 @@ function CalcHorizontal({
             func="1/x"
             iconName="1/x"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -436,8 +392,6 @@ function CalcHorizontal({
             func="2sqrx"
             iconName="2sqrx"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -445,8 +399,6 @@ function CalcHorizontal({
             func="3sqrx"
             iconName={'3sqrx'}
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -454,16 +406,12 @@ function CalcHorizontal({
             func="ysqrx"
             iconName={'ysqrx'}
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('ln')}
             func="ln"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -484,29 +432,21 @@ function CalcHorizontal({
               </View>
             )}
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('4')}
             func="4"
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('5')}
             func="5"
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('6')}
             func="6"
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -514,8 +454,6 @@ function CalcHorizontal({
             func="—"
             // titleStyle={{ fontSize: 18 }}
             colorNum={2}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
         </View>
@@ -524,69 +462,51 @@ function CalcHorizontal({
             onPress={() => btnClick('x!')}
             func="x!"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('sin')}
             func="sin"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('cos')}
             func="cos"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('tan')}
             func="tan"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('e')}
             func="e"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('ee')}
             func="EE"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('1')}
             func="1"
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('2')}
             func="2"
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('3')}
             func="3"
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -594,8 +514,6 @@ function CalcHorizontal({
             func="+"
             titleStyle={{ fontSize: 24 }}
             colorNum={2}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
         </View>
@@ -604,48 +522,36 @@ function CalcHorizontal({
             onPress={() => btnClick('deg')}
             func="Deg"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('sinh')}
             func="sinh"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('cosh')}
             func="cosh"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('tanh')}
             func="tanh"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('pi')}
             func="π"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             onPress={() => btnClick('rand')}
             func="Rand"
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton onPress={() => btnClick('0')} func="0" big />
@@ -653,8 +559,7 @@ function CalcHorizontal({
             onPress={() => btnClick(',')}
             func=","
             // titleStyle={{ fontSize: 20 }}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
+
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
@@ -662,8 +567,6 @@ function CalcHorizontal({
             func="="
             titleStyle={{ fontSize: 22 }}
             colorNum={2}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
           />
         </View>

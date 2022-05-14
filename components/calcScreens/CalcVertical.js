@@ -29,8 +29,6 @@ function CalcVertical({
   firstArg,
   config,
   highlightFunc,
-  isButtonPressed,
-  setIsButtonPressed,
   setTimer,
   clearTimer,
 }) {
@@ -99,6 +97,9 @@ function CalcVertical({
           config={config}
           style={{
             position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
             width: 'auto',
             minHeight: 80,
             marginHorizontal: 8,
@@ -162,8 +163,6 @@ function CalcVertical({
             // onLongPress={goToSettings}
             iconName={!secondArg && !firstArg ? 'AC' : 'C'}
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             onTouchEnd={clearTimer}
             square
           />
@@ -172,8 +171,6 @@ function CalcVertical({
             func="+-"
             iconName={'+-'}
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           <FuncButton
@@ -181,8 +178,6 @@ function CalcVertical({
             func="%"
             iconName={'%'}
             colorNum={1}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           <FuncButton
@@ -191,8 +186,6 @@ function CalcVertical({
             iconName={'/'}
             active={highlightFunc === '/'}
             colorNum={2}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           {/* <FuncButton onPress={() => btnClick('±')} title="±" alt square />
@@ -214,8 +207,6 @@ function CalcVertical({
             onPress={() => btnClick('7')}
             func="7"
             iconName={'7'}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           <FuncButton
@@ -227,8 +218,6 @@ function CalcVertical({
             onPress={() => btnClick('8')}
             func="8"
             iconName={'8'}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           <FuncButton
@@ -240,8 +229,6 @@ function CalcVertical({
             onPress={() => btnClick('9')}
             func="9"
             iconName={'9'}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           <FuncButton
@@ -249,8 +236,6 @@ function CalcVertical({
             iconName={'*'}
             func="*"
             colorNum={2}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             active={highlightFunc === '*'}
             square
           />
@@ -289,8 +274,6 @@ function CalcVertical({
             onPress={() => btnClick('4')}
             func="4"
             iconName={'4'}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           <FuncButton
@@ -302,8 +285,6 @@ function CalcVertical({
             onPress={() => btnClick('5')}
             func="5"
             iconName={'5'}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           <FuncButton
@@ -315,8 +296,6 @@ function CalcVertical({
             onPress={() => btnClick('6')}
             func="6"
             iconName={'6'}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           <FuncButton
@@ -325,8 +304,6 @@ function CalcVertical({
             iconName={'-'}
             active={highlightFunc === '-'}
             colorNum={2}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           {/* <NumButton
@@ -364,8 +341,6 @@ function CalcVertical({
             onPress={() => btnClick('1')}
             func="1"
             iconName={'1'}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           <FuncButton
@@ -377,8 +352,6 @@ function CalcVertical({
             onPress={() => btnClick('2')}
             func="2"
             iconName={'2'}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           <FuncButton
@@ -390,8 +363,6 @@ function CalcVertical({
             onPress={() => btnClick('3')}
             func="3"
             iconName={'3'}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           <FuncButton
@@ -400,8 +371,6 @@ function CalcVertical({
             func="+"
             colorNum={2}
             active={highlightFunc === '+'}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           {/* <NumButton
@@ -439,8 +408,6 @@ function CalcVertical({
             onPress={() => btnClick('0')}
             func="0"
             iconName={'0'}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
             big
           />
@@ -448,8 +415,6 @@ function CalcVertical({
             onPress={() => btnClick(',')}
             func=","
             iconName={','}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           <FuncButton
@@ -457,8 +422,6 @@ function CalcVertical({
             iconName={'='}
             func="="
             colorNum={2}
-            isButtonPressed={isButtonPressed}
-            setIsButtonPressed={setIsButtonPressed}
             square
           />
           {/* <NumButton

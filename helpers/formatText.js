@@ -4,17 +4,13 @@ const formatText = (text, separateChar) => {
 
   let newText = text
 
-  if (endIndex > 3) {
+  let i = 3
+  while (endIndex > i) {
     newText =
-      newText.slice(0, endIndex - 3) +
+      newText.slice(0, endIndex - i) +
       separateChar +
-      newText.slice(endIndex - 3)
-  }
-  if (endIndex > 6) {
-    newText =
-      newText.slice(0, endIndex - 6) +
-      separateChar +
-      newText.slice(endIndex - 6)
+      newText.slice(endIndex - i)
+    i = i + 3
   }
   return newText
 }
