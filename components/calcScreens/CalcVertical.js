@@ -31,11 +31,10 @@ function CalcVertical({
   highlightFunc,
   setTimer,
   clearTimer,
+  triggerColor,
 }) {
-  const triggerColor = '#ceced1'
-  // trigger: {
-  //   backgroundColor: '#c6c6c8',
-  // },
+  const lastNumberOfNextResultNumsCountToReady = nextResultNumsCountToReady % 10
+
   return (
     <>
       <View
@@ -46,7 +45,7 @@ function CalcVertical({
           // alignItems: 'flex-end',
           justifyContent: 'flex-end',
           width: '100%',
-          backgroundColor: '#202020',
+          backgroundColor: settings.theme === 'classic' ? '#202020' : '#000000',
           // backgroundColor: settings.isDarkTheme ? '#202020' : '#efefef',
           // borderWidth: 1,
           // borderColor: 'blue',
@@ -61,7 +60,7 @@ function CalcVertical({
               height: 3,
               width: 3,
               backgroundColor:
-                nextResultNumsCountToReady === 0
+                lastNumberOfNextResultNumsCountToReady === '0'
                   ? '#888888'
                   : neededFunc === '+'
                   ? 'green'
@@ -145,7 +144,11 @@ function CalcVertical({
           </TouchableWithoutFeedback>
         </GestureRecognizer>
       </View>
-      <View style={{ backgroundColor: '#202020' }}>
+      <View
+        style={{
+          backgroundColor: settings.theme === 'classic' ? '#202020' : '#000000',
+        }}
+      >
         <View style={styles.bottonsRow}>
           {/* <FuncButton
             onPress={() => btnClick('c')}
@@ -165,6 +168,7 @@ function CalcVertical({
             colorNum={1}
             onTouchEnd={clearTimer}
             square
+            theme={settings.theme}
           />
           <FuncButton
             onPress={() => btnClick('±')}
@@ -172,6 +176,7 @@ function CalcVertical({
             iconName={'+-'}
             colorNum={1}
             square
+            theme={settings.theme}
           />
           <FuncButton
             onPress={() => btnClick('%')}
@@ -179,6 +184,7 @@ function CalcVertical({
             iconName={'%'}
             colorNum={1}
             square
+            theme={settings.theme}
           />
           <FuncButton
             onPress={() => btnClick('÷')}
@@ -187,6 +193,7 @@ function CalcVertical({
             active={highlightFunc === '/'}
             colorNum={2}
             square
+            theme={settings.theme}
           />
           {/* <FuncButton onPress={() => btnClick('±')} title="±" alt square />
           <FuncButton onPress={() => btnClick('%')} title="%" alt square />
@@ -200,7 +207,7 @@ function CalcVertical({
         <View style={styles.bottonsRow}>
           <FuncButton
             style={
-              nextResultNumsCountToReady === 7
+              lastNumberOfNextResultNumsCountToReady === 7
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -208,10 +215,11 @@ function CalcVertical({
             func="7"
             iconName={'7'}
             square
+            theme={settings.theme}
           />
           <FuncButton
             style={
-              nextResultNumsCountToReady === 8
+              lastNumberOfNextResultNumsCountToReady === 8
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -219,10 +227,11 @@ function CalcVertical({
             func="8"
             iconName={'8'}
             square
+            theme={settings.theme}
           />
           <FuncButton
             style={
-              nextResultNumsCountToReady === 9
+              lastNumberOfNextResultNumsCountToReady === 9
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -230,6 +239,7 @@ function CalcVertical({
             func="9"
             iconName={'9'}
             square
+            theme={settings.theme}
           />
           <FuncButton
             onPress={() => btnClick('*')}
@@ -238,6 +248,7 @@ function CalcVertical({
             colorNum={2}
             active={highlightFunc === '*'}
             square
+            theme={settings.theme}
           />
           {/* <NumButton
             style={nextResultNumsCountToReady === 7 ? styles.trigger : {}}
@@ -267,7 +278,7 @@ function CalcVertical({
         <View style={styles.bottonsRow}>
           <FuncButton
             style={
-              nextResultNumsCountToReady === 4
+              lastNumberOfNextResultNumsCountToReady === 4
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -275,10 +286,11 @@ function CalcVertical({
             func="4"
             iconName={'4'}
             square
+            theme={settings.theme}
           />
           <FuncButton
             style={
-              nextResultNumsCountToReady === 5
+              lastNumberOfNextResultNumsCountToReady === 5
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -286,10 +298,11 @@ function CalcVertical({
             func="5"
             iconName={'5'}
             square
+            theme={settings.theme}
           />
           <FuncButton
             style={
-              nextResultNumsCountToReady === 6
+              lastNumberOfNextResultNumsCountToReady === 6
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -297,6 +310,7 @@ function CalcVertical({
             func="6"
             iconName={'6'}
             square
+            theme={settings.theme}
           />
           <FuncButton
             onPress={() => btnClick('-')}
@@ -305,6 +319,7 @@ function CalcVertical({
             active={highlightFunc === '-'}
             colorNum={2}
             square
+            theme={settings.theme}
           />
           {/* <NumButton
             style={nextResultNumsCountToReady === 4 ? styles.trigger : {}}
@@ -334,7 +349,7 @@ function CalcVertical({
         <View style={styles.bottonsRow}>
           <FuncButton
             style={
-              nextResultNumsCountToReady === 1
+              lastNumberOfNextResultNumsCountToReady === 1
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -342,10 +357,11 @@ function CalcVertical({
             func="1"
             iconName={'1'}
             square
+            theme={settings.theme}
           />
           <FuncButton
             style={
-              nextResultNumsCountToReady === 2
+              lastNumberOfNextResultNumsCountToReady === 2
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -353,10 +369,11 @@ function CalcVertical({
             func="2"
             iconName={'2'}
             square
+            theme={settings.theme}
           />
           <FuncButton
             style={
-              nextResultNumsCountToReady === 3
+              lastNumberOfNextResultNumsCountToReady === 3
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -364,6 +381,7 @@ function CalcVertical({
             func="3"
             iconName={'3'}
             square
+            theme={settings.theme}
           />
           <FuncButton
             onPress={() => btnClick('+')}
@@ -372,6 +390,7 @@ function CalcVertical({
             colorNum={2}
             active={highlightFunc === '+'}
             square
+            theme={settings.theme}
           />
           {/* <NumButton
             style={nextResultNumsCountToReady === 1 ? styles.trigger : {}}
@@ -401,7 +420,7 @@ function CalcVertical({
         <View style={styles.bottonsRow}>
           <FuncButton
             style={
-              nextResultNumsCountToReady === 0
+              lastNumberOfNextResultNumsCountToReady === 0
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -409,6 +428,7 @@ function CalcVertical({
             func="0"
             iconName={'0'}
             square
+            theme={settings.theme}
             big
           />
           <FuncButton
@@ -416,6 +436,12 @@ function CalcVertical({
             func=","
             iconName={','}
             square
+            theme={settings.theme}
+            style={
+              nextResultNumsCountToReady >= 10
+                ? { backgroundColor: triggerColor }
+                : {}
+            }
           />
           <FuncButton
             onPress={() => btnClick('=')}
@@ -423,6 +449,7 @@ function CalcVertical({
             func="="
             colorNum={2}
             square
+            theme={settings.theme}
           />
           {/* <NumButton
             style={nextResultNumsCountToReady === 0 ? styles.trigger : {}}

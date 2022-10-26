@@ -9,7 +9,11 @@ const SvgComponent = (props) => (
     height={144}
     {...props}
   >
-    <Path d="M179.31 222.87H174c1.24-6.28 2.41-12.2 3.65-18.46h8.23Z" />
+    <Path
+      stroke={props.fill}
+      strokeWidth={props.bold ? 5 : 0}
+      d="M179.31 222.87H174c1.24-6.28 2.41-12.2 3.65-18.46h8.23Z"
+    />
   </Svg>
 )
 

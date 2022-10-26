@@ -33,6 +33,7 @@ function CalcHorizontal({
   highlightFunc,
   setTimer,
   clearTimer,
+  triggerColor,
 }) {
   return (
     <>
@@ -158,6 +159,7 @@ function CalcHorizontal({
       >
         <View style={styles.bottonsRow}>
           <HorizontalButton
+            theme={settings.theme}
             func="("
             onPress={() => btnClick('(')}
             // iconName="("
@@ -166,6 +168,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick(')')}
             // iconName=")"
             func=")"
@@ -173,6 +176,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('mc')}
             // iconName={'mc'}
             func="mc"
@@ -180,6 +184,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('m+')}
             func="m+"
             // iconName={'m+'}
@@ -187,6 +192,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('m-')}
             // iconName={'m-'}
             func="m-"
@@ -194,6 +200,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('mr')}
             // iconName={'mr'}
             func="mr"
@@ -201,6 +208,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => {
               !trigger && !secondArg && !firstArg && setTimer()
               btnClick('C')
@@ -212,6 +220,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('±')}
             // iconName="+-"
             func="􀅺"
@@ -219,6 +228,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('%')}
             // iconName="%"
             func="%"
@@ -226,6 +236,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('÷')}
             active={highlightFunc === '/'}
             colorNum={2}
@@ -236,6 +247,7 @@ function CalcHorizontal({
         </View>
         <View style={styles.bottonsRow}>
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('2nd')}
             // iconName={'2nd'}
             func="2nd"
@@ -257,6 +269,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('x2')}
             func={'x2'}
             component={({ style }) => (
@@ -277,6 +290,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('x3')}
             func="x3"
             component={({ style }) => (
@@ -297,6 +311,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('xy')}
             func="xy"
             component={({ style }) => (
@@ -317,6 +332,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('ex')}
             func="ex"
             component={({ style }) => (
@@ -337,6 +353,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('10x')}
             func="10x"
             component={({ style }) => (
@@ -357,22 +374,26 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             style={{ fontSize: 20 }}
             onPress={() => btnClick('7')}
             func="7"
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('8')}
             func="8"
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('9')}
             func="9"
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('*')}
             func="􀅾"
             colorNum={2}
@@ -381,6 +402,7 @@ function CalcHorizontal({
         </View>
         <View style={styles.bottonsRow}>
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('1/x')}
             func="1/x"
             iconName="1/x"
@@ -388,6 +410,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('2sqrx')}
             func="2sqrx"
             iconName="2sqrx"
@@ -395,6 +418,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('3sqrx')}
             func="3sqrx"
             iconName={'3sqrx'}
@@ -402,6 +426,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('ysqrx')}
             func="ysqrx"
             iconName={'ysqrx'}
@@ -409,12 +434,14 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('ln')}
             func="ln"
             colorNum={1}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('log10')}
             func="log10"
             component={({ style }) => (
@@ -435,21 +462,25 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('4')}
             func="4"
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('5')}
             func="5"
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('6')}
             func="6"
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('-')}
             func="—"
             // titleStyle={{ fontSize: 18 }}
@@ -459,57 +490,67 @@ function CalcHorizontal({
         </View>
         <View style={styles.bottonsRow}>
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('x!')}
             func="x!"
             colorNum={1}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('sin')}
             func="sin"
             colorNum={1}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('cos')}
             func="cos"
             colorNum={1}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('tan')}
             func="tan"
             colorNum={1}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('e')}
             func="e"
             colorNum={1}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('ee')}
             func="EE"
             colorNum={1}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('1')}
             func="1"
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('2')}
             func="2"
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('3')}
             func="3"
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('+')}
             func="+"
             titleStyle={{ fontSize: 24 }}
@@ -519,43 +560,55 @@ function CalcHorizontal({
         </View>
         <View style={styles.bottonsRow}>
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('deg')}
             func="Deg"
             colorNum={1}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('sinh')}
             func="sinh"
             colorNum={1}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('cosh')}
             func="cosh"
             colorNum={1}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('tanh')}
             func="tanh"
             colorNum={1}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('pi')}
             func="π"
             colorNum={1}
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('rand')}
             func="Rand"
             colorNum={1}
             onTouchEnd={clearTimer}
           />
-          <HorizontalButton onPress={() => btnClick('0')} func="0" big />
           <HorizontalButton
+            theme={settings.theme}
+            onPress={() => btnClick('0')}
+            func="0"
+            big
+          />
+          <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick(',')}
             func=","
             // titleStyle={{ fontSize: 20 }}
@@ -563,6 +616,7 @@ function CalcHorizontal({
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
+            theme={settings.theme}
             onPress={() => btnClick('=')}
             func="="
             titleStyle={{ fontSize: 22 }}

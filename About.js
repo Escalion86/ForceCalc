@@ -15,6 +15,7 @@ import Button from './components/Button'
 // import Button from '../components/Button'
 // import { AppContext } from '../AppContext'
 import { ContactIcon } from './components/infoComponents'
+import language from './helpers/language'
 // import { fontSize } from '../theme'
 // import { ModalChangeLog } from '../components/Modals'
 // import * as appJson from '../../app.json'
@@ -78,8 +79,10 @@ const AboutScreen = ({ setScreen, settings }) => {
                 color: textColor,
               }}
             >
-              {'\t\t\t\t'}Приложение для форсирования определенного числа или
-              текущей даты и времени.
+              {`\t\t\t\t ${language(
+                settings.language,
+                'Приложение для форсирования определенного числа или текущей даты и времени'
+              )}.`}
             </Text>
             <Text
               style={{
@@ -88,8 +91,11 @@ const AboutScreen = ({ setScreen, settings }) => {
                 color: textColor,
               }}
             >
-              {'\t\t\t\t'}Если у Вас появились предложения или замечания по
-              приложению, то сообщите об этом разработчику напрямую:
+              {' '}
+              {`\t\t\t\t ${language(
+                settings.language,
+                'Если у Вас появились предложения или замечания по приложению, то сообщите об этом разработчику напрямую'
+              )}:`}
             </Text>
           </View>
           <View style={styles.contacts}>
@@ -110,7 +116,7 @@ const AboutScreen = ({ setScreen, settings }) => {
                   color: textColor,
                 }}
               >
-                Разработчик:
+                {`${language(settings.language, 'Разработчик')}:`}
               </Text>
               <Text
                 style={{
@@ -120,7 +126,7 @@ const AboutScreen = ({ setScreen, settings }) => {
                   color: textColor,
                 }}
               >
-                Алексей Белинский
+                {language(settings.language, 'Алексей Белинский')}
               </Text>
               <TouchableOpacity
                 onPress={() => Linking.openURL('https://escalion.ru')}
@@ -154,7 +160,7 @@ const AboutScreen = ({ setScreen, settings }) => {
             </TouchableOpacity>
           </View>
           <Button
-            title="Поблагодарить разработчика"
+            title={language(settings.language, 'Поблагодарить разработчика')}
             color="#aa77ff"
             onPress={() =>
               Linking.openURL(
@@ -194,7 +200,7 @@ const AboutScreen = ({ setScreen, settings }) => {
         // }
       >
         <Text style={{ fontSize: 16, color: textColor }}>
-          Версия: {appJson.expo.version}
+          {`${language(settings.language, 'Версия')}: ${appJson.expo.version}`}
         </Text>
       </TouchableOpacity>
       {/* {modal} */}

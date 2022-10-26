@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import * as Font from 'expo-font'
-import AppLoading from 'expo-app-loading'
+// import AppLoading from 'expo-app-loading'
+import * as SplashScreen from 'expo-splash-screen'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -89,6 +90,8 @@ const getJsonData = async (key) => {
   }
 }
 
+SplashScreen.preventAutoHideAsync()
+
 export default function App() {
   // const colorScheme = useColorScheme()
   const [isReady, setIsReady] = useState(false)
@@ -105,7 +108,15 @@ export default function App() {
     pressTriggerButtons: false,
     screenOrientation: 'auto',
     forceCryptotext: 'Семья',
+    highlightNumberIntensity: 'normal',
+    theme: 'classic',
+    language: 'ru',
   })
+
+  console.log(
+    'settings.highlightNumberIntensity',
+    settings.highlightNumberIntensity
+  )
 
   const storeSettings = (data) => storeJsonData('settings', data)
 
@@ -121,20 +132,59 @@ export default function App() {
   //   if (key) setSettings({...settings, [key]:value})
   // }
 
-  if (!isReady)
-    return (
-      <AppLoading
-        startAsync={async () => {
-          const settings = await loadApplication()
-          if (settings) {
-            if (settings.startCalcOnLoad) setScreen('calc')
-            updateSettings(settings)
-          }
-        }}
-        onFinish={() => setIsReady(true)}
-        onError={console.warn}
-      />
-    )
+  // if (!isReady)
+  //   return (
+  //     <AppLoading
+  //       startAsync={async () => {
+  //         const settings = await loadApplication()
+  //         if (settings) {
+  //           if (settings.startCalcOnLoad) setScreen('calc')
+  //           updateSettings(settings)
+  //         }
+  //       }}
+  //       onFinish={() => setIsReady(true)}
+  //       onError={console.warn}
+  //     />
+  //   )
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        // Pre-load fonts, make any API calls you need to do here
+        const settings = await loadApplication()
+        if (settings) {
+          if (settings.startCalcOnLoad) setScreen('calc')
+          updateSettings(settings)
+        }
+        // Artificially delay for two seconds to simulate a slow loading
+        // experience. Please remove this if you copy and paste the code!
+        // await new Promise(resolve => setTimeout(resolve, 2000));
+      } catch (e) {
+        console.warn(e)
+      } finally {
+        // Tell the application to render
+        setIsReady(true)
+        await SplashScreen.hideAsync()
+      }
+    }
+
+    prepare()
+  }, [])
+
+  // const onLayoutRootView = useCallback(async () => {
+  //   if (isReady) {
+  //     // This tells the splash screen to hide immediately! If we call this after
+  //     // `setAppIsReady`, then we may see a blank screen while the app is
+  //     // loading its initial state and rendering its first pixels. So instead,
+  //     // we hide the splash screen once we know the root view has already
+  //     // performed layout.
+  //     await SplashScreen.hideAsync()
+  //   }
+  // }, [isReady])
+
+  if (!isReady) {
+    return null
+  }
 
   return (
     <RecoilRoot>

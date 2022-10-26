@@ -109,10 +109,10 @@ const icons = {
     // 8: <IconH18 fill="#000000" height="100%" />,
     // 9: <IconH19 fill="#000000" height="100%" />,
     // '*': <IconH20 fill="#000000" height="100%" />,
-    '1/x': <IconH21 fill="#000000" height="100%" />,
-    '2sqrx': <IconH22 fill="#000000" height="100%" />,
-    '3sqrx': <IconH23 fill="#000000" height="100%" />,
-    ysqrx: <IconH24 fill="#000000" height="100%" />,
+    '1/x': (props) => <IconH21 fill="#000000" height="100%" {...props} />,
+    '2sqrx': (props) => <IconH22 fill="#000000" height="100%" {...props} />,
+    '3sqrx': (props) => <IconH23 fill="#000000" height="100%" {...props} />,
+    ysqrx: (props) => <IconH24 fill="#000000" height="100%" {...props} />,
     // ln: <IconH25 fill="#000000" height="100%" />,
     // log10: <IconH26 fill="#000000" height="100%" />,
     // 4: <IconH27 fill="#000000" height="100%" />,
@@ -140,30 +140,33 @@ const icons = {
     // '=': <IconH49 fill="#000000" height="100%" />,
   },
   v: {
-    AC: <IconV1 fill="#000000" height="100%" />,
-    C: <IconV1_1 fill="#000000" height="100%" />,
-    '+-': <IconV2 fill="#000000" height="100%" />,
-    '%': <IconV3 fill="#000000" height="100%" />,
-    '/': <IconV4 fill="#ffffff" height="100%" />,
-    7: <IconV5 fill="#000000" height="100%" />,
-    8: <IconV6 fill="#000000" height="100%" />,
-    9: <IconV7 fill="#000000" height="100%" />,
-    '*': <IconV8 fill="#ffffff" height="100%" />,
-    4: <IconV9 fill="#000000" height="100%" />,
-    5: <IconV10 fill="#000000" height="100%" />,
-    6: <IconV11 fill="#000000" height="100%" />,
-    '-': <IconV12 fill="#ffffff" height="100%" />,
-    1: <IconV13 fill="#000000" height="100%" />,
-    2: <IconV14 fill="#000000" height="100%" />,
-    3: <IconV15 fill="#000000" height="100%" />,
-    '+': <IconV16 fill="#ffffff" height="100%" />,
-    0: <IconV17 fill="#000000" height="100%" />,
-    ',': <IconV18 fill="#000000" height="100%" />,
-    '=': <IconV19 fill="#ffffff" height="100%" />,
+    AC: (props) => <IconV1 fill="#000000" height="100%" {...props} />,
+    C: (props) => <IconV1_1 fill="#000000" height="100%" {...props} />,
+    '+-': (props) => <IconV2 fill="#000000" height="100%" {...props} />,
+    '%': (props) => <IconV3 fill="#000000" height="100%" {...props} />,
+    '/': (props) => <IconV4 fill="#ffffff" height="100%" {...props} />,
+    7: (props) => <IconV5 fill="#000000" height="100%" {...props} />,
+    8: (props) => <IconV6 fill="#000000" height="100%" {...props} />,
+    9: (props) => <IconV7 fill="#000000" height="100%" {...props} />,
+    '*': (props) => <IconV8 fill="#ffffff" height="100%" {...props} />,
+    4: (props) => <IconV9 fill="#000000" height="100%" {...props} />,
+    5: (props) => <IconV10 fill="#000000" height="100%" {...props} />,
+    6: (props) => <IconV11 fill="#000000" height="100%" {...props} />,
+    '-': (props) => <IconV12 fill="#ffffff" height="100%" {...props} />,
+    1: (props) => <IconV13 fill="#000000" height="100%" {...props} />,
+    2: (props) => <IconV14 fill="#000000" height="100%" {...props} />,
+    3: (props) => <IconV15 fill="#000000" height="100%" {...props} />,
+    '+': (props) => <IconV16 fill="#ffffff" height="100%" {...props} />,
+    0: (props) => <IconV17 fill="#000000" height="100%" {...props} />,
+    ',': (props) => <IconV18 fill="#000000" height="100%" {...props} />,
+    '=': (props) => <IconV19 fill="#ffffff" height="100%" {...props} />,
   },
 }
 
-const colors = ['#d2d3d5', '#c4c5c7', '#f88a11']
+const colors = {
+  classic: ['#d2d3d5', '#c4c5c7', '#f88a11'],
+  standart: ['#313131', '#9f9f9f', '#ee9800'],
+}
 
 const FuncButton = ({
   func,
@@ -180,6 +183,7 @@ const FuncButton = ({
   orientation = 'v',
   onTouchEnd,
   titleStyle = {},
+  theme = 'standart',
 }) => {
   // const [pressed, setPressed] = useRecoilState(pressedButtonAtomFamily(func))
   const [pressed, setPressed] = useState(false)
@@ -254,8 +258,10 @@ const FuncButton = ({
         fontFamily: 'sf-regular',
         position: 'relative',
         flex: big ? 2 : 1,
-        backgroundColor: colors[colorNum],
+        backgroundColor: colors[theme][colorNum],
         aspectRatio: square ? (big ? 2 : 1) : null,
+        borderRadius: theme === 'standart' ? 200 : 0,
+        margin: theme === 'standart' ? 7 : 0,
         // opacity: isTouched ? 0.88 : 1,
         opacity: fadeAnim,
         ...style,
@@ -297,7 +303,7 @@ const FuncButton = ({
       <View
         style={{
           position: 'absolute',
-          borderWidth: active ? 2 : 0.5,
+          borderWidth: theme === 'classic' ? (active ? 2 : 0.5) : 0,
           width: '100%',
           height: '100%',
           borderColor: active ? 'black' : '#666666',
@@ -357,7 +363,20 @@ const FuncButton = ({
                 marginTop: -2,
               },
             })}
-          {iconName && orientation && icons[orientation][iconName]}
+          {iconName &&
+            orientation &&
+            icons[orientation][iconName]({
+              height: theme === 'standart' ? '150%' : '100%',
+              bold: theme === 'standart',
+              fill:
+                theme === 'standart'
+                  ? ['c', '+-', '%'].includes(func)
+                    ? 'black'
+                    : 'white'
+                  : ['/', '*', '-', '+', '='].includes(func)
+                  ? 'white'
+                  : 'black',
+            })}
         </View>
       </View>
       {/* </TouchableOpacity> */}
