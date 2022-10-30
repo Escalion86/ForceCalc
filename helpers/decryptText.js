@@ -7,7 +7,7 @@ const decryptText = (text) => {
     e: '3',
     f: '1',
     g: '9',
-    h: 'h',
+    h: '4',
     i: '1',
     j: '1',
     k: '4',
