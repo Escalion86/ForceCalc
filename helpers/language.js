@@ -29,6 +29,7 @@ const language = (lng, word) => {
         en: 'When the trigger is active, lightly highlight the digit to show the number of remaining digits needed to enter the forced number',
       },
     'Контрастность подсветки цифры': { en: 'Digit backlight contrast' },
+    'Очень высокий': { en: 'Very high' },
     Высокий: { en: 'High' },
     Нормальный: { en: 'Normal' },
     Низкий: { en: 'Low' },
