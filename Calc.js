@@ -374,14 +374,20 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
 
   var triggerColor
   if (settings.theme === 'classic' || !settings.theme) {
-    if (settings.highlightNumberIntensity === 'high') triggerColor = '#cacbcc'
+    if (settings.highlightNumberIntensity === 'veryhigh')
+      triggerColor = '#c7c8ca'
+    else if (settings.highlightNumberIntensity === 'high')
+      triggerColor = '#cacbcc'
     else if (settings.highlightNumberIntensity === 'normal')
       triggerColor = '#cdcdcf'
     else if (settings.highlightNumberIntensity === 'light')
       triggerColor = '#d0d0d2'
   }
   if (settings.theme === 'standart') {
-    if (settings.highlightNumberIntensity === 'high') triggerColor = '#383838'
+    if (settings.highlightNumberIntensity === 'veryhigh')
+      triggerColor = '#3a3a3a'
+    else if (settings.highlightNumberIntensity === 'high')
+      triggerColor = '#383838'
     else if (settings.highlightNumberIntensity === 'normal')
       triggerColor = '#363636'
     else if (settings.highlightNumberIntensity === 'light')
