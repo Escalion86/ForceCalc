@@ -34,7 +34,6 @@ function CalcVertical({
   triggerColor,
 }) {
   const lastNumberOfNextResultNumsCountToReady = nextResultNumsCountToReady % 10
-
   return (
     <>
       <View
@@ -60,7 +59,7 @@ function CalcVertical({
               height: 3,
               width: 3,
               backgroundColor:
-                lastNumberOfNextResultNumsCountToReady === '0'
+                lastNumberOfNextResultNumsCountToReady === 0
                   ? '#888888'
                   : neededFunc === '+'
                   ? 'green'
