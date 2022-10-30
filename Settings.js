@@ -535,6 +535,10 @@ const SettingsTheme = ({ setScreen, settings, updateSettings }) => {
               dropdownIconColor={settings.isDarkTheme ? 'white' : 'black'}
             >
               <Picker.Item
+                label={language(settings.language, 'Очень высокий')}
+                value="veryhigh"
+              />
+              <Picker.Item
                 label={language(settings.language, 'Высокий')}
                 value="high"
               />

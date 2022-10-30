@@ -308,7 +308,7 @@ const FuncButton = ({
           borderWidth: theme === 'classic' ? (active ? 2 : 0.5) : 0,
           width: '100%',
           height: '100%',
-          borderColor: active ? 'black' : '#666666',
+          // borderColor: active ? 'black' : '#666666',
           // margin: 1,
         }}
       />
@@ -322,8 +322,6 @@ const FuncButton = ({
           // borderColor: '#000000',
           // borderColor: 'red',
           padding: theme === 'standart' ? 7 : 0,
-
-          // borderWidth: 1,
         }}
       >
         {/* {imageSource && (
@@ -344,50 +342,75 @@ const FuncButton = ({
             // display: 'flex',
             width: '100%',
             height: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
+            // alignItems: 'center',
+            // justifyContent: 'flex-start',
             // borderColor: 'red',
-            backgroundColor: colors[theme][colorNum],
+            backgroundColor:
+              theme === 'standart'
+                ? active
+                  ? 'white'
+                  : colors[theme][colorNum]
+                : colors[theme][colorNum],
             borderRadius: theme === 'standart' ? 200 : 0,
+            borderColor: theme === 'standart' ? null : 'black',
+            borderWidth: theme === 'standart' ? null : active ? 2 : 0,
             ...style,
           }}
         >
-          {!component && !(iconName && orientation) && (
-            <Text
-              style={{
-                fontFamily: 'sf-regular',
-                fontSize: itsNumber ? 22 : 16,
-                color: colorNum === 2 ? 'white' : 'black',
-                marginTop: itsNumber ? 0 : -2,
-                ...titleStyle,
-              }}
-            >
-              {func}
-            </Text>
-          )}
-          {component &&
-            component({
-              style: {
-                fontFamily: 'sf-regular',
-                fontSize: 16,
-                color: colorNum === 2 ? 'white' : 'black',
-                marginTop: -2,
-              },
-            })}
-          {iconName &&
-            orientation &&
-            icons[orientation][iconName]({
-              height: theme === 'standart' ? '150%' : '100%',
-              bold: theme === 'standart',
-              fill:
-                theme === 'standart'
-                  ? ['c', '+-', '%'].includes(func)
-                    ? 'black'
-                    : 'white'
-                  : ['/', '*', '-', '+', '='].includes(func)
-                  ? 'white'
-                  : 'black',
-            })}
+          <View
+            style={{
+              // alignItems: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
+              // display: 'flex',
+              width: big ? '50%' : '100%',
+              // borderWidth: 2,
+              // borderColor: 'red',
+            }}
+          >
+            {!component && !(iconName && orientation) && (
+              <Text
+                style={{
+                  fontFamily: 'sf-regular',
+                  fontSize: itsNumber ? 22 : 16,
+                  color: colorNum === 2 ? 'white' : 'black',
+                  marginTop: itsNumber ? 0 : -2,
+
+                  ...titleStyle,
+                }}
+              >
+                {func}
+              </Text>
+            )}
+            {component &&
+              component({
+                style: {
+                  fontFamily: 'sf-regular',
+                  fontSize: 16,
+                  color: colorNum === 2 ? 'white' : 'black',
+                  marginTop: -2,
+                },
+              })}
+            {iconName &&
+              orientation &&
+              icons[orientation][iconName]({
+                height: theme === 'standart' ? '150%' : '100%',
+                // width: '150%',
+                marginTop: theme === 'standart' ? '-15%' : 0,
+                bold: theme === 'standart',
+                // marginTop: '-20%',
+                fill:
+                  theme === 'standart'
+                    ? ['c', '+-', '%'].includes(func)
+                      ? 'black'
+                      : active
+                      ? colors['standart'][2]
+                      : 'white'
+                    : ['/', '*', '-', '+', '='].includes(func)
+                    ? 'white'
+                    : 'black',
+              })}
+          </View>
         </View>
       </View>
       {/* </TouchableOpacity> */}
