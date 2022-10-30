@@ -258,13 +258,15 @@ const FuncButton = ({
         fontFamily: 'sf-regular',
         position: 'relative',
         flex: big ? 2 : 1,
-        backgroundColor: colors[theme][colorNum],
+        justifyContent: 'center',
+
         aspectRatio: square ? (big ? 2 : 1) : null,
-        borderRadius: theme === 'standart' ? 200 : 0,
-        margin: theme === 'standart' ? 7 : 0,
+        // borderRadius: theme === 'standart' ? 200 : 0,
+        // padding: theme === 'standart' ? 7 : 0,
         // opacity: isTouched ? 0.88 : 1,
+        // borderColor: 'red',
+        // borderWidth: 1,
         opacity: fadeAnim,
-        ...style,
       }}
       onTouchStart={() => {
         // onLongPress && setTimer()
@@ -307,6 +309,7 @@ const FuncButton = ({
           width: '100%',
           height: '100%',
           borderColor: active ? 'black' : '#666666',
+          // margin: 1,
         }}
       />
       <View
@@ -316,7 +319,11 @@ const FuncButton = ({
           height: '100%',
           alignItems: 'flex-start',
           justifyContent: 'center',
-          borderColor: '#000000',
+          // borderColor: '#000000',
+          // borderColor: 'red',
+          padding: theme === 'standart' ? 7 : 0,
+
+          // borderWidth: 1,
         }}
       >
         {/* {imageSource && (
@@ -334,11 +341,15 @@ const FuncButton = ({
         <View
           style={{
             // borderWidth: 1,
-            width: big ? '50%' : '100%',
+            // display: 'flex',
+            width: '100%',
             height: '100%',
             alignItems: 'center',
             justifyContent: 'center',
             // borderColor: 'red',
+            backgroundColor: colors[theme][colorNum],
+            borderRadius: theme === 'standart' ? 200 : 0,
+            ...style,
           }}
         >
           {!component && !(iconName && orientation) && (
