@@ -65,9 +65,9 @@ const language = (lng, word) => {
     'Алексей Белинский': { en: 'Alexey Belinsky' },
     'Поблагодарить разработчика': { en: 'Thank the developer' },
     Версия: { en: 'Version' },
-    'Внимание! Число начинается с нуля "0", что не может быть отображено в результате вычисления в калькуляторе. Слово не может заканчиваться на букву "О"':
+    'Внимание! Слово не может заканчиваться на букву "О", "C" , "D", "U" и "P", так как форсируемый результат (число) начинается с нуля "0", что не может быть отображено в результате вычисления в калькуляторе.':
       {
-        en: 'Attention! The number starts with a zero "0", which cannot be displayed as a calculation result in a calculator. The word cannot end with the letter "O"',
+        en: 'Attention! The word cannot end with the letter "O", since the forced result (number) starts from zero "O", "C", "D", "U" and "P", which cannot be displayed as a result of the calculation in the calculator.',
       },
   }
 

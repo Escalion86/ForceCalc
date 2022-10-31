@@ -781,21 +781,23 @@ const SettingsForce = ({ setScreen, settings, updateSettings }) => {
           >
             {settings.forceCryptotext.toUpperCase()}
           </Text>
-          <Text
-            style={{
-              ...styles.text,
-              flex: 1,
-              fontSize: 14,
-              marginBottom: 8,
-              // marginTop: -4,
-              color: settings.isDarkTheme ? 'white' : 'black',
-            }}
-          >
-            {`${language(
-              settings.language,
-              'Внимание! Число начинается с нуля "0", что не может быть отображено в результате вычисления в калькуляторе. Слово не может заканчиваться на букву "О"'
-            )}`}
-          </Text>
+          {!!(decryptedText && decryptedText[0] === '0') && (
+            <Text
+              style={{
+                ...styles.text,
+                flex: 1,
+                fontSize: 14,
+                marginBottom: 8,
+                // marginTop: -4,
+                color: settings.isDarkTheme ? 'white' : 'black',
+              }}
+            >
+              {`${language(
+                settings.language,
+                'Внимание! Слово не может заканчиваться на букву "О", "C" , "D", "U" и "P", так как форсируемый результат (число) начинается с нуля "0", что не может быть отображено в результате вычисления в калькуляторе.'
+              )}`}
+            </Text>
+          )}
         </>
       )}
     </ScrollView>
