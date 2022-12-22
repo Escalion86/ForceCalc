@@ -102,21 +102,17 @@ export default function App() {
     separateChar: '.',
     forceType: 'date',
     forceNumber: '0',
-    forceDateDelay: 60,
+    forceDateDelay: 75,
     highlightNumber: true,
-    dateFormat: 'dMMhhmm',
+    dateFormat: 'dMMHHmm',
     pressTriggerButtons: false,
     screenOrientation: 'auto',
-    forceCryptotext: 'Семья',
+    forceCryptotext: 'Force',
     highlightNumberIntensity: 'normal',
     theme: 'classic',
     language: 'ru',
+    // hoursFormat: '24',
   })
-
-  console.log(
-    'settings.highlightNumberIntensity',
-    settings.highlightNumberIntensity
-  )
 
   const storeSettings = (data) => storeJsonData('settings', data)
 

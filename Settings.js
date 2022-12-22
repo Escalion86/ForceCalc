@@ -687,6 +687,43 @@ const SettingsForce = ({ setScreen, settings, updateSettings }) => {
               settings.dateFormat
             )}`}
           </Text>
+          {/* <View
+            style={{
+              height: 40,
+              borderWidth: 1,
+              borderColor: settings.isDarkTheme ? 'white' : 'black',
+              borderRadius: 8,
+            }}
+          >
+            <Picker
+              selectedValue={settings.hoursFormat}
+              style={{
+                // maxHeight: 30,
+                marginRight: -8,
+                marginTop: -8,
+                width: 200,
+                color: settings.isDarkTheme ? 'white' : 'black',
+                borderWidth: 1,
+                borderLeftColor: 'blue',
+                borderLeftWidth: 2,
+                // backgroundColor: 'blue',
+              }}
+              onValueChange={(itemValue, itemIndex) =>
+                updateSettings({ hoursFormat: itemValue })
+              }
+              mode="dropdown"
+              dropdownIconColor={settings.isDarkTheme ? 'white' : 'black'}
+            >
+              <Picker.Item
+                label={'12'}
+                value="12"
+              />
+              <Picker.Item
+                label={'24'}
+                value="24"
+              />
+            </Picker>
+          </View> */}
           <Text
             style={{
               ...styles.text,
@@ -709,7 +746,13 @@ const SettingsForce = ({ setScreen, settings, updateSettings }) => {
             )};\n      m, mm - ${language(
               settings.language,
               'минуты'
-            )};\n      h, hh - ${language(settings.language, 'часы')}.`}
+            )};\n      h, hh - ${language(
+              settings.language,
+              'часы (12 часовой формат)'
+            )};\n      H, HH - ${language(
+              settings.language,
+              'часы (24 часовой формат)'
+            )}.`}
           </Text>
         </>
       )}

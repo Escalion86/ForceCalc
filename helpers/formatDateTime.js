@@ -15,6 +15,8 @@ function formatDateTime(dateTime = Date.now(), format = 'ddMMhhmm') {
     .replace(/d/g, day)
     .replace(/hh/g, hours.length < 2 ? '0' + hours : hours)
     .replace(/h/g, hours)
+    .replace(/HH/g, hours.length < 2 ? '0' + hours : hours % 12)
+    .replace(/H/g, hours % 12)
     .replace(/mm/g, minutes.length < 2 ? '0' + minutes : minutes)
     .replace(/m/g, minutes)
     .replace(/[^\d]/g, '')
