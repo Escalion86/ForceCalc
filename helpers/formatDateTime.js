@@ -13,7 +13,7 @@ function formatDateTime(dateTime = Date.now(), format = 'ddMMhhmm') {
     .replace(/M/g, month)
     .replace(/dd/g, day.length < 2 ? '0' + day : day)
     .replace(/d/g, day)
-    .replace(/hh/g, hours.length < 2 ? '0' + hours : hours % 12)
+    .replace(/hh/g, hours % 12 < 10 ? '0' + hours : hours % 12)
     .replace(/h/g, hours % 12)
     .replace(/HH/g, hours.length < 2 ? '0' + hours : hours)
     .replace(/H/g, hours)
