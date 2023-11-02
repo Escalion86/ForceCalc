@@ -2,7 +2,7 @@
   "expo": {
     "name": "ForceCalc",
     "slug": "ForceCalc",
-    "version": "1.3.3",
+    "version": "1.3.4",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -26,6 +26,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "userInterfaceStyle": "automatic"
+    "userInterfaceStyle": "automatic",
+    "extra": {
+      "eas": {
+        "projectId": "32f76ceb-abca-49d1-b334-c86dee3bdcbd"
+      }
+    }
   }
 }

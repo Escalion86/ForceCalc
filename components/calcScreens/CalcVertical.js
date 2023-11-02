@@ -1,17 +1,9 @@
-import React, { useRef, useState } from 'react'
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native'
+import React from 'react'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 
 import GestureRecognizer from 'react-native-swipe-gestures'
-import formatDateTime from '../../helpers/formatDateTime'
 import formatText from '../../helpers/formatText'
 import FuncButton from '../FuncButton'
-import NumButton from '../NumButton'
 
 function CalcVertical({
   btnClick,
@@ -33,7 +25,6 @@ function CalcVertical({
   clearTimer,
   triggerColor,
 }) {
-  const lastNumberOfNextResultNumsCountToReady = nextResultNumsCountToReady % 10
   return (
     <>
       <View
@@ -59,7 +50,7 @@ function CalcVertical({
               height: 3,
               width: 3,
               backgroundColor:
-                lastNumberOfNextResultNumsCountToReady === 0
+                nextResultNumsCountToReady === 0
                   ? '#888888'
                   : neededFunc === '+'
                   ? 'green'
@@ -206,7 +197,7 @@ function CalcVertical({
         <View style={styles.bottonsRow}>
           <FuncButton
             style={
-              lastNumberOfNextResultNumsCountToReady === 7
+              nextResultNumsCountToReady === 7
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -218,7 +209,7 @@ function CalcVertical({
           />
           <FuncButton
             style={
-              lastNumberOfNextResultNumsCountToReady === 8
+              nextResultNumsCountToReady === 8
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -230,7 +221,7 @@ function CalcVertical({
           />
           <FuncButton
             style={
-              lastNumberOfNextResultNumsCountToReady === 9
+              nextResultNumsCountToReady === 9
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -277,7 +268,7 @@ function CalcVertical({
         <View style={styles.bottonsRow}>
           <FuncButton
             style={
-              lastNumberOfNextResultNumsCountToReady === 4
+              nextResultNumsCountToReady === 4
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -289,7 +280,7 @@ function CalcVertical({
           />
           <FuncButton
             style={
-              lastNumberOfNextResultNumsCountToReady === 5
+              nextResultNumsCountToReady === 5
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -301,7 +292,7 @@ function CalcVertical({
           />
           <FuncButton
             style={
-              lastNumberOfNextResultNumsCountToReady === 6
+              nextResultNumsCountToReady === 6
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -348,7 +339,7 @@ function CalcVertical({
         <View style={styles.bottonsRow}>
           <FuncButton
             style={
-              lastNumberOfNextResultNumsCountToReady === 1
+              nextResultNumsCountToReady === 1
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -360,7 +351,7 @@ function CalcVertical({
           />
           <FuncButton
             style={
-              lastNumberOfNextResultNumsCountToReady === 2
+              nextResultNumsCountToReady === 2
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -372,7 +363,7 @@ function CalcVertical({
           />
           <FuncButton
             style={
-              lastNumberOfNextResultNumsCountToReady === 3
+              nextResultNumsCountToReady === 3
                 ? { backgroundColor: triggerColor }
                 : {}
             }
@@ -419,7 +410,7 @@ function CalcVertical({
         <View style={styles.bottonsRow}>
           <FuncButton
             style={
-              lastNumberOfNextResultNumsCountToReady === 0
+              nextResultNumsCountToReady === 0
                 ? { backgroundColor: triggerColor }
                 : {}
             }

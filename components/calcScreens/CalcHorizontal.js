@@ -375,19 +375,34 @@ function CalcHorizontal({
           />
           <HorizontalButton
             theme={settings.theme}
-            style={{ fontSize: 20 }}
+            style={{
+              fontSize: 20,
+              ...(nextResultNumsCountToReady === 7
+                ? { backgroundColor: triggerColor }
+                : {}),
+            }}
             onPress={() => btnClick('7')}
             func="7"
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             theme={settings.theme}
+            style={
+              nextResultNumsCountToReady === 8
+                ? { backgroundColor: triggerColor }
+                : {}
+            }
             onPress={() => btnClick('8')}
             func="8"
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             theme={settings.theme}
+            style={
+              nextResultNumsCountToReady === 9
+                ? { backgroundColor: triggerColor }
+                : {}
+            }
             onPress={() => btnClick('9')}
             func="9"
             onTouchEnd={clearTimer}
@@ -463,6 +478,11 @@ function CalcHorizontal({
           />
           <HorizontalButton
             theme={settings.theme}
+            style={
+              nextResultNumsCountToReady === 4
+                ? { backgroundColor: triggerColor }
+                : {}
+            }
             onPress={() => btnClick('4')}
             func="4"
             onTouchEnd={clearTimer}
@@ -470,12 +490,22 @@ function CalcHorizontal({
           <HorizontalButton
             theme={settings.theme}
             onPress={() => btnClick('5')}
+            style={
+              nextResultNumsCountToReady === 5
+                ? { backgroundColor: triggerColor }
+                : {}
+            }
             func="5"
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             theme={settings.theme}
             onPress={() => btnClick('6')}
+            style={
+              nextResultNumsCountToReady === 6
+                ? { backgroundColor: triggerColor }
+                : {}
+            }
             func="6"
             onTouchEnd={clearTimer}
           />
@@ -534,18 +564,33 @@ function CalcHorizontal({
           <HorizontalButton
             theme={settings.theme}
             onPress={() => btnClick('1')}
+            style={
+              nextResultNumsCountToReady === 1
+                ? { backgroundColor: triggerColor }
+                : {}
+            }
             func="1"
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             theme={settings.theme}
             onPress={() => btnClick('2')}
+            style={
+              nextResultNumsCountToReady === 2
+                ? { backgroundColor: triggerColor }
+                : {}
+            }
             func="2"
             onTouchEnd={clearTimer}
           />
           <HorizontalButton
             theme={settings.theme}
             onPress={() => btnClick('3')}
+            style={
+              nextResultNumsCountToReady === 3
+                ? { backgroundColor: triggerColor }
+                : {}
+            }
             func="3"
             onTouchEnd={clearTimer}
           />
@@ -553,7 +598,7 @@ function CalcHorizontal({
             theme={settings.theme}
             onPress={() => btnClick('+')}
             func="+"
-            titleStyle={{ fontSize: 24 }}
+            titleStyle={{ fontSize: 24, marginTop: -3 }}
             colorNum={2}
             onTouchEnd={clearTimer}
           />
@@ -604,6 +649,11 @@ function CalcHorizontal({
           <HorizontalButton
             theme={settings.theme}
             onPress={() => btnClick('0')}
+            style={
+              nextResultNumsCountToReady === 0
+                ? { backgroundColor: triggerColor }
+                : {}
+            }
             func="0"
             big
           />

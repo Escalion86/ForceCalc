@@ -109,10 +109,10 @@ const icons = {
     // 8: <IconH18 fill="#000000" height="100%" />,
     // 9: <IconH19 fill="#000000" height="100%" />,
     // '*': <IconH20 fill="#000000" height="100%" />,
-    '1/x': (props) => <IconH21 fill="#000000" height="100%" {...props} />,
-    '2sqrx': (props) => <IconH22 fill="#000000" height="100%" {...props} />,
-    '3sqrx': (props) => <IconH23 fill="#000000" height="100%" {...props} />,
-    ysqrx: (props) => <IconH24 fill="#000000" height="100%" {...props} />,
+    '1/x': (props) => <IconH21 height="100%" {...props} fill="#000000" />,
+    '2sqrx': (props) => <IconH22 height="100%" {...props} fill="#000000" />,
+    '3sqrx': (props) => <IconH23 height="100%" {...props} fill="#000000" />,
+    ysqrx: (props) => <IconH24 height="100%" {...props} fill="#000000" />,
     // ln: <IconH25 fill="#000000" height="100%" />,
     // log10: <IconH26 fill="#000000" height="100%" />,
     // 4: <IconH27 fill="#000000" height="100%" />,
@@ -362,8 +362,11 @@ const FuncButton = ({
               // alignItems: 'center',
               justifyContent: 'center',
               alignItems: 'center',
-              // display: 'flex',
+              display: 'flex',
               width: big ? '50%' : '100%',
+              height: '100%',
+              // borderColor: 'blue',
+              // borderWidth: 2,
               // borderWidth: 2,
               // borderColor: 'red',
             }}
@@ -373,9 +376,22 @@ const FuncButton = ({
                 style={{
                   fontFamily: 'sf-regular',
                   fontSize: itsNumber ? 22 : 16,
-                  color: colorNum === 2 ? 'white' : 'black',
-                  marginTop: itsNumber ? 0 : -2,
-
+                  color: itsNumber
+                    ? theme === 'classic'
+                      ? 'black'
+                      : 'white'
+                    : colorNum === 2
+                    ? 'white'
+                    : 'black',
+                  // marginTop: itsNumber ? -6 : 0,
+                  // borderColor: 'red',
+                  // borderWidth: 2,
+                  height: '160%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  display: 'flex',
+                  textAlignVertical: 'center',
+                  textAlign: 'center',
                   ...titleStyle,
                 }}
               >
@@ -388,15 +404,15 @@ const FuncButton = ({
                   fontFamily: 'sf-regular',
                   fontSize: 16,
                   color: colorNum === 2 ? 'white' : 'black',
-                  marginTop: -2,
+                  marginTop: -1,
                 },
               })}
             {iconName &&
               orientation &&
               icons[orientation][iconName]({
-                height: theme === 'standart' ? '150%' : '100%',
+                height: theme === 'standart' ? '120%' : '100%',
                 // width: '150%',
-                marginTop: theme === 'standart' ? '-15%' : 0,
+                // marginTop: theme === 'standart' ? '-15%' : 0,
                 bold: theme === 'standart',
                 // marginTop: '-20%',
                 fill:
