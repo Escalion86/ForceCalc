@@ -1,9 +1,18 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import * as Font from 'expo-font'
-import AppLoading from 'expo-app-loading'
+// import AppLoading from 'expo-app-loading'
+import * as SplashScreen from 'expo-splash-screen'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil'
 
 import {
   Image,
@@ -28,7 +37,14 @@ async function loadApplication() {
     'helvetica-medium': require('./assets/fonts/HelveticaMedium.ttf'),
     'helvetica-regular': require('./assets/fonts/HelveticaRegular.ttf'),
     'helvetica-thin': require('./assets/fonts/HelveticaThin.ttf'),
-    'helvetica-ultralight': require('./assets/fonts/HelveticaUltraLight.ttf'),
+    'sf-ultralight': require('./assets/fonts/HelveticaUltraLight.ttf'),
+    'sf-bold': require('./assets/fonts/SF-Pro-Display-Bold.otf'),
+    'sf-semibold': require('./assets/fonts/SF-Pro-Display-Semibold.otf'),
+    'sf-light': require('./assets/fonts/SF-Pro-Display-Light.otf'),
+    'sf-medium': require('./assets/fonts/SF-Pro-Display-Medium.otf'),
+    'sf-regular': require('./assets/fonts/SF-Pro-Display-Regular.otf'),
+    'sf-thin': require('./assets/fonts/SF-Pro-Display-Thin.otf'),
+    cryptext: require('./assets/fonts/Cryptext-ru.ttf'),
   })
   return await getJsonData('settings')
 }
@@ -74,6 +90,8 @@ const getJsonData = async (key) => {
   }
 }
 
+SplashScreen.preventAutoHideAsync()
+
 export default function App() {
   // const colorScheme = useColorScheme()
   const [isReady, setIsReady] = useState(false)
@@ -84,8 +102,16 @@ export default function App() {
     separateChar: '.',
     forceType: 'date',
     forceNumber: '0',
-    forceDateDelay: 40,
+    forceDateDelay: 75,
     highlightNumber: true,
+    dateFormat: 'dMMHHmm',
+    pressTriggerButtons: false,
+    screenOrientation: 'auto',
+    forceCryptotext: 'Force',
+    highlightNumberIntensity: 'normal',
+    theme: 'classic',
+    language: 'ru',
+    // hoursFormat: '24',
   })
 
   const storeSettings = (data) => storeJsonData('settings', data)
@@ -102,29 +128,69 @@ export default function App() {
   //   if (key) setSettings({...settings, [key]:value})
   // }
 
-  if (!isReady)
-    return (
-      <AppLoading
-        startAsync={async () => {
-          const settings = await loadApplication()
-          if (settings) {
-            if (settings.startCalcOnLoad) setScreen('calc')
-            updateSettings(settings)
-          }
-        }}
-        onFinish={() => setIsReady(true)}
-        onError={console.warn}
-      />
-    )
+  // if (!isReady)
+  //   return (
+  //     <AppLoading
+  //       startAsync={async () => {
+  //         const settings = await loadApplication()
+  //         if (settings) {
+  //           if (settings.startCalcOnLoad) setScreen('calc')
+  //           updateSettings(settings)
+  //         }
+  //       }}
+  //       onFinish={() => setIsReady(true)}
+  //       onError={console.warn}
+  //     />
+  //   )
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        // Pre-load fonts, make any API calls you need to do here
+        const settings = await loadApplication()
+        if (settings) {
+          if (settings.startCalcOnLoad) setScreen('calc')
+          updateSettings(settings)
+        }
+        // Artificially delay for two seconds to simulate a slow loading
+        // experience. Please remove this if you copy and paste the code!
+        // await new Promise(resolve => setTimeout(resolve, 2000));
+      } catch (e) {
+        console.warn(e)
+      } finally {
+        // Tell the application to render
+        setIsReady(true)
+        await SplashScreen.hideAsync()
+      }
+    }
+
+    prepare()
+  }, [])
+
+  // const onLayoutRootView = useCallback(async () => {
+  //   if (isReady) {
+  //     // This tells the splash screen to hide immediately! If we call this after
+  //     // `setAppIsReady`, then we may see a blank screen while the app is
+  //     // loading its initial state and rendering its first pixels. So instead,
+  //     // we hide the splash screen once we know the root view has already
+  //     // performed layout.
+  //     await SplashScreen.hideAsync()
+  //   }
+  // }, [isReady])
+
+  if (!isReady) {
+    return null
+  }
 
   return (
-    <SafeAreaView
-      style={{
-        ...styles.container,
-        backgroundColor: settings.isDarkTheme ? 'black' : 'white',
-      }}
-    >
-      {/* <View
+    <RecoilRoot>
+      <SafeAreaView
+        style={{
+          ...styles.container,
+          backgroundColor: settings.isDarkTheme ? 'black' : 'white',
+        }}
+      >
+        {/* <View
         style={{
           position: 'absolute',
           top: 0,
@@ -139,32 +205,34 @@ export default function App() {
       >
         <Text style={{ color: 'blue', fontSize: 10 }}>21</Text>
       </View> */}
-      {/* <View style={styles.container}> */}
-      <StatusBar style={settings.isDarkTheme ? 'light' : 'dark'} />
-      {screen === 'settings' && (
-        <Settings
-          setScreen={setScreen}
-          updateSettings={updateSettings}
-          settings={settings}
-        />
-      )}
-      {screen === 'calc' && (
-        <Calc
-          isDarkTheme={settings.isDarkTheme}
-          goToSettings={() => setScreen('settings')}
-          separateChar={settings.separateChar}
-          settings={settings}
-        />
-      )}
-      {screen === 'about' && (
-        <About
-          setScreen={setScreen}
-          // updateSettings={updateSettings}
-          settings={settings}
-        />
-      )}
-      {/* </View> */}
-    </SafeAreaView>
+        {/* <View style={styles.container}> */}
+        <StatusBar style={settings.isDarkTheme ? 'light' : 'dark'} />
+        {screen === 'settings' && (
+          <Settings
+            setScreen={setScreen}
+            updateSettings={updateSettings}
+            settings={settings}
+          />
+        )}
+        {screen === 'calc' && (
+          <Calc
+            isDarkTheme={settings.isDarkTheme}
+            goToSettings={() => setScreen('settings')}
+            separateChar={settings.separateChar}
+            settings={settings}
+          />
+        )}
+        {screen === 'about' && (
+          <About
+            setScreen={setScreen}
+            // updateSettings={updateSettings}
+            settings={settings}
+          />
+        )}
+
+        {/* </View> */}
+      </SafeAreaView>
+    </RecoilRoot>
   )
 }
 
