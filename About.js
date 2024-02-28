@@ -26,7 +26,7 @@ const appJson = require('./app.json')
 const AboutScreen = ({ setScreen, settings }) => {
   // const { colors } = useTheme()
   const textColor = settings.isDarkTheme ? 'white' : 'black'
-  const backgroundColor = settings.isDarkTheme ? 'black' : 'white'
+  // const backgroundColor = settings.isDarkTheme ? 'black' : 'white'
   const fontSize = 20
   // const { toggleDev, dev } = useContext(AppContext)
 
