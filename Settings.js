@@ -3,7 +3,6 @@ import React from 'react'
 import {
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   Switch,
   TextInput,
@@ -12,10 +11,6 @@ import {
 import { Icon } from '@rneui/themed'
 import { Picker } from '@react-native-picker/picker'
 import getNoun from './helpers/getNoun'
-
-// import RadioButtonRN from 'radio-buttons-react-native'
-
-// import Icon from 'react-native-vector-icons/FontAwesome'
 
 import Checkbox from 'expo-checkbox'
 import Button from './components/Button'
@@ -58,32 +53,32 @@ const ItemSwitch = ({ title, onValueChange, value, isDarkTheme }) => (
   </View>
 )
 
-const ItemCheckBox = ({ title, isDarkTheme, value, onValueChange }) => (
-  <View
-    style={{
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      flex: 1,
-    }}
-  >
-    <Checkbox
-      style={{ margin: 8, height: 22, width: 22 }}
-      value={value}
-      onValueChange={onValueChange}
-      color={value ? '#ff9933' : undefined}
-    />
-    <Text
-      style={{
-        ...styles.text,
-        flex: 1,
-        color: isDarkTheme ? 'white' : 'black',
-      }}
-    >
-      {title}
-    </Text>
-  </View>
-)
+// const ItemCheckBox = ({ title, isDarkTheme, value, onValueChange }) => (
+//   <View
+//     style={{
+//       display: 'flex',
+//       flexDirection: 'row',
+//       alignItems: 'center',
+//       flex: 1,
+//     }}
+//   >
+//     <Checkbox
+//       style={{ margin: 8, height: 22, width: 22 }}
+//       value={value}
+//       onValueChange={onValueChange}
+//       color={value ? '#ff9933' : undefined}
+//     />
+//     <Text
+//       style={{
+//         ...styles.text,
+//         flex: 1,
+//         color: isDarkTheme ? 'white' : 'black',
+//       }}
+//     >
+//       {title}
+//     </Text>
+//   </View>
+// )
 
 const ItemInputNumber = ({
   title,
@@ -889,7 +884,7 @@ export default function Settings(generalProps) {
         // containerStyle={styles.icon}
         type="ionicon"
         name="calculator"
-        color="white"
+        color={generalProps.settings?.isDarkTheme ? 'white' : '#202020'}
         style={{
           borderRadius: 40,
           // alignItems: 'center',
