@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import * as ScreenOrientation from 'expo-screen-orientation'
 
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { View } from 'react-native'
 
-import GestureRecognizer from 'react-native-swipe-gestures'
 import formatDateTime from './helpers/formatDateTime'
-import NumButton from './components/NumButton'
-import FuncButton from './components/FuncButton'
 import CalcVertical from './components/calcScreens/CalcVertical'
 import CalcHorizontal from './components/calcScreens/CalcHorizontal'
 import decryptText from './helpers/decryptText'
@@ -39,8 +36,6 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
   const setPressedTriggeredButton = useSetRecoilState(
     pressedTriggeredButtonAtom
   )
-  // const [isButtonPressed, setIsButtonPressed] = useState(false)
-
   const [trigger, setTrigger] = useRecoilState(triggerAtom)
 
   const [text, setText] = useState('0')
@@ -50,25 +45,14 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
   const [startNewNumber, setStartNewNumber] = useState(true)
   const [activeFunc, setActiveFunc] = useState(null)
   const [highlightFunc, setHighlightFunc] = useState(null)
-  // const [trigger, setTrigger] = useState(false)
   const [triggerFuncIsActive, setTriggerFuncIsActive] = useState(false)
   const [triggerFirstCharIsSet, setTriggerFirstCharIsSet] = useState(false)
   const [screenOrientation, setScreenOrientation] = useState('vertical')
   const [neededFunc, setNeededFunc] = useState('+')
   const [neededNumber, setNeededNumber] = useState('')
-  const [neededResult, setNeededResult] = useState('')
-
-  // useEffect(() => {
-  //   console.log('--------------------')
-  //   console.log(`firstArg`, firstArg)
-  //   console.log(`secondArg`, secondArg)
-  //   console.log(`startNewNumber`, startNewNumber)
-  //   console.log(`activeFunc`, activeFunc)
-  // }, [firstArg, secondArg, startNewNumber, activeFunc])
 
   const timer = useRef(null)
   const setTimer = () => {
-    // setTimeStartPress(Date.now())
     timer.current = setTimeout(() => {
       goToSettings()
     }, 2000)
@@ -97,47 +81,6 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
   }, [])
 
   let nextResultNumsCountToReady = -1
-  // let neededFunc = '+'
-  // let neededNumber
-  // let neededResult
-
-  // if (trigger) {
-  //   if (settings.forceType === 'date')
-  //     neededResult = formatDateTime(
-  //       Date.now() + settings.forceDateDelay * 1000,
-  //       settings.dateFormat
-  //     )
-  //   if (settings.forceType === 'cryptotext')
-  //     neededResult = decryptText(settings.forceCryptotext)
-  //   if (settings.forceType === 'number') neededResult = settings.forceNumber
-
-  //   neededNumber = String(
-  //     Math.abs(Number(Number(neededResult) - (firstArg ?? 0)))
-  //   )
-
-  //   if (Number(neededResult) < Number(secondArg)) {
-  //     neededFunc = '-'
-  //     // neededNumber = String(-neededNumber)
-  //   }
-  // }
-
-  // useEffect(() => {
-  // if (trigger) {
-  // console.log('--------------------')
-  // console.log({
-  //   // trigger,
-  //   neededFunc,
-  //   neededResult,
-  //   neededNumber,
-  //   firstArg,
-  //   secondArg,
-  //   startNewNumber,
-  //   activeFunc,
-  //   triggerFuncIsActive,
-  //   triggerFirstCharIsSet,
-  // })
-  // }
-  // }, [trigger])
 
   if (settings.highlightNumber && trigger) {
     nextResultNumsCountToReady = startNewNumber
@@ -153,7 +96,6 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
       if (!triggerFuncIsActive) {
         // Если до этого небыло набрано ни одной цифры
         if (!secondArg) {
-          // settings.pressTriggerButtons && setIsButtonPressed(neededNumber[0])
           settings.pressTriggerButtons &&
             setPressedTriggeredButton(neededNumber[0])
           addChar(neededNumber[0])
@@ -162,7 +104,6 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
           return
         }
         useFunc(neededFunc)
-        // settings.pressTriggerButtons && setIsButtonPressed(neededFunc)
         settings.pressTriggerButtons && setPressedTriggeredButton(neededFunc)
         setTriggerFuncIsActive(true)
 
@@ -170,7 +111,6 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
       }
       if (triggerFuncIsActive) {
         if (!triggerFirstCharIsSet) {
-          // settings.pressTriggerButtons && setIsButtonPressed(neededNumber[0])
           settings.pressTriggerButtons &&
             setPressedTriggeredButton(neededNumber[0])
           addChar(neededNumber[0])
@@ -178,12 +118,9 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
         } else {
           if (String(secondArg).length !== String(neededNumber).length) {
             const charToAdd = String(neededNumber)[String(secondArg).length]
-            // settings.pressTriggerButtons && setIsButtonPressed(charToAdd)
             settings.pressTriggerButtons && setPressedTriggeredButton(charToAdd)
             addChar(charToAdd)
           } else if (char === '=') {
-            // settings.pressTriggerButtons && setIsButtonPressed('=')
-
             setTrigger(false)
             getResult()
             settings.pressTriggerButtons && setPressedTriggeredButton('=')
@@ -222,27 +159,11 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
     }
   }
 
-  // console.log('--------------------')
-  // console.log({
-  //   // trigger,
-  //   neededFunc,
-  //   neededResult,
-  //   neededNumber,
-  //   firstArg,
-  //   secondArg,
-  //   startNewNumber,
-  //   activeFunc,
-  //   triggerFuncIsActive,
-  //   triggerFirstCharIsSet,
-  // })
   const startTrigger = () => {
     if (!trigger) {
-      // console.log('--------- triggerstarted')
-      // setFirstArg(secondArg)
       setPressedTriggeredButton(null)
       setTriggerFuncIsActive(false)
       setTriggerFirstCharIsSet(false)
-      setStartNewNumber(true)
       setTrigger(true)
 
       let newNeededResult
@@ -257,12 +178,20 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
         newNeededResult = decryptText(settings.forceCryptotext)
       if (settings.forceType === 'number')
         newNeededResult = settings.forceNumber
-      setNeededResult(newNeededResult)
+
       setNeededNumber(
         String(
           Math.abs(
             Number(newNeededResult) -
-              Number(firstArg ? firstArg : secondArg ? secondArg : 0)
+              Number(
+                !startNewNumber && firstArg && secondArg
+                  ? calcArgs(firstArg, secondArg, activeFunc)
+                  : firstArg
+                  ? firstArg
+                  : secondArg
+                  ? secondArg
+                  : 0
+              )
           )
         )
       )
@@ -274,10 +203,6 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
           : '+'
       )
     }
-    // else {
-    //   setTrigger(false)
-    //   reset()
-    // }
   }
 
   const calcPercent = () =>
@@ -318,15 +243,9 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
       setText('0,')
       setSecondArg(0)
       setStartNewNumber(false)
-      // setMinus(false)
       return
     }
-    // const secongArgString = String(Math.abs(secondArg))
-    // if (
-    //   startNewNumber
 
-    // || secongArgString.length < (secongArgString.includes(',') ? 10 : 9)
-    // ) {
     const newText = (startNewNumber || text === '0' ? '' : text) + char
     setText(newText)
 
@@ -338,7 +257,6 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
     } else {
       setSecondArg(parseFloat(newText.replace(',', '.')) * (minus ? -1 : 1))
     }
-    // }
   }
 
   const deleteChar = () => {
@@ -352,9 +270,6 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
     const calcResult = calcArgs(firstArg, secondArg, activeFunc)
     let result = String(Math.abs(calcResult)).replace('.', ',')
 
-    // Обрезаем лишние цифры что не влезли
-    // if (result.includes(',')) result = result.substr(0, 10)
-    // else result = result.substr(0, 9)
     setFirstArg(calcResult)
     setText(result)
     setStartNewNumber(true)
@@ -411,18 +326,9 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
     config,
     highlightFunc,
     triggerColor,
-    // isButtonPressed,
-    // setIsButtonPressed: (btnName) => {
-    //   if (!settings.pressTriggerButtons || !trigger || !btnName) {
-    //     setIsButtonPressed(btnName)
-    //   }
-    // },
     setTimer,
     clearTimer,
   }
-
-  const CalcScreen =
-    screenOrientation === 'vertical' ? CalcVertical : CalcHorizontal
 
   return (
     <View
@@ -431,7 +337,11 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
         flex: 1,
       }}
     >
-      <CalcScreen {...calcProps} />
+      {screenOrientation === 'vertical' ? (
+        <CalcVertical {...calcProps} />
+      ) : (
+        <CalcHorizontal {...calcProps} />
+      )}
     </View>
   )
 }
