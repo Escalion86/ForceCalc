@@ -1,27 +1,13 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as Font from 'expo-font'
-// import AppLoading from 'expo-app-loading'
 import * as SplashScreen from 'expo-splash-screen'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil'
+import { RecoilRoot } from 'recoil'
 
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  // useColorScheme,
-} from 'react-native'
+import { StyleSheet } from 'react-native'
 
 import Settings from './Settings'
 import Calc from './Calc'
@@ -49,16 +35,16 @@ async function loadApplication() {
   return await getJsonData('settings')
 }
 
-const storeData = async (key, value) => {
-  try {
-    return await AsyncStorage.setItem(
-      key,
-      typeof value === 'boolean' ? (value ? '1' : '0') : value
-    )
-  } catch (e) {
-    // saving error
-  }
-}
+// const storeData = async (key, value) => {
+//   try {
+//     return await AsyncStorage.setItem(
+//       key,
+//       typeof value === 'boolean' ? (value ? '1' : '0') : value
+//     )
+//   } catch (e) {
+//     // saving error
+//   }
+// }
 
 const storeJsonData = async (key, json) => {
   try {
@@ -69,17 +55,17 @@ const storeJsonData = async (key, json) => {
   }
 }
 
-const getData = async (key) => {
-  try {
-    const value = await AsyncStorage.getItem(key)
-    if (value !== null) {
-      // value previously stored
-    }
-    return value
-  } catch (e) {
-    // error reading value
-  }
-}
+// const getData = async (key) => {
+//   try {
+//     const value = await AsyncStorage.getItem(key)
+//     if (value !== null) {
+//       // value previously stored
+//     }
+//     return value
+//   } catch (e) {
+//     // error reading value
+//   }
+// }
 
 const getJsonData = async (key) => {
   try {
@@ -93,7 +79,6 @@ const getJsonData = async (key) => {
 SplashScreen.preventAutoHideAsync()
 
 export default function App() {
-  // const colorScheme = useColorScheme()
   const [isReady, setIsReady] = useState(false)
   const [screen, setScreen] = useState('settings')
   const [settings, setSettings] = useState({
