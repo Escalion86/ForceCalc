@@ -1,6 +1,25 @@
 const language = (lng, word) => {
   if (lng === 'ru') return word
   const obj = {
+    'Срок вашей лецензии истек! Для продления и других вопросов обратитесь к разработчику':
+      {
+        en: 'Your license has expired! For renewal and other questions, contact the developer',
+      },
+    Режим: { en: 'Mode' },
+    'Проверте код и попробуйте еще раз': { en: 'Check the code and try again' },
+    'Код не верный': { en: 'The code is not correct' },
+    'Следующая попытка': { en: 'Next try after' },
+    'Слишком много попыток ввода кода': { en: 'Too many code attempts' },
+    'Спасибо что приобрели это замечательное приложение': {
+      en: 'Thank you for purchasing this wonderful application',
+    },
+    'Приветствую вас': { en: 'Greetings' },
+    'Начать пользоваться': { en: 'Start to use' },
+    'Введите выданный вам код': { en: 'Enter the code given to you' },
+    'Связаться с разработчиком': { en: 'Contact the developer' },
+    до: { en: 'until' },
+    'для пользователя': { en: 'for user' },
+    Лицензия: { en: 'License' },
     'Внешний вид': { en: 'Appearance' },
     'Параметры форсирования': { en: 'Force options' },
     'О приложении': { en: 'About app' },
@@ -72,7 +91,7 @@ const language = (lng, word) => {
       },
   }
 
-  return obj[word][lng]
+  return obj[word] ? obj[word][lng] : word
 }
 
 export default language

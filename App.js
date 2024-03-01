@@ -12,6 +12,9 @@ import { StyleSheet } from 'react-native'
 import Settings from './Settings'
 import Calc from './Calc'
 import About from './About'
+import LicenseScreen from './License'
+
+import * as ScreenOrientation from 'expo-screen-orientation'
 
 async function loadApplication() {
   await Font.loadAsync({
@@ -80,9 +83,9 @@ SplashScreen.preventAutoHideAsync()
 
 export default function App() {
   const [isReady, setIsReady] = useState(false)
-  const [screen, setScreen] = useState('settings')
+  const [screen, setScreen] = useState()
   const [settings, setSettings] = useState({
-    isDarkTheme: false,
+    isDarkTheme: true,
     startCalcOnLoad: false,
     separateChar: '.',
     forceType: 'date',
@@ -94,10 +97,15 @@ export default function App() {
     screenOrientation: 'auto',
     forceCryptotext: 'Force',
     highlightNumberIntensity: 'normal',
-    theme: 'classic',
-    language: 'ru',
+    theme: 'standart',
+    language: 'en',
+    licenseCode: undefined,
+    licenseUserName: undefined,
+    licenseExpiredDate: undefined,
     // hoursFormat: '24',
   })
+
+  const [screenOrientation, setScreenOrientation] = useState('vertical')
 
   const storeSettings = (data) => storeJsonData('settings', data)
 
@@ -129,12 +137,44 @@ export default function App() {
   //   )
 
   useEffect(() => {
+    if (settings.licenseExpiredDate) {
+      const expDate = new Date(settings.licenseExpiredDate)
+      const now = new Date()
+      if (expDate.getTime() - now.getTime() < 0) {
+        setScreen()
+      }
+    }
+  }, [settings.licenseExpiredDate])
+
+  useEffect(() => {
+    ScreenOrientation.getOrientationAsync().then((o) => {
+      if (o === 3 || o === 4) setScreenOrientation('horizontal')
+      if (o === 1 || o === 2) setScreenOrientation('vertical')
+    })
+    ScreenOrientation.addOrientationChangeListener((e) => {
+      const o = e.orientationInfo.orientation
+      if (settings.screenOrientation === 'vertical') {
+        setScreenOrientation('vertical')
+        return
+      }
+      if (settings.screenOrientation === 'horizontal') {
+        setScreenOrientation('horizontal')
+        return
+      }
+      if (o === 3 || o === 4) setScreenOrientation('horizontal')
+      if (o === 1 || o === 2) setScreenOrientation('vertical')
+    })
+  }, [])
+
+  useEffect(() => {
     async function prepare() {
       try {
         // Pre-load fonts, make any API calls you need to do here
         const settings = await loadApplication()
         if (settings) {
-          if (settings.startCalcOnLoad) setScreen('calc')
+          if (!settings.licenseCode || !settings.licenseUserName) setScreen()
+          else if (settings.startCalcOnLoad) setScreen('calc')
+          else setScreen('settings')
           updateSettings(settings)
         }
         // Artificially delay for two seconds to simulate a slow loading
@@ -151,6 +191,10 @@ export default function App() {
 
     prepare()
   }, [])
+
+  useEffect(() => {
+    if (!settings?.licenseCode || !settings?.licenseUserName) setScreen()
+  }, [settings?.licenseUserName, settings?.licenseCode])
 
   // const onLayoutRootView = useCallback(async () => {
   //   if (isReady) {
@@ -192,25 +236,32 @@ export default function App() {
       </View> */}
         {/* <View style={styles.container}> */}
         <StatusBar style={settings.isDarkTheme ? 'light' : 'dark'} />
-        {screen === 'settings' && (
+        {screen === 'settings' ? (
           <Settings
             setScreen={setScreen}
             updateSettings={updateSettings}
             settings={settings}
+            screenOrientation={screenOrientation}
           />
-        )}
-        {screen === 'calc' && (
+        ) : screen === 'calc' ? (
           <Calc
             isDarkTheme={settings.isDarkTheme}
             goToSettings={() => setScreen('settings')}
             separateChar={settings.separateChar}
             settings={settings}
+            updateSettings={updateSettings}
+            screenOrientation={screenOrientation}
           />
-        )}
-        {screen === 'about' && (
+        ) : screen === 'about' ? (
           <About
             setScreen={setScreen}
             // updateSettings={updateSettings}
+            settings={settings}
+          />
+        ) : (
+          <LicenseScreen
+            setScreen={setScreen}
+            updateSettings={updateSettings}
             settings={settings}
           />
         )}

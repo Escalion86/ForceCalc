@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import * as ScreenOrientation from 'expo-screen-orientation'
 
 import { View } from 'react-native'
 
@@ -32,7 +31,13 @@ const calcArgs = (firstArg = 0, secondArg = 0, func) => {
   }
 }
 
-export default function Calc({ goToSettings, settings, separateChar = '.' }) {
+export default function Calc({
+  goToSettings,
+  settings,
+  separateChar = '.',
+  updateSettings,
+  screenOrientation,
+}) {
   const setPressedTriggeredButton = useSetRecoilState(
     pressedTriggeredButtonAtom
   )
@@ -47,7 +52,6 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
   const [highlightFunc, setHighlightFunc] = useState(null)
   const [triggerFuncIsActive, setTriggerFuncIsActive] = useState(false)
   const [triggerFirstCharIsSet, setTriggerFirstCharIsSet] = useState(false)
-  const [screenOrientation, setScreenOrientation] = useState('vertical')
   const [neededFunc, setNeededFunc] = useState('+')
   const [neededNumber, setNeededNumber] = useState('')
 
@@ -59,26 +63,6 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
   }
 
   const clearTimer = () => timer?.current && clearTimeout(timer.current)
-
-  useEffect(() => {
-    ScreenOrientation.getOrientationAsync().then((o) => {
-      if (o === 3 || o === 4) setScreenOrientation('horizontal')
-      if (o === 1 || o === 2) setScreenOrientation('vertical')
-    })
-    ScreenOrientation.addOrientationChangeListener((e) => {
-      const o = e.orientationInfo.orientation
-      if (settings.screenOrientation === 'vertical') {
-        setScreenOrientation('vertical')
-        return
-      }
-      if (settings.screenOrientation === 'horizontal') {
-        setScreenOrientation('horizontal')
-        return
-      }
-      if (o === 3 || o === 4) setScreenOrientation('horizontal')
-      if (o === 1 || o === 2) setScreenOrientation('vertical')
-    })
-  }, [])
 
   let nextResultNumsCountToReady = -1
 
@@ -328,6 +312,7 @@ export default function Calc({ goToSettings, settings, separateChar = '.' }) {
     triggerColor,
     setTimer,
     clearTimer,
+    updateSettings,
   }
 
   return (

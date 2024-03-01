@@ -1,9 +1,17 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+  ToastAndroid,
+  // Dimensions,
+} from 'react-native'
 
 import GestureRecognizer from 'react-native-swipe-gestures'
 import formatText from '../../helpers/formatText'
 import FuncButton from '../FuncButton'
+import language from '../../helpers/language'
 
 function CalcVertical({
   btnClick,
@@ -21,10 +29,12 @@ function CalcVertical({
   firstArg,
   config,
   highlightFunc,
-  setTimer,
-  clearTimer,
   triggerColor,
+  updateSettings,
 }) {
+  // const windowWidth = Dimensions.get('window').width
+  // const btnSize = windowWidth / 4 + 10
+
   return (
     <>
       <View
@@ -87,12 +97,15 @@ function CalcVertical({
           style={{
             position: 'relative',
             display: 'flex',
-            flexDirection: 'column',
+            // flexDirection: 'column',
             justifyContent: 'flex-end',
             width: 'auto',
             minHeight: 80,
             marginHorizontal: 8,
             // backgroundColor: 'blue',
+            // borderWidth: 1,
+            // borderColor: 'blue',
+            paddingHorizontal: '6%',
           }}
         >
           <Text
@@ -100,7 +113,7 @@ function CalcVertical({
               // flex: 1,
               // color: settings.isDarkTheme ? 'white' : 'black',
               color: 'white',
-              width: '100%',
+              // width: '90%',
               // backgroundColor: 'black',
               // borderWidth: 1,
               // borderColor: 'red',
@@ -140,23 +153,16 @@ function CalcVertical({
         }}
       >
         <View style={styles.bottonsRow}>
-          {/* <FuncButton
-            onPress={() => btnClick('c')}
-            onLongPress={goToSettings}
-            title={!secondArg && !firstArg ? 'AC' : 'c'}
-            alt
-            square
-          /> */}
           <FuncButton
             onPress={() => {
-              !trigger && !secondArg && !firstArg && setTimer()
+              // !trigger && !secondArg && !firstArg && setTimer()
               btnClick('C')
             }}
             func="c"
-            // onLongPress={goToSettings}
+            onLongPress={!trigger && !secondArg && !firstArg && goToSettings}
             iconName={!secondArg && !firstArg ? 'AC' : 'C'}
             colorNum={1}
-            onTouchEnd={clearTimer}
+            // onTouchEnd={clearTimer}
             square
             theme={settings.theme}
           />
@@ -185,14 +191,6 @@ function CalcVertical({
             square
             theme={settings.theme}
           />
-          {/* <FuncButton onPress={() => btnClick('±')} title="±" alt square />
-          <FuncButton onPress={() => btnClick('%')} title="%" alt square />
-          <FuncButton
-            onPress={() => btnClick('÷')}
-            title="÷"
-            active={highlightFunc === '/'}
-            square
-          /> */}
         </View>
         <View style={styles.bottonsRow}>
           <FuncButton
@@ -240,30 +238,6 @@ function CalcVertical({
             square
             theme={settings.theme}
           />
-          {/* <NumButton
-            style={nextResultNumsCountToReady === 7 ? styles.trigger : {}}
-            onPress={() => btnClick('7')}
-            title="7"
-            square
-          />
-          <NumButton
-            style={nextResultNumsCountToReady === 8 ? styles.trigger : {}}
-            onPress={() => btnClick('8')}
-            title="8"
-            square
-          />
-          <NumButton
-            style={nextResultNumsCountToReady === 9 ? styles.trigger : {}}
-            onPress={() => btnClick('9')}
-            title="9"
-            square
-          />
-          <FuncButton
-            onPress={() => btnClick('*')}
-            title="×"
-            active={highlightFunc === '*'}
-            square
-          /> */}
         </View>
         <View style={styles.bottonsRow}>
           <FuncButton
@@ -311,30 +285,6 @@ function CalcVertical({
             square
             theme={settings.theme}
           />
-          {/* <NumButton
-            style={nextResultNumsCountToReady === 4 ? styles.trigger : {}}
-            onPress={() => btnClick('4')}
-            title="4"
-            square
-          />
-          <NumButton
-            style={nextResultNumsCountToReady === 5 ? styles.trigger : {}}
-            onPress={() => btnClick('5')}
-            title="5"
-            square
-          />
-          <NumButton
-            style={nextResultNumsCountToReady === 6 ? styles.trigger : {}}
-            onPress={() => btnClick('6')}
-            title="6"
-            square
-          />
-          <FuncButton
-            onPress={() => btnClick('-')}
-            title="-"
-            active={highlightFunc === '-'}
-            square
-          /> */}
         </View>
         <View style={styles.bottonsRow}>
           <FuncButton
@@ -348,6 +298,12 @@ function CalcVertical({
             iconName={'1'}
             square
             theme={settings.theme}
+            onLongPress={() => {
+              if (!trigger && !secondArg && !firstArg) {
+                updateSettings({ forceType: 'date' })
+                ToastAndroid.show('Режим: Дата', ToastAndroid.SHORT)
+              }
+            }}
           />
           <FuncButton
             style={
@@ -360,6 +316,15 @@ function CalcVertical({
             iconName={'2'}
             square
             theme={settings.theme}
+            onLongPress={() => {
+              if (!trigger && !secondArg && !firstArg) {
+                updateSettings({ forceType: 'number' })
+                ToastAndroid.show(
+                  `Режим: Число (${settings.forceNumber})`,
+                  ToastAndroid.SHORT
+                )
+              }
+            }}
           />
           <FuncButton
             style={
@@ -372,6 +337,15 @@ function CalcVertical({
             iconName={'3'}
             square
             theme={settings.theme}
+            onLongPress={() => {
+              if (!trigger && !secondArg && !firstArg) {
+                updateSettings({ forceType: 'cryptotext' })
+                ToastAndroid.show(
+                  `Режим: Криптотекст (${settings.forceCryptotext})`,
+                  ToastAndroid.SHORT
+                )
+              }
+            }}
           />
           <FuncButton
             onPress={() => btnClick('+')}
@@ -420,6 +394,34 @@ function CalcVertical({
             square
             theme={settings.theme}
             big
+            onLongPress={() => {
+              if (!trigger && !secondArg && !firstArg)
+                if (settings.forceType === 'date') {
+                  ToastAndroid.show(
+                    `${language(settings.language, 'Режим')}: ${language(
+                      settings.language,
+                      'Дата'
+                    )}`,
+                    ToastAndroid.SHORT
+                  )
+                } else if (settings.forceType === 'cryptotext') {
+                  ToastAndroid.show(
+                    `${language(settings.language, 'Режим')}: ${language(
+                      settings.language,
+                      'Криптотекст'
+                    )} (${settings.forceCryptotext})`,
+                    ToastAndroid.SHORT
+                  )
+                } else if (settings.forceType === 'number') {
+                  ToastAndroid.show(
+                    `${language(settings.language, 'Режим')}: ${language(
+                      settings.language,
+                      'Число'
+                    )} (${settings.forceNumber})`,
+                    ToastAndroid.SHORT
+                  )
+                }
+            }}
           />
           <FuncButton
             onPress={() => btnClick(',')}

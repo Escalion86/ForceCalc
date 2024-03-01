@@ -109,10 +109,10 @@ const icons = {
     // 8: <IconH18 fill="#000000" height="100%" />,
     // 9: <IconH19 fill="#000000" height="100%" />,
     // '*': <IconH20 fill="#000000" height="100%" />,
-    '1/x': (props) => <IconH21 height="100%" {...props} fill="#000000" />,
-    '2sqrx': (props) => <IconH22 height="100%" {...props} fill="#000000" />,
-    '3sqrx': (props) => <IconH23 height="100%" {...props} fill="#000000" />,
-    ysqrx: (props) => <IconH24 height="100%" {...props} fill="#000000" />,
+    '1/x': (props) => <IconH21 height="100%" {...props} />,
+    '2sqrx': (props) => <IconH22 height="100%" {...props} />,
+    '3sqrx': (props) => <IconH23 height="100%" {...props} />,
+    ysqrx: (props) => <IconH24 height="100%" {...props} />,
     // ln: <IconH25 fill="#000000" height="100%" />,
     // log10: <IconH26 fill="#000000" height="100%" />,
     // 4: <IconH27 fill="#000000" height="100%" />,
@@ -162,10 +162,20 @@ const icons = {
     '=': (props) => <IconV19 fill="#ffffff" height="100%" {...props} />,
   },
 }
-
+// Number and "," / C +- % / func / otherHorizontal
 const colors = {
-  classic: ['#d2d3d5', '#c4c5c7', '#f88a11'],
-  standart: ['#313131', '#9f9f9f', '#ee9800'],
+  classic: [
+    ['#d2d3d5', 'black'],
+    ['#c4c5c7', 'black'],
+    ['#f88a11', 'white'],
+    ['#c4c5c7', 'black'],
+  ],
+  standart: [
+    ['#313131', 'white'],
+    ['#9f9f9f', 'black'],
+    ['#ee9800', 'white'],
+    ['#202020', 'white'],
+  ],
 }
 
 const FuncButton = ({
@@ -184,6 +194,9 @@ const FuncButton = ({
   onTouchEnd,
   titleStyle = {},
   theme = 'standart',
+  // isDarkTheme,
+  width,
+  height,
 }) => {
   // const [pressed, setPressed] = useRecoilState(pressedButtonAtomFamily(func))
   const [pressed, setPressed] = useState(false)
@@ -191,6 +204,17 @@ const FuncButton = ({
     pressedTriggeredButtonAtom
   )
   const trigger = useRecoilValue(triggerAtom)
+
+  // const colorTheme = isDarkTheme ? 'dark' : 'light'
+
+  // const timer = useRef(null)
+  // const setTimer = () => {
+  //   timer.current = setTimeout(() => {
+  //     if (onLongPress) onLongPress()
+  //   }, 2000)
+  // }
+
+  // const clearTimer = () => timer?.current && clearTimeout(timer.current)
 
   const fadeAnim = useRef(new Animated.Value(1)).current
 
@@ -253,41 +277,83 @@ const FuncButton = ({
   }, [iconName, func])
 
   return (
-    <Animated.View
+    <TouchableOpacity
+      activeOpacity={0.85}
       style={{
-        fontFamily: 'sf-regular',
         position: 'relative',
         flex: big ? 2 : 1,
-        justifyContent: 'center',
-
+        width: width,
+        height: height,
+        // width: '25%',
         aspectRatio: square ? (big ? 2 : 1) : null,
         // borderRadius: theme === 'standart' ? 200 : 0,
         // padding: theme === 'standart' ? 7 : 0,
         // opacity: isTouched ? 0.88 : 1,
         // borderColor: 'red',
         // borderWidth: 1,
-        opacity: fadeAnim,
+        // opacity: fadeAnim,
       }}
-      onTouchStart={() => {
-        // onLongPress && setTimer()
-        fadeIn()
-        onPress && onPress()
+      //  style={[styles.modelView]}
+      onLongPress={() => {
+        onLongPress()
       }}
-      onTouchEnd={() => {
-        onTouchEnd && onTouchEnd()
-        // onLongPress && timer && clearTimeout(timer)
-        fadeOut()
-        // setIsTouched(false)
+      onPress={() => {
+        onPress()
       }}
-      // onLongPress={() => {
-      //   console.log('onLongPress')
-      //   onLongPress && setTimer()
+      // onTouchStart={() => {
+      //   fadeIn()
+      //   console.log('onTouchStart :>> ')
       // }}
-      // onPressOut={() => {
-      //   console.log('onPressOut')
-      //   onLongPress && timer && clearTimeout(timer)
+      // onTouchEnd={() => {
+      //   fadeOut()
+      //   console.log('onTouchEnd :>> ')
       // }}
+      delayLongPress={3000}
     >
+      {/* <View
+        // style={{
+          // fontFamily: 'sf-regular',
+          // position: 'relative',
+          // flex: big ? 2 : 1,
+          // justifyContent: 'center',
+
+          // aspectRatio: square ? (big ? 2 : 1) : null,
+          // borderRadius: theme === 'standart' ? 200 : 0,
+          // padding: theme === 'standart' ? 7 : 0,
+          // opacity: isTouched ? 0.88 : 1,
+          // borderColor: 'red',
+          // borderWidth: 1,
+          // opacity: fadeAnim,
+        // }}
+        // onTouchStart={() => {
+        //   // onLongPress && setTimer()
+        //   fadeIn()
+        //   // onPress && onPress()
+        //   // if (onLongPress) {
+        //   setTimer()
+        //   // }
+        // }}
+        // onTouchEnd={() => {
+        //   onTouchEnd && onTouchEnd()
+
+        //   // onLongPress && timer && clearTimeout(timer)
+        //   fadeOut()
+        //   // setIsTouched(false)
+        //   // if (onLongPress) {
+        //   console.log('timer.current :>> ', timer.current)
+        //   if (timer.current && onPress) onPress()
+        //   clearTimer()
+        //   // }
+        // }}
+        // onLongPress={() => {
+        //   console.log('onLongPress')
+        //   onLongPress && setTimer()
+        // }}
+        // onPressOut={() => {
+        //   console.log('onPressOut')
+        //   onLongPress && timer && clearTimeout(timer)
+        // }}
+      // > */}
       {/* <TouchableOpacity
         // onPress={() => console.log('1')}
         // style={{
@@ -317,11 +383,14 @@ const FuncButton = ({
           // borderWidth: active ? 20 : 0.5,
           width: '100%',
           height: '100%',
+          maxHeight: '100%',
+          maxWidth: '100%',
           alignItems: 'flex-start',
           justifyContent: 'center',
           // borderColor: '#000000',
           // borderColor: 'red',
-          padding: theme === 'standart' ? 7 : 0,
+          // borderWidth: 1,
+          padding: theme === 'standart' ? (orientation === 'h' ? 5 : 7) : 0,
         }}
       >
         {/* {imageSource && (
@@ -342,6 +411,7 @@ const FuncButton = ({
             // display: 'flex',
             width: '100%',
             height: '100%',
+
             // alignItems: 'center',
             // justifyContent: 'flex-start',
             // borderColor: 'red',
@@ -349,8 +419,8 @@ const FuncButton = ({
               theme === 'standart'
                 ? active
                   ? 'white'
-                  : colors[theme][colorNum]
-                : colors[theme][colorNum],
+                  : colors[theme][colorNum][0]
+                : colors[theme][colorNum][0],
             borderRadius: theme === 'standart' ? 200 : 0,
             borderColor: theme === 'standart' ? null : 'black',
             borderWidth: theme === 'standart' ? null : active ? 2 : 0,
@@ -365,6 +435,7 @@ const FuncButton = ({
               display: 'flex',
               width: big ? '50%' : '100%',
               height: '100%',
+              overflow: 'hidden',
               // borderColor: 'blue',
               // borderWidth: 2,
               // borderWidth: 2,
@@ -376,13 +447,7 @@ const FuncButton = ({
                 style={{
                   fontFamily: 'sf-regular',
                   fontSize: itsNumber ? 22 : 16,
-                  color: itsNumber
-                    ? theme === 'classic'
-                      ? 'black'
-                      : 'white'
-                    : colorNum === 2
-                    ? 'white'
-                    : 'black',
+                  color: colors[theme][colorNum][1],
                   // marginTop: itsNumber ? -6 : 0,
                   // borderColor: 'red',
                   // borderWidth: 2,
@@ -403,14 +468,16 @@ const FuncButton = ({
                 style: {
                   fontFamily: 'sf-regular',
                   fontSize: 16,
-                  color: colorNum === 2 ? 'white' : 'black',
+                  // color: colorNum === 2 ? 'white' : 'black',
+                  color: colors[theme][colorNum][1],
+                  // fill: colors[theme][colorNum][1],
                   marginTop: -1,
                 },
               })}
             {iconName &&
               orientation &&
               icons[orientation][iconName]({
-                height: theme === 'standart' ? '120%' : '100%',
+                height: theme === 'standart' ? '110%' : '90%',
                 // width: '150%',
                 // marginTop: theme === 'standart' ? '-15%' : 0,
                 bold: theme === 'standart',
@@ -420,7 +487,7 @@ const FuncButton = ({
                     ? ['c', '+-', '%'].includes(func)
                       ? 'black'
                       : active
-                      ? colors['standart'][2]
+                      ? colors['standart'][2][0]
                       : 'white'
                     : ['/', '*', '-', '+', '='].includes(func)
                     ? 'white'
@@ -430,7 +497,8 @@ const FuncButton = ({
         </View>
       </View>
       {/* </TouchableOpacity> */}
-    </Animated.View>
+      {/* </View> */}
+    </TouchableOpacity>
   )
 }
 
