@@ -7,21 +7,7 @@ import { OtpInput } from 'react-native-otp-entry'
 import LanguagePicker from './components/LanguagePicker'
 import { useState } from 'react'
 import formatDateTime from './helpers/formatDateTime'
-import * as Device from 'expo-device'
-
-const getDataCode = async (code, data) => {
-  console.log('code :>> ', code)
-  let response = await fetch('https://escalion.ru/api/forcecalc', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-    },
-    body: JSON.stringify({ code, data }),
-  })
-  const json = await response.json()
-  console.log('json :>> ', json)
-  return json
-}
+import getDataCode from './helpers/getDataCode'
 
 const LicenseScreen = ({ setScreen, settings, updateSettings }) => {
   const textColor = settings.isDarkTheme ? 'white' : 'black'
@@ -44,13 +30,7 @@ const LicenseScreen = ({ setScreen, settings, updateSettings }) => {
 
   const onFilled = async (code) => {
     setWaitResponce(true)
-    const data = await getDataCode(code, {
-      deviceModelName: Device.modelName,
-      deviceModelId: Device.modelId,
-      deviceProductName: Device.productName,
-      deviceManufacturer: Device.manufacturer,
-      deviceBrand: Device.brand,
-    })
+    const data = await getDataCode(code)
     if (data?.error) {
       if (data.errorCode === 'too many tries') {
         setError(
@@ -62,7 +42,10 @@ const LicenseScreen = ({ setScreen, settings, updateSettings }) => {
             'Следующая попытка'
           )}: ${formatDateTime(data.data?.nextTryDate, 'dd.MM.yy hh:mm')}`
         )
-      } else if (data.errorCode === 'wrong code') {
+      } else if (
+        data.errorCode === 'wrong code' ||
+        data.errorCode === 'code not exist'
+      ) {
         setError(
           `${language(settings.language, 'Код не верный')}.\n${language(
             settings.language,

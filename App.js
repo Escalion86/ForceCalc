@@ -5,7 +5,7 @@ import * as SplashScreen from 'expo-splash-screen'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { RecoilRoot } from 'recoil'
+import { RecoilRoot, useRecoilState } from 'recoil'
 
 import { StyleSheet } from 'react-native'
 
@@ -15,6 +15,8 @@ import About from './About'
 import LicenseScreen from './License'
 
 import * as ScreenOrientation from 'expo-screen-orientation'
+import getDataCode from './helpers/getDataCode'
+import settingsAtom from './state/atoms/settingsAtom'
 
 async function loadApplication() {
   await Font.loadAsync({
@@ -81,29 +83,12 @@ const getJsonData = async (key) => {
 
 SplashScreen.preventAutoHideAsync()
 
-export default function App() {
+let interval
+
+const AppChildren = () => {
   const [isReady, setIsReady] = useState(false)
   const [screen, setScreen] = useState()
-  const [settings, setSettings] = useState({
-    isDarkTheme: true,
-    startCalcOnLoad: false,
-    separateChar: '.',
-    forceType: 'date',
-    forceNumber: '0',
-    forceDateDelay: 75,
-    highlightNumber: true,
-    dateFormat: 'dMMHHmm',
-    pressTriggerButtons: false,
-    screenOrientation: 'auto',
-    forceCryptotext: 'Force',
-    highlightNumberIntensity: 'normal',
-    theme: 'standart',
-    language: 'en',
-    licenseCode: undefined,
-    licenseUserName: undefined,
-    licenseExpiredDate: undefined,
-    // hoursFormat: '24',
-  })
+  const [settings, setSettings] = useRecoilState(settingsAtom)
 
   const [screenOrientation, setScreenOrientation] = useState('vertical')
 
@@ -117,24 +102,32 @@ export default function App() {
     }
   }
 
-  // const updateSetting = (key, value) => {
-  //   if (key) setSettings({...settings, [key]:value})
-  // }
-
-  // if (!isReady)
-  //   return (
-  //     <AppLoading
-  //       startAsync={async () => {
-  //         const settings = await loadApplication()
-  //         if (settings) {
-  //           if (settings.startCalcOnLoad) setScreen('calc')
-  //           updateSettings(settings)
-  //         }
-  //       }}
-  //       onFinish={() => setIsReady(true)}
-  //       onError={console.warn}
-  //     />
-  //   )
+  useEffect(() => {
+    if (!settings.licenseCode && interval) clearInterval(interval)
+    if (settings.licenseCode && !interval) {
+      const updateServerInfo = async () => {
+        const data = await getDataCode(settings.licenseCode, true)
+        if (data) {
+          if (data.errorCode === 'code not exist') {
+            updateSettings({
+              licenseUserName: undefined,
+              licenseExpiredDate: undefined,
+              licenseCode: undefined,
+            })
+          } else {
+            updateSettings({
+              licenseUserName: data.data.userName,
+              licenseExpiredDate: data.data?.expiredDate,
+            })
+          }
+        }
+      }
+      updateServerInfo()
+      interval = setInterval(() => {
+        updateServerInfo()
+      }, 3600000)
+    }
+  }, [settings.licenseCode])
 
   useEffect(() => {
     if (settings.licenseExpiredDate) {
@@ -166,6 +159,23 @@ export default function App() {
     })
   }, [])
 
+  // const hashString = (code) => {
+  //   let hash = 5381
+  //   let i = code.length
+
+  //   while (i) hash = (hash * 33) ^ code.charCodeAt(--i)
+
+  //   const result = Math.abs((hash >>> 0) & 0xffffffff)
+  //   return result
+  // }
+
+  // const hashString8 = (code) => {
+  //   let hash = hashString(code)
+  //   return (hash % 100000000).toString().padStart(8, '0')
+  // }
+
+  // console.log('hashString8 :>> ', hashString8('Андрей Гамм'))
+
   useEffect(() => {
     async function prepare() {
       try {
@@ -193,7 +203,10 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    if (!settings?.licenseCode || !settings?.licenseUserName) setScreen()
+    if (!settings?.licenseCode || !settings?.licenseUserName) {
+      if (interval) clearInterval(interval)
+      setScreen()
+    }
   }, [settings?.licenseUserName, settings?.licenseCode])
 
   // const onLayoutRootView = useCallback(async () => {
@@ -212,14 +225,13 @@ export default function App() {
   }
 
   return (
-    <RecoilRoot>
-      <SafeAreaView
-        style={{
-          ...styles.container,
-          backgroundColor: settings.isDarkTheme ? 'black' : 'white',
-        }}
-      >
-        {/* <View
+    <SafeAreaView
+      style={{
+        ...styles.container,
+        backgroundColor: settings.isDarkTheme ? 'black' : 'white',
+      }}
+    >
+      {/* <View
         style={{
           position: 'absolute',
           top: 0,
@@ -234,40 +246,47 @@ export default function App() {
       >
         <Text style={{ color: 'blue', fontSize: 10 }}>21</Text>
       </View> */}
-        {/* <View style={styles.container}> */}
-        <StatusBar style={settings.isDarkTheme ? 'light' : 'dark'} />
-        {screen === 'settings' ? (
-          <Settings
-            setScreen={setScreen}
-            updateSettings={updateSettings}
-            settings={settings}
-            screenOrientation={screenOrientation}
-          />
-        ) : screen === 'calc' ? (
-          <Calc
-            isDarkTheme={settings.isDarkTheme}
-            goToSettings={() => setScreen('settings')}
-            separateChar={settings.separateChar}
-            settings={settings}
-            updateSettings={updateSettings}
-            screenOrientation={screenOrientation}
-          />
-        ) : screen === 'about' ? (
-          <About
-            setScreen={setScreen}
-            // updateSettings={updateSettings}
-            settings={settings}
-          />
-        ) : (
-          <LicenseScreen
-            setScreen={setScreen}
-            updateSettings={updateSettings}
-            settings={settings}
-          />
-        )}
+      {/* <View style={styles.container}> */}
+      <StatusBar style={settings.isDarkTheme ? 'light' : 'dark'} />
+      {screen === 'settings' ? (
+        <Settings
+          setScreen={setScreen}
+          updateSettings={updateSettings}
+          settings={settings}
+          screenOrientation={screenOrientation}
+        />
+      ) : screen === 'calc' ? (
+        <Calc
+          isDarkTheme={settings.isDarkTheme}
+          goToSettings={() => setScreen('settings')}
+          separateChar={settings.separateChar}
+          settings={settings}
+          updateSettings={updateSettings}
+          screenOrientation={screenOrientation}
+        />
+      ) : screen === 'about' ? (
+        <About
+          setScreen={setScreen}
+          // updateSettings={updateSettings}
+          settings={settings}
+        />
+      ) : (
+        <LicenseScreen
+          setScreen={setScreen}
+          updateSettings={updateSettings}
+          settings={settings}
+        />
+      )}
 
-        {/* </View> */}
-      </SafeAreaView>
+      {/* </View> */}
+    </SafeAreaView>
+  )
+}
+
+export default function App() {
+  return (
+    <RecoilRoot>
+      <AppChildren />
     </RecoilRoot>
   )
 }

@@ -15,6 +15,7 @@ import language from '../../helpers/language'
 
 function CalcVertical({
   btnClick,
+  btnStartPress,
   deleteChar,
   settings,
   trigger,
@@ -101,11 +102,11 @@ function CalcVertical({
             justifyContent: 'flex-end',
             width: 'auto',
             minHeight: 80,
-            marginHorizontal: 8,
+            marginHorizontal: '7%',
             // backgroundColor: 'blue',
             // borderWidth: 1,
             // borderColor: 'blue',
-            paddingHorizontal: '6%',
+            // paddingHorizontal: '5%',
           }}
         >
           <Text
@@ -137,9 +138,9 @@ function CalcVertical({
               style={{
                 // borderWidth: 1,
                 // borderColor: 'blue',
-                width: '90%',
+                width: '100%',
                 position: 'absolute',
-                left: '5%',
+                // left: '5%',
                 height: '100%',
                 zIndex: 10,
               }}
@@ -158,6 +159,7 @@ function CalcVertical({
               // !trigger && !secondArg && !firstArg && setTimer()
               btnClick('C')
             }}
+            onPressIn={() => btnStartPress('C')}
             func="c"
             onLongPress={!trigger && !secondArg && !firstArg && goToSettings}
             iconName={!secondArg && !firstArg ? 'AC' : 'C'}
@@ -168,6 +170,7 @@ function CalcVertical({
           />
           <FuncButton
             onPress={() => btnClick('±')}
+            onPressIn={() => btnStartPress('±')}
             func="+-"
             iconName={'+-'}
             colorNum={1}
@@ -176,6 +179,7 @@ function CalcVertical({
           />
           <FuncButton
             onPress={() => btnClick('%')}
+            onPressIn={() => btnStartPress('%')}
             func="%"
             iconName={'%'}
             colorNum={1}
@@ -184,6 +188,7 @@ function CalcVertical({
           />
           <FuncButton
             onPress={() => btnClick('÷')}
+            onPressIn={() => btnStartPress('÷')}
             func="/"
             iconName={'/'}
             active={highlightFunc === '/'}
@@ -200,6 +205,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('7')}
+            onPressIn={() => btnStartPress('7')}
             func="7"
             iconName={'7'}
             square
@@ -212,6 +218,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('8')}
+            onPressIn={() => btnStartPress('8')}
             func="8"
             iconName={'8'}
             square
@@ -224,6 +231,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('9')}
+            onPressIn={() => btnStartPress('9')}
             func="9"
             iconName={'9'}
             square
@@ -232,6 +240,7 @@ function CalcVertical({
           <FuncButton
             onPress={() => btnClick('*')}
             iconName={'*'}
+            onPressIn={() => btnStartPress('*')}
             func="*"
             colorNum={2}
             active={highlightFunc === '*'}
@@ -247,6 +256,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('4')}
+            onPressIn={() => btnStartPress('4')}
             func="4"
             iconName={'4'}
             square
@@ -259,6 +269,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('5')}
+            onPressIn={() => btnStartPress('5')}
             func="5"
             iconName={'5'}
             square
@@ -271,6 +282,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('6')}
+            onPressIn={() => btnStartPress('6')}
             func="6"
             iconName={'6'}
             square
@@ -278,6 +290,7 @@ function CalcVertical({
           />
           <FuncButton
             onPress={() => btnClick('-')}
+            onPressIn={() => btnStartPress('-')}
             func="-"
             iconName={'-'}
             active={highlightFunc === '-'}
@@ -294,6 +307,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('1')}
+            onPressIn={() => btnStartPress('1')}
             func="1"
             iconName={'1'}
             square
@@ -312,6 +326,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('2')}
+            onPressIn={() => btnStartPress('2')}
             func="2"
             iconName={'2'}
             square
@@ -333,6 +348,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('3')}
+            onPressIn={() => btnStartPress('3')}
             func="3"
             iconName={'3'}
             square
@@ -350,6 +366,7 @@ function CalcVertical({
           <FuncButton
             onPress={() => btnClick('+')}
             iconName={'+'}
+            onPressIn={() => btnStartPress('+')}
             func="+"
             colorNum={2}
             active={highlightFunc === '+'}
@@ -389,6 +406,7 @@ function CalcVertical({
                 : {}
             }
             onPress={() => btnClick('0')}
+            onPressIn={() => btnStartPress('0')}
             func="0"
             iconName={'0'}
             square
@@ -425,6 +443,7 @@ function CalcVertical({
           />
           <FuncButton
             onPress={() => btnClick(',')}
+            onPressIn={() => btnStartPress(',')}
             func=","
             iconName={','}
             square
@@ -434,10 +453,17 @@ function CalcVertical({
                 ? { backgroundColor: triggerColor }
                 : {}
             }
+            onLongPress={() => {
+              if (!trigger) {
+                updateSettings({ forceType: 'number', forceNumber: text })
+                ToastAndroid.show(`Режим: Число (${text})`, ToastAndroid.SHORT)
+              }
+            }}
           />
           <FuncButton
             onPress={() => btnClick('=')}
             iconName={'='}
+            onPressIn={() => btnStartPress('=')}
             func="="
             colorNum={2}
             square

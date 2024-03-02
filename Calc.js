@@ -38,9 +38,10 @@ export default function Calc({
   updateSettings,
   screenOrientation,
 }) {
-  const setPressedTriggeredButton = useSetRecoilState(
+  const [pressedTriggeredButton, setPressedTriggeredButton] = useRecoilState(
     pressedTriggeredButtonAtom
   )
+  console.log('pressedTriggeredButton :>> ', pressedTriggeredButton)
   const [trigger, setTrigger] = useRecoilState(triggerAtom)
 
   const [text, setText] = useState('0')
@@ -73,39 +74,72 @@ export default function Calc({
         : String(neededNumber ?? 0).length - (text ? text.length : 0)
   }
 
+  const btnStartPress = (char) => {
+    console.log('1 :>> ', 1)
+    if (trigger) {
+      if (!triggerFuncIsActive) {
+        // Если до этого небыло набрано ни одной цифры
+        if (!secondArg) {
+          return (
+            settings.pressTriggerButtons &&
+            setPressedTriggeredButton(neededNumber[0])
+          )
+        }
+        return (
+          settings.pressTriggerButtons && setPressedTriggeredButton(neededFunc)
+        )
+      }
+      if (triggerFuncIsActive) {
+        if (!triggerFirstCharIsSet) {
+          settings.pressTriggerButtons &&
+            setPressedTriggeredButton(neededNumber[0])
+        } else {
+          if (String(secondArg).length !== String(neededNumber).length) {
+            const charToAdd = String(neededNumber)[String(secondArg).length]
+            settings.pressTriggerButtons && setPressedTriggeredButton(charToAdd)
+          } else if (char === '=') {
+            settings.pressTriggerButtons && setPressedTriggeredButton('=')
+          }
+        }
+
+        return
+      }
+    }
+  }
+
   const btnClick = (char) => {
     if (trigger) {
       if (!triggerFuncIsActive) {
         // Если до этого небыло набрано ни одной цифры
         if (!secondArg) {
-          settings.pressTriggerButtons &&
-            setPressedTriggeredButton(neededNumber[0])
+          // settings.pressTriggerButtons &&
+          //   setPressedTriggeredButton(neededNumber[0])
           addChar(neededNumber[0])
           setTriggerFuncIsActive(true)
           setTriggerFirstCharIsSet(true)
           return
         }
         useFunc(neededFunc)
-        settings.pressTriggerButtons && setPressedTriggeredButton(neededFunc)
+        // settings.pressTriggerButtons && setPressedTriggeredButton(neededFunc)
         setTriggerFuncIsActive(true)
 
         return
       }
       if (triggerFuncIsActive) {
         if (!triggerFirstCharIsSet) {
-          settings.pressTriggerButtons &&
-            setPressedTriggeredButton(neededNumber[0])
+          // settings.pressTriggerButtons &&
+          //   setPressedTriggeredButton(neededNumber[0])
           addChar(neededNumber[0])
           setTriggerFirstCharIsSet(true)
         } else {
           if (String(secondArg).length !== String(neededNumber).length) {
             const charToAdd = String(neededNumber)[String(secondArg).length]
-            settings.pressTriggerButtons && setPressedTriggeredButton(charToAdd)
+            // settings.pressTriggerButtons && setPressedTriggeredButton(charToAdd)
             addChar(charToAdd)
           } else if (char === '=') {
             setTrigger(false)
             getResult()
-            settings.pressTriggerButtons && setPressedTriggeredButton('=')
+            // settings.pressTriggerButtons && setPressedTriggeredButton('=')
           }
         }
 
@@ -293,6 +327,7 @@ export default function Calc({
 
   const calcProps = {
     btnClick,
+    btnStartPress,
     deleteChar,
     settings,
     trigger,
