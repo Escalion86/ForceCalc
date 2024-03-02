@@ -73,9 +73,6 @@ export default function Calc({
         : String(neededNumber ?? 0).length - (text ? text.length : 0)
   }
 
-  console.log('---')
-  console.log('nextResultNumsCountToReady :>> ', nextResultNumsCountToReady)
-  console.log('startNewNumber :>> ', startNewNumber)
   const btnClick = (char) => {
     if (trigger) {
       if (!triggerFuncIsActive) {
