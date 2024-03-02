@@ -1,5 +1,4 @@
 import React from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
 import {
   StyleSheet,
   Text,
@@ -10,41 +9,13 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import Button from './components/Button'
-// import { useTheme } from '@react-navigation/native'
-// import { TouchableOpacity } from 'react-native-gesture-handler'
-// import Button from '../components/Button'
-// import { AppContext } from '../AppContext'
 import { ContactIcon } from './components/infoComponents'
 import language from './helpers/language'
-// import { fontSize } from '../theme'
-// import { ModalChangeLog } from '../components/Modals'
-// import * as appJson from '../../app.json'
-// import { setSettings } from '../store/actions/app'
-// import { appJson } from './app.json'
 const appJson = require('./app.json')
 
 const AboutScreen = ({ setScreen, settings }) => {
-  // const { colors } = useTheme()
   const textColor = settings.isDarkTheme ? 'white' : 'black'
-  // const backgroundColor = settings.isDarkTheme ? 'black' : 'white'
   const fontSize = 20
-  // const { toggleDev, dev } = useContext(AppContext)
-
-  // const [startToOpenDev, setStartToOpenDev] = useState(null)
-  // const [modal, setModal] = useState(null)
-  // const dev = useSelector((state) => state.app.dev)
-
-  // const dispatch = useDispatch()
-
-  // const endToOpenDev = () => {
-  //   if (Math.floor((new Date() - startToOpenDev) / 1000) >= 5) {
-  //     ToastAndroid.show(
-  //       `Режим разработчика ${dev ? 'деактивирован' : 'активирован'}`,
-  //       ToastAndroid.SHORT
-  //     )
-  //     dispatch(setSettings({ dev: !dev }))
-  //   }
-  // }
 
   return (
     <View
@@ -168,42 +139,13 @@ const AboutScreen = ({ setScreen, settings }) => {
               )
             }
           />
-          {/* <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-          <Button
-            title="Вернуться в настройки"
-            onPress={() => setScreen('settings')}
-          />
-        </View> */}
-
-          {/* <Button
-          title="Поблагодарить"
-          style={{ marginBottom: 20 }}
-          onPress={() =>
-            Linking.openURL(
-              'https://money.alfabank.ru/p2p/web/transfer/abelinskii3048'
-            )
-          }
-        /> */}
         </View>
       </ScrollView>
-      <TouchableOpacity
-        style={{ ...styles.bottom, borderColor: 'gray' }}
-        // onPressIn={() =>
-        //   setModal(
-        //     <ModalChangeLog
-        //       visible={true}
-        //       onOuterClick={() => {
-        //         setModal(null)
-        //       }}
-        //     />
-        //   )
-        // }
-      >
+      <TouchableOpacity style={{ ...styles.bottom, borderColor: 'gray' }}>
         <Text style={{ fontSize: 16, color: textColor }}>
           {`${language(settings.language, 'Версия')}: ${appJson.expo.version}`}
         </Text>
       </TouchableOpacity>
-      {/* {modal} */}
     </View>
   )
 }

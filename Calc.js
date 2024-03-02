@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 
 import { View } from 'react-native'
 
@@ -67,14 +67,15 @@ export default function Calc({
   let nextResultNumsCountToReady = -1
 
   if (settings.highlightNumber && trigger) {
-    nextResultNumsCountToReady = startNewNumber
-      ? String(neededNumber ?? 0).length
-      : (neededNumber ?? 0) - (text ? Number(text) : 0) === 0
-      ? 0
-      : String((neededNumber ?? 0) - (text ? Number(text) : 0)).length -
-        (text ? text.length : 0)
+    nextResultNumsCountToReady =
+      (!startNewNumber && !triggerFuncIsActive) || startNewNumber
+        ? String(neededNumber ?? 0).length
+        : String(neededNumber ?? 0).length - (text ? text.length : 0)
   }
 
+  console.log('---')
+  console.log('nextResultNumsCountToReady :>> ', nextResultNumsCountToReady)
+  console.log('startNewNumber :>> ', startNewNumber)
   const btnClick = (char) => {
     if (trigger) {
       if (!triggerFuncIsActive) {
@@ -284,13 +285,13 @@ export default function Calc({
   }
   if (settings.theme === 'standart') {
     if (settings.highlightNumberIntensity === 'veryhigh')
-      triggerColor = '#3a3a3a'
+      triggerColor = '#3c3c3c'
     else if (settings.highlightNumberIntensity === 'high')
-      triggerColor = '#383838'
+      triggerColor = '#3a3a3a'
     else if (settings.highlightNumberIntensity === 'normal')
-      triggerColor = '#363636'
+      triggerColor = '#383838'
     else if (settings.highlightNumberIntensity === 'light')
-      triggerColor = '#343434'
+      triggerColor = '#363636'
   }
 
   const calcProps = {

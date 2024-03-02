@@ -1,39 +1,6 @@
 import React from 'react'
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Linking,
-  View,
-  Clipboard,
-  ToastAndroid,
-  Share,
-} from 'react-native'
-// import { useTheme } from '@react-navigation/native'
+import { StyleSheet, Text, TouchableOpacity, Linking, View } from 'react-native'
 import { FontAwesome5 } from '@expo/vector-icons'
-// import { fontSize, iconSize } from '../theme'
-
-// export const TextBlock = ({
-//   text = '',
-//   center = false,
-//   big = false,
-//   style = {},
-// }) => {
-//   // const { colors } = useTheme()
-//   return (
-//     <Text
-//       style={{
-//         ...styles.text,
-//         color: colors.text,
-//         textAlign: center ? 'center' : 'auto',
-//         fontSize: big ? fontSize.big : fontSize.medium,
-//         ...style,
-//       }}
-//     >
-//       {text}
-//     </Text>
-//   )
-// }
 
 export const ContactIcon = ({
   iconName = '',
@@ -43,8 +10,6 @@ export const ContactIcon = ({
   data = '',
   textColor = 'white',
 }) => {
-  // const { colors } = useTheme()
-  // if (!textColor) textColor = colors.text
   const IconSizeNum = 24
   const fontSizeNum = 18
   const iconDemention = IconSizeNum + Math.floor(IconSizeNum / 2)

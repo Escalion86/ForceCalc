@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import Button from './components/Button'
 import { ContactIcon } from './components/infoComponents'

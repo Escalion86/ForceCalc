@@ -8,11 +8,10 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native'
-import { Icon } from '@rneui/themed'
+import { FontAwesome5 } from '@expo/vector-icons'
 import { Picker } from '@react-native-picker/picker'
 import getNoun from './helpers/getNoun'
 
-// import Checkbox from 'expo-checkbox'
 import Button from './components/Button'
 import formatDateTime from './helpers/formatDateTime'
 
@@ -24,7 +23,6 @@ import decryptText from './helpers/decryptText'
 import language from './helpers/language'
 import LicenseScreen from './License'
 import LanguagePicker from './components/LanguagePicker'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Stack = createNativeStackNavigator()
 
@@ -218,6 +216,11 @@ const SettingsMenu = ({
           title={language(settings.language, 'О приложении')}
           onPress={() => navigation.navigate('About')}
         />
+        {/* <Button
+          title={language(settings.language, 'TicTacToe')}
+          onPress={() => navigation.navigate('TicTacToe')}
+          style={{ flex: screenOrientation === 'vertical' ? undefined : 1 }}
+        /> */}
         <View
           style={{
             display: 'flex',
@@ -909,7 +912,7 @@ export default function Settings(generalProps) {
     <View
       {...props}
       style={{
-        marginRight: -4,
+        // marginRight: -4,
         height: 40,
         width: 40,
         borderRadius: 40,
@@ -917,35 +920,19 @@ export default function Settings(generalProps) {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        // borderWidth: 1,
       }}
-      // onPress={() => generalProps.setScreen('calc')}
     >
-      <Icon
-        // {...props}
-        // containerStyle={styles.icon}
-        type="ionicon"
-        name="calculator"
-        color={settings?.isDarkTheme ? 'white' : '#202020'}
+      <FontAwesome5
         style={{
           borderRadius: 40,
-          // alignItems: 'center',
-          // overflow: 'hidden',
-          // borderColor: 'blue',
-          // borderWidth: 1,
-          height: 40,
-          width: 40,
-          paddingTop: 7,
           overflow: 'hidden',
         }}
+        name="calculator"
+        size={20}
+        color={settings?.isDarkTheme ? 'white' : '#202020'}
         onPress={() => setScreen('calc')}
       />
     </View>
-    // <HeaderBackButton
-    //   {...props}
-    //   style={{ marginLeft: 0, marginRight: 25 }}
-    //   onPress={() => generalProps.setScreen('calc')}
-    // />
   )
 
   return (
