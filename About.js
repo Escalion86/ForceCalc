@@ -29,7 +29,7 @@ const AboutScreen = ({ setScreen, settings }) => {
           <Text
             style={{
               ...styles.title,
-              color: settings.isDarkTheme ? 'white' : 'black',
+              color: textColor,
             }}
           >
             Force Calc

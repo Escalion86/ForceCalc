@@ -1,6 +1,10 @@
 const language = (lng, word) => {
   if (lng === 'ru') return word
   const obj = {
+    'Процесс демонстрации': { en: 'Demonstration process' },
+    'Настройки внешнего вида': { en: 'Appearance Settings' },
+    'Настройки форсирования': { en: 'Force Settings' },
+    Инструкция: { en: 'Instructions' },
     'Срок вашей лецензии истек! Для продления и других вопросов обратитесь к разработчику':
       {
         en: 'Your license has expired! For renewal and other questions, contact the developer',

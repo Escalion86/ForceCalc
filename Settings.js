@@ -7,6 +7,7 @@ import {
   Switch,
   TextInput,
   ScrollView,
+  Linking,
 } from 'react-native'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { Picker } from '@react-native-picker/picker'
@@ -213,6 +214,11 @@ const SettingsMenu = ({
         </View>
         <Button
           color="#aa77ff"
+          title={language(settings.language, 'Инструкция')}
+          onPress={() => navigation.navigate('Instructions')}
+        />
+        <Button
+          color="#aa77ff"
           title={language(settings.language, 'О приложении')}
           onPress={() => navigation.navigate('About')}
         />
@@ -247,7 +253,8 @@ const SettingsMenu = ({
                     'dd.MM.yy hh:mm'
                   )}`
                 : '') +
-              language(settings.language, ' для пользователя')}
+              ' ' +
+              language(settings.language, 'для пользователя')}
           </Text>
           <Text
             style={{
@@ -295,6 +302,61 @@ const SettingsMenu = ({
           title="О приложении"
           onPress={() => setScreen('about')}
         /> */}
+      </View>
+    </View>
+  )
+}
+
+const SettingsInstructions = ({
+  navigation,
+  setScreen,
+  settings,
+  updateSettings,
+  screenOrientation,
+}) => {
+  const textColor = settings.isDarkTheme ? 'white' : 'black'
+
+  return (
+    <View
+      style={{
+        ...styles.container,
+        backgroundColor: settings.isDarkTheme ? 'black' : 'white',
+      }}
+    >
+      <View
+        style={{
+          display: 'flex',
+          flex: 1,
+        }}
+      >
+        {settings.language === 'en' && (
+          <Text
+            style={{
+              marginBottom: 6,
+              fontSize: 16,
+              color: textColor,
+            }}
+          >
+            Unfortunately, the instructions is only available in Russian
+            language, but you can automatically turn on subtitles in your
+            language in the player
+          </Text>
+        )}
+        <Button
+          color="#aa77ff"
+          title={language(settings.language, 'Процесс демонстрации')}
+          onPress={() => Linking.openURL('https://youtu.be/OweGaDPZ4ww')}
+        />
+        <Button
+          color="#aa77ff"
+          title={language(settings.language, 'Настройки внешнего вида')}
+          onPress={() => Linking.openURL('https://youtu.be/rv2qo6Su7Xk')}
+        />
+        <Button
+          color="#aa77ff"
+          title={language(settings.language, 'Настройки форсирования')}
+          onPress={() => Linking.openURL('https://youtu.be/utp2f8YXZr0')}
+        />
       </View>
     </View>
   )
@@ -976,6 +1038,16 @@ export default function Settings(generalProps) {
           }}
         >
           {(props) => <SettingsForce {...props} {...generalProps} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Instructions"
+          options={{
+            title: language(settings.language, 'Инструкция'),
+            headerRight,
+            ...screenProps,
+          }}
+        >
+          {(props) => <SettingsInstructions {...props} {...generalProps} />}
         </Stack.Screen>
         <Stack.Screen
           name="About"
