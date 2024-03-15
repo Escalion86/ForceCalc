@@ -299,9 +299,7 @@ const FuncButton = ({
         // borderWidth: 1,
       }}
       //  style={[styles.modelView]}
-      onLongPress={() => {
-        onLongPress()
-      }}
+      onLongPress={typeof onLongPress === 'function' ? onLongPress : undefined}
       onPress={() => {
         onPress()
       }}
