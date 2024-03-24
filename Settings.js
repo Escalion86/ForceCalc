@@ -357,6 +357,11 @@ const SettingsInstructions = ({
           title={language(settings.language, 'Настройки форсирования')}
           onPress={() => Linking.openURL('https://youtu.be/utp2f8YXZr0')}
         />
+        <Button
+          color="#aa77ff"
+          title={language(settings.language, 'Быстрые клавиши')}
+          onPress={() => Linking.openURL('https://youtu.be/ia7RCZ0wYKU')}
+        />
       </View>
     </View>
   )

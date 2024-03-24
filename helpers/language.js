@@ -1,6 +1,7 @@
 const language = (lng, word) => {
   if (lng === 'ru') return word
   const obj = {
+    'Быстрые клавиши': { en: 'Keyboard shortcuts' },
     'Процесс демонстрации': { en: 'Demonstration process' },
     'Настройки внешнего вида': { en: 'Appearance Settings' },
     'Настройки форсирования': { en: 'Force Settings' },
