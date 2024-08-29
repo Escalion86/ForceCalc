@@ -350,6 +350,7 @@ export default function Calc({
     setTimer,
     clearTimer,
     updateSettings,
+    startNewNumber,
   }
 
   return (

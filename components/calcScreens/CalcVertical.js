@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   StyleSheet,
   Text,
@@ -12,6 +12,7 @@ import GestureRecognizer from 'react-native-swipe-gestures'
 import formatText from '../../helpers/formatText'
 import FuncButton from '../FuncButton'
 import language from '../../helpers/language'
+import decryptText from '../../helpers/decryptText'
 
 function CalcVertical({
   btnClick,
@@ -32,9 +33,11 @@ function CalcVertical({
   highlightFunc,
   triggerColor,
   updateSettings,
+  startNewNumber,
 }) {
   // const windowWidth = Dimensions.get('window').width
   // const btnSize = windowWidth / 4 + 10
+  const [showCryptotext, setShowCryptotext] = useState(false)
 
   return (
     <>
@@ -88,6 +91,29 @@ function CalcVertical({
             ' ' +
             String(secondArg ?? 0)}
         </Text> */}
+        <TouchableWithoutFeedback
+          onPressOut={() => setShowCryptotext(false)}
+          onLongPress={
+            settings.forceType === 'cryptotext' &&
+            text === decryptText(settings.forceCryptotext)
+              ? () => setShowCryptotext(true)
+              : undefined
+          }
+        >
+          <View
+            style={{
+              // borderWidth: 1,
+              // borderColor: 'blue',
+              width: '100%',
+              position: 'absolute',
+              // left: '5%',
+              top: 0,
+              bottom: 100,
+              // height: '65%',
+              zIndex: 10,
+            }}
+          />
+        </TouchableWithoutFeedback>
         <GestureRecognizer
           // onSwipe={(direction, state) => onSwipe(direction, state)}
           // onSwipeUp={(state) => onSwipe(state)}
@@ -116,13 +142,16 @@ function CalcVertical({
               color: 'white',
               // width: '90%',
               // backgroundColor: 'black',
+              // height: 99,
               // borderWidth: 1,
               // borderColor: 'red',
               fontSize: 78,
-              textAlign: 'right',
+              textAlign: showCryptotext ? 'left' : 'right',
               // fontWeight: '300',
+              transform: [{ rotate: showCryptotext ? '180deg' : '0deg' }],
+              // rotate: showCryptotext ? '180deg' : '0deg',
 
-              fontFamily: 'helvetica-thin',
+              fontFamily: showCryptotext ? 'cryptext' : 'helvetica-thin',
             }}
             numberOfLines={1}
             adjustsFontSizeToFit
@@ -131,7 +160,9 @@ function CalcVertical({
             //     setTrigger((state) => !state)
             // }}
           >
-            {(minus ? '-' : '') + formatText(text, separateChar)}
+            {showCryptotext
+              ? settings.forceCryptotext.toUpperCase()
+              : (minus ? '-' : '') + formatText(text, separateChar)}
           </Text>
           <TouchableWithoutFeedback onPress={startTrigger}>
             <View

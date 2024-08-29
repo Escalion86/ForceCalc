@@ -359,7 +359,7 @@ const SettingsInstructions = ({
         />
         <Button
           color="#aa77ff"
-          title={language(settings.language, 'Быстрые клавиши')}
+          title={language(settings.language, 'Горячие клавиши')}
           onPress={() => Linking.openURL('https://youtu.be/ia7RCZ0wYKU')}
         />
       </View>
