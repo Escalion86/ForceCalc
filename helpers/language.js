@@ -57,6 +57,7 @@ const language = (lng, word) => {
     Высокий: { en: 'High' },
     Нормальный: { en: 'Normal' },
     Низкий: { en: 'Low' },
+    'Очень низкий': { en: 'Very Low' },
     'Внешний вид': { en: 'Appearance' },
     'Параметры форсирования': { en: 'Forcing parameters' },
     Настройки: { en: 'Settings' },

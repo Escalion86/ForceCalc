@@ -657,6 +657,10 @@ const SettingsTheme = ({ setScreen, settings, updateSettings }) => {
                 label={language(settings.language, 'Низкий')}
                 value="light"
               />
+              <Picker.Item
+                label={language(settings.language, 'Очень низкий')}
+                value="verylight"
+              />
             </Picker>
           </View>
         </View>

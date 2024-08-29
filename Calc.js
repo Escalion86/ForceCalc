@@ -306,22 +306,26 @@ export default function Calc({
   var triggerColor
   if (settings.theme === 'classic' || !settings.theme) {
     if (settings.highlightNumberIntensity === 'veryhigh')
-      triggerColor = '#c7c8ca'
+      triggerColor = '#c5c5ca'
     else if (settings.highlightNumberIntensity === 'high')
-      triggerColor = '#cacbcc'
+      triggerColor = '#c7c8ca'
     else if (settings.highlightNumberIntensity === 'normal')
-      triggerColor = '#cdcdcf'
+      triggerColor = '#cacbcc'
     else if (settings.highlightNumberIntensity === 'light')
+      triggerColor = '#cdcdcf'
+    else if (settings.highlightNumberIntensity === 'verylight')
       triggerColor = '#d0d0d2'
   }
   if (settings.theme === 'standart') {
     if (settings.highlightNumberIntensity === 'veryhigh')
-      triggerColor = '#3c3c3c'
+      triggerColor = '#3e3e3e'
     else if (settings.highlightNumberIntensity === 'high')
-      triggerColor = '#3a3a3a'
+      triggerColor = '#3c3c3c'
     else if (settings.highlightNumberIntensity === 'normal')
-      triggerColor = '#383838'
+      triggerColor = '#3a3a3a'
     else if (settings.highlightNumberIntensity === 'light')
+      triggerColor = '#383838'
+    else if (settings.highlightNumberIntensity === 'verylight')
       triggerColor = '#363636'
   }
 
