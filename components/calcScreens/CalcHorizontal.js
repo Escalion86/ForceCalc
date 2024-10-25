@@ -1,22 +1,22 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import {
   StyleSheet,
   Text,
-  TouchableOpacity,
+  ToastAndroid,
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
 
 import GestureRecognizer from 'react-native-swipe-gestures'
-import formatDateTime from '../../helpers/formatDateTime'
 import formatText from '../../helpers/formatText'
 import FuncButton from '../FuncButton'
-import NumButton from '../NumButton'
+import language from '../../helpers/language'
 
 const HorizontalButton = (props) => <FuncButton orientation="h" {...props} />
 
 function CalcHorizontal({
   btnClick,
+  btnStartPress,
   deleteChar,
   settings,
   trigger,
@@ -34,6 +34,7 @@ function CalcHorizontal({
   setTimer,
   clearTimer,
   triggerColor,
+  updateSettings,
 }) {
   return (
     <>
@@ -45,7 +46,7 @@ function CalcHorizontal({
           // alignItems: 'flex-end',
           justifyContent: 'flex-end',
           width: '100%',
-          backgroundColor: '#202020',
+          backgroundColor: settings.theme === 'classic' ? '#202020' : '#000000',
           // backgroundColor: settings.isDarkTheme ? '#202020' : '#efefef',
           // borderWidth: 1,
           // borderColor: 'blue',
@@ -99,6 +100,7 @@ function CalcHorizontal({
             width: 'auto',
             minHeight: 80,
             marginHorizontal: 8,
+            paddingHorizontal: '4%',
             // backgroundColor: 'blue',
           }}
         >
@@ -152,102 +154,105 @@ function CalcHorizontal({
       <View
         style={{
           display: 'flex',
-          height: '64%',
+          height: '80%',
           marginLeft: 0,
-          backgroundColor: '#202020',
+          backgroundColor: settings.theme === 'classic' ? '#202020' : '#000000',
         }}
       >
         <View style={styles.bottonsRow}>
           <HorizontalButton
             theme={settings.theme}
             func="("
+            onPressIn={() => btnStartPress('(')}
             onPress={() => btnClick('(')}
             // iconName="("
             // title="("
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress(')')}
             onPress={() => btnClick(')')}
             // iconName=")"
             func=")"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('mc')}
             onPress={() => btnClick('mc')}
             // iconName={'mc'}
             func="mc"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('m+')}
             onPress={() => btnClick('m+')}
             func="m+"
             // iconName={'m+'}
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('m-')}
             onPress={() => btnClick('m-')}
             // iconName={'m-'}
             func="m-"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('mr')}
             onPress={() => btnClick('mr')}
             // iconName={'mr'}
             func="mr"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onLongPress={!trigger && !secondArg && !firstArg && goToSettings}
+            onPressIn={() => btnStartPress('C')}
             onPress={() => {
-              !trigger && !secondArg && !firstArg && setTimer()
+              // !trigger && !secondArg && !firstArg && setTimer()
               btnClick('C')
             }}
             // onLongPress={goToSettings}
             // iconName="ac"
             func={!secondArg && !firstArg ? 'AC' : 'C'}
             colorNum={1}
-            onTouchEnd={clearTimer}
+            // onTouchEnd={clearTimer}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('±')}
             onPress={() => btnClick('±')}
             // iconName="+-"
             func="􀅺"
             colorNum={1}
-            onTouchEnd={clearTimer}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('%')}
             onPress={() => btnClick('%')}
             // iconName="%"
             func="%"
             colorNum={1}
-            onTouchEnd={clearTimer}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('÷')}
             onPress={() => btnClick('÷')}
             active={highlightFunc === '/'}
             colorNum={2}
             // iconName="/"
             func="􀅿"
-            onTouchEnd={clearTimer}
           />
         </View>
         <View style={styles.bottonsRow}>
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('2nd')}
             onPress={() => btnClick('2nd')}
             // iconName={'2nd'}
             func="2nd"
@@ -262,14 +267,18 @@ function CalcHorizontal({
                 }}
               >
                 <Text style={style}>2</Text>
-                <Text style={{ marginBottom: 12, fontSize: 8 }}>nd</Text>
+                <Text
+                  style={{ marginBottom: 12, fontSize: 8, color: style.color }}
+                >
+                  nd
+                </Text>
               </View>
             )}
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('x2')}
             onPress={() => btnClick('x2')}
             func={'x2'}
             component={({ style }) => (
@@ -283,14 +292,18 @@ function CalcHorizontal({
                 }}
               >
                 <Text style={style}>x</Text>
-                <Text style={{ marginBottom: 12, fontSize: 8 }}>2</Text>
+                <Text
+                  style={{ marginBottom: 12, fontSize: 8, color: style.color }}
+                >
+                  2
+                </Text>
               </View>
             )}
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('x3')}
             onPress={() => btnClick('x3')}
             func="x3"
             component={({ style }) => (
@@ -304,14 +317,18 @@ function CalcHorizontal({
                 }}
               >
                 <Text style={style}>x</Text>
-                <Text style={{ marginBottom: 12, fontSize: 8 }}>3</Text>
+                <Text
+                  style={{ marginBottom: 12, fontSize: 8, color: style.color }}
+                >
+                  3
+                </Text>
               </View>
             )}
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('xy')}
             onPress={() => btnClick('xy')}
             func="xy"
             component={({ style }) => (
@@ -325,14 +342,18 @@ function CalcHorizontal({
                 }}
               >
                 <Text style={style}>x</Text>
-                <Text style={{ marginBottom: 12, fontSize: 8 }}>y</Text>
+                <Text
+                  style={{ marginBottom: 12, fontSize: 8, color: style.color }}
+                >
+                  y
+                </Text>
               </View>
             )}
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('ex')}
             onPress={() => btnClick('ex')}
             func="ex"
             component={({ style }) => (
@@ -346,14 +367,18 @@ function CalcHorizontal({
                 }}
               >
                 <Text style={style}>e</Text>
-                <Text style={{ marginBottom: 12, fontSize: 8 }}>x</Text>
+                <Text
+                  style={{ marginBottom: 12, fontSize: 8, color: style.color }}
+                >
+                  x
+                </Text>
               </View>
             )}
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('10x')}
             onPress={() => btnClick('10x')}
             func="10x"
             component={({ style }) => (
@@ -367,11 +392,14 @@ function CalcHorizontal({
                 }}
               >
                 <Text style={style}>10</Text>
-                <Text style={{ marginBottom: 12, fontSize: 8 }}>x</Text>
+                <Text
+                  style={{ marginBottom: 12, fontSize: 8, color: style.color }}
+                >
+                  x
+                </Text>
               </View>
             )}
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
@@ -381,9 +409,9 @@ function CalcHorizontal({
                 ? { backgroundColor: triggerColor }
                 : {}),
             }}
+            onPressIn={() => btnStartPress('7')}
             onPress={() => btnClick('7')}
             func="7"
-            onTouchEnd={clearTimer}
           />
           <HorizontalButton
             theme={settings.theme}
@@ -392,9 +420,9 @@ function CalcHorizontal({
                 ? { backgroundColor: triggerColor }
                 : {}
             }
+            onPressIn={() => btnStartPress('8')}
             onPress={() => btnClick('8')}
             func="8"
-            onTouchEnd={clearTimer}
           />
           <HorizontalButton
             theme={settings.theme}
@@ -403,60 +431,61 @@ function CalcHorizontal({
                 ? { backgroundColor: triggerColor }
                 : {}
             }
+            onPressIn={() => btnStartPress('9')}
             onPress={() => btnClick('9')}
             func="9"
-            onTouchEnd={clearTimer}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('*')}
             onPress={() => btnClick('*')}
             func="􀅾"
             colorNum={2}
-            onTouchEnd={clearTimer}
           />
         </View>
         <View style={styles.bottonsRow}>
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('1/x')}
             onPress={() => btnClick('1/x')}
             func="1/x"
             iconName="1/x"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('2sqrx')}
             onPress={() => btnClick('2sqrx')}
             func="2sqrx"
             iconName="2sqrx"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('3sqrx')}
             onPress={() => btnClick('3sqrx')}
             func="3sqrx"
             iconName={'3sqrx'}
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('ysqrx')}
             onPress={() => btnClick('ysqrx')}
             func="ysqrx"
             iconName={'ysqrx'}
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('ln')}
             onPress={() => btnClick('ln')}
             func="ln"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('log10')}
             onPress={() => btnClick('log10')}
             func="log10"
             component={({ style }) => (
@@ -470,11 +499,14 @@ function CalcHorizontal({
                 }}
               >
                 <Text style={style}>log</Text>
-                <Text style={{ marginBottom: -12, fontSize: 8 }}>10</Text>
+                <Text
+                  style={{ marginBottom: -12, fontSize: 8, color: style.color }}
+                >
+                  10
+                </Text>
               </View>
             )}
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
@@ -483,12 +515,13 @@ function CalcHorizontal({
                 ? { backgroundColor: triggerColor }
                 : {}
             }
+            onPressIn={() => btnStartPress('4')}
             onPress={() => btnClick('4')}
             func="4"
-            onTouchEnd={clearTimer}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('5')}
             onPress={() => btnClick('5')}
             style={
               nextResultNumsCountToReady === 5
@@ -496,10 +529,10 @@ function CalcHorizontal({
                 : {}
             }
             func="5"
-            onTouchEnd={clearTimer}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('6')}
             onPress={() => btnClick('6')}
             style={
               nextResultNumsCountToReady === 6
@@ -507,62 +540,62 @@ function CalcHorizontal({
                 : {}
             }
             func="6"
-            onTouchEnd={clearTimer}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('-')}
             onPress={() => btnClick('-')}
             func="—"
             // titleStyle={{ fontSize: 18 }}
             colorNum={2}
-            onTouchEnd={clearTimer}
           />
         </View>
         <View style={styles.bottonsRow}>
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('x!')}
             onPress={() => btnClick('x!')}
             func="x!"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('sin')}
             onPress={() => btnClick('sin')}
             func="sin"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('cos')}
             onPress={() => btnClick('cos')}
             func="cos"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('tan')}
             onPress={() => btnClick('tan')}
             func="tan"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('e')}
             onPress={() => btnClick('e')}
             func="e"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('ee')}
             onPress={() => btnClick('ee')}
             func="EE"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('1')}
             onPress={() => btnClick('1')}
             style={
               nextResultNumsCountToReady === 1
@@ -570,10 +603,16 @@ function CalcHorizontal({
                 : {}
             }
             func="1"
-            onTouchEnd={clearTimer}
+            onLongPress={() => {
+              if (!trigger && !secondArg && !firstArg) {
+                updateSettings({ forceType: 'date' })
+                ToastAndroid.show('Режим: Дата', ToastAndroid.SHORT)
+              }
+            }}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('2')}
             onPress={() => btnClick('2')}
             style={
               nextResultNumsCountToReady === 2
@@ -581,10 +620,19 @@ function CalcHorizontal({
                 : {}
             }
             func="2"
-            onTouchEnd={clearTimer}
+            onLongPress={() => {
+              if (!trigger && !secondArg && !firstArg) {
+                updateSettings({ forceType: 'number' })
+                ToastAndroid.show(
+                  `Режим: Число (${settings.forceNumber})`,
+                  ToastAndroid.SHORT
+                )
+              }
+            }}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('3')}
             onPress={() => btnClick('3')}
             style={
               nextResultNumsCountToReady === 3
@@ -592,62 +640,71 @@ function CalcHorizontal({
                 : {}
             }
             func="3"
-            onTouchEnd={clearTimer}
+            onLongPress={() => {
+              if (!trigger && !secondArg && !firstArg) {
+                updateSettings({ forceType: 'cryptotext' })
+                ToastAndroid.show(
+                  `Режим: Криптотекст (${settings.forceCryptotext})`,
+                  ToastAndroid.SHORT
+                )
+              }
+            }}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('+')}
             onPress={() => btnClick('+')}
             func="+"
             titleStyle={{ fontSize: 24, marginTop: -3 }}
             colorNum={2}
-            onTouchEnd={clearTimer}
           />
         </View>
         <View style={styles.bottonsRow}>
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('deg')}
             onPress={() => btnClick('deg')}
             func="Deg"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('sinh')}
             onPress={() => btnClick('sinh')}
             func="sinh"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('cosh')}
             onPress={() => btnClick('cosh')}
             func="cosh"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('tanh')}
             onPress={() => btnClick('tanh')}
             func="tanh"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('pi')}
             onPress={() => btnClick('pi')}
             func="π"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('rand')}
             onPress={() => btnClick('rand')}
             func="Rand"
-            colorNum={1}
-            onTouchEnd={clearTimer}
+            colorNum={3}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('0')}
             onPress={() => btnClick('0')}
             style={
               nextResultNumsCountToReady === 0
@@ -656,22 +713,56 @@ function CalcHorizontal({
             }
             func="0"
             big
+            onLongPress={() => {
+              if (!trigger && !secondArg && !firstArg)
+                if (settings.forceType === 'date') {
+                  ToastAndroid.show(
+                    `${language(settings.language, 'Режим')}: ${language(
+                      settings.language,
+                      'Дата'
+                    )}`,
+                    ToastAndroid.SHORT
+                  )
+                } else if (settings.forceType === 'cryptotext') {
+                  ToastAndroid.show(
+                    `${language(settings.language, 'Режим')}: ${language(
+                      settings.language,
+                      'Криптотекст'
+                    )} (${settings.forceCryptotext})`,
+                    ToastAndroid.SHORT
+                  )
+                } else if (settings.forceType === 'number') {
+                  ToastAndroid.show(
+                    `${language(settings.language, 'Режим')}: ${language(
+                      settings.language,
+                      'Число'
+                    )} (${settings.forceNumber})`,
+                    ToastAndroid.SHORT
+                  )
+                }
+            }}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress(',')}
             onPress={() => btnClick(',')}
             func=","
             // titleStyle={{ fontSize: 20 }}
 
-            onTouchEnd={clearTimer}
+            onLongPress={() => {
+              if (!trigger) {
+                updateSettings({ forceType: 'number', forceNumber: text })
+                ToastAndroid.show(`Режим: Число (${text})`, ToastAndroid.SHORT)
+              }
+            }}
           />
           <HorizontalButton
             theme={settings.theme}
+            onPressIn={() => btnStartPress('=')}
             onPress={() => btnClick('=')}
             func="="
             titleStyle={{ fontSize: 22 }}
             colorNum={2}
-            onTouchEnd={clearTimer}
           />
         </View>
       </View>

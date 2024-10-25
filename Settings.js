@@ -3,16 +3,17 @@ import React from 'react'
 import {
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   Switch,
   TextInput,
   ScrollView,
+  Linking,
 } from 'react-native'
-import { Icon } from '@rneui/themed'
+import { FontAwesome5 } from '@expo/vector-icons'
 import { Picker } from '@react-native-picker/picker'
 import getNoun from './helpers/getNoun'
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 // import RadioButtonRN from 'radio-buttons-react-native'
 
@@ -21,6 +22,8 @@ import getNoun from './helpers/getNoun'
 =======
 >>>>>>> bca268a0ebb688baaed0f39c91f1f3b4444b5dfe
 import Checkbox from 'expo-checkbox'
+=======
+>>>>>>> dev
 import Button from './components/Button'
 import formatDateTime from './helpers/formatDateTime'
 
@@ -30,6 +33,8 @@ import { HeaderBackButton } from '@react-navigation/elements'
 import AboutScreen from './About'
 import decryptText from './helpers/decryptText'
 import language from './helpers/language'
+import LicenseScreen from './License'
+import LanguagePicker from './components/LanguagePicker'
 
 const Stack = createNativeStackNavigator()
 
@@ -61,32 +66,32 @@ const ItemSwitch = ({ title, onValueChange, value, isDarkTheme }) => (
   </View>
 )
 
-const ItemCheckBox = ({ title, isDarkTheme, value, onValueChange }) => (
-  <View
-    style={{
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      flex: 1,
-    }}
-  >
-    <Checkbox
-      style={{ margin: 8, height: 22, width: 22 }}
-      value={value}
-      onValueChange={onValueChange}
-      color={value ? '#ff9933' : undefined}
-    />
-    <Text
-      style={{
-        ...styles.text,
-        flex: 1,
-        color: isDarkTheme ? 'white' : 'black',
-      }}
-    >
-      {title}
-    </Text>
-  </View>
-)
+// const ItemCheckBox = ({ title, isDarkTheme, value, onValueChange }) => (
+//   <View
+//     style={{
+//       display: 'flex',
+//       flexDirection: 'row',
+//       alignItems: 'center',
+//       flex: 1,
+//     }}
+//   >
+//     <Checkbox
+//       style={{ margin: 8, height: 22, width: 22 }}
+//       value={value}
+//       onValueChange={onValueChange}
+//       color={value ? '#ff9933' : undefined}
+//     />
+//     <Text
+//       style={{
+//         ...styles.text,
+//         flex: 1,
+//         color: isDarkTheme ? 'white' : 'black',
+//       }}
+//     >
+//       {title}
+//     </Text>
+//   </View>
+// )
 
 const ItemInputNumber = ({
   title,
@@ -168,15 +173,26 @@ const ItemInputText = ({
   </View>
 )
 
-const SettingsMenu = ({ navigation, setScreen, settings, updateSettings }) => {
+const SettingsMenu = ({
+  navigation,
+  setScreen,
+  settings,
+  updateSettings,
+  screenOrientation,
+}) => {
   return (
-    <ScrollView
+    <View
       style={{
         ...styles.container,
         backgroundColor: settings.isDarkTheme ? 'black' : 'white',
       }}
     >
-      <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+      <View
+        style={{
+          display: 'flex',
+          flex: 1,
+        }}
+      >
         <ItemSwitch
           title={language(
             settings.language,
@@ -186,69 +202,108 @@ const SettingsMenu = ({ navigation, setScreen, settings, updateSettings }) => {
           value={settings.startCalcOnLoad}
           isDarkTheme={settings.isDarkTheme}
         />
+        <LanguagePicker settings={settings} updateSettings={updateSettings} />
         <View
           style={{
-            // flex: 1,
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginVertical: 1,
+            display: screenOrientation === 'vertical' ? '' : 'flex',
+            justifyContent: 'center',
+            flexDirection: screenOrientation === 'vertical' ? 'column' : 'row',
+            gap: screenOrientation === 'vertical' ? 0 : 15,
+            marginTop: 5,
           }}
         >
-          <Text
-            style={{
-              ...styles.text,
-              flex: 1,
-              color: settings.isDarkTheme ? 'white' : 'black',
-            }}
-          >
-            {language(settings.language, 'Язык')}
-          </Text>
-          <View
-            style={{
-              height: 40,
-              borderWidth: 1,
-              borderColor: settings.isDarkTheme ? 'white' : 'black',
-              borderRadius: 8,
-            }}
-          >
-            <Picker
-              selectedValue={settings.language}
-              style={{
-                // maxHeight: 30,
-                marginRight: -8,
-                marginTop: -8,
-                width: 200,
-                color: settings.isDarkTheme ? 'white' : 'black',
-                borderWidth: 1,
-                borderLeftColor: 'blue',
-                borderLeftWidth: 2,
-                // backgroundColor: 'blue',
-              }}
-              onValueChange={(itemValue, itemIndex) =>
-                updateSettings({ language: itemValue })
-              }
-              mode="dropdown"
-              dropdownIconColor={settings.isDarkTheme ? 'white' : 'black'}
-            >
-              <Picker.Item label="Русский" value="ru" />
-              <Picker.Item label="English" value="en" />
-            </Picker>
-          </View>
+          <Button
+            title={language(settings.language, 'Внешний вид')}
+            onPress={() => navigation.navigate('Theme')}
+            style={{ flex: screenOrientation === 'vertical' ? undefined : 1 }}
+          />
+          <Button
+            title={language(settings.language, 'Параметры форсирования')}
+            onPress={() => navigation.navigate('Force')}
+            style={{ flex: screenOrientation === 'vertical' ? undefined : 1 }}
+          />
         </View>
         <Button
-          title={language(settings.language, 'Внешний вид')}
-          onPress={() => navigation.navigate('Theme')}
-        />
-        <Button
-          title={language(settings.language, 'Параметры форсирования')}
-          onPress={() => navigation.navigate('Force')}
+          color="#aa77ff"
+          title={language(settings.language, 'Инструкция')}
+          onPress={() => navigation.navigate('Instructions')}
         />
         <Button
           color="#aa77ff"
           title={language(settings.language, 'О приложении')}
           onPress={() => navigation.navigate('About')}
         />
+        {/* <Button
+          title={language(settings.language, 'TicTacToe')}
+          onPress={() => navigation.navigate('TicTacToe')}
+          style={{ flex: screenOrientation === 'vertical' ? undefined : 1 }}
+        /> */}
+        <View
+          style={{
+            display: 'flex',
+            flex: 1,
+            justifyContent: 'flex-end',
+          }}
+        >
+          {/* <Button
+            color="#aa77ff"
+            title={language(settings.language, 'Лицензия')}
+            onPress={() => setScreen('')}
+          /> */}
+          <Text
+            style={{
+              color: settings.isDarkTheme ? 'white' : 'black',
+              textAlign: 'center',
+              fontSize: 14,
+            }}
+          >
+            {language(settings.language, 'Лицензия') +
+              (settings?.licenseExpiredDate
+                ? ` ${language(settings.language, 'до')} ${formatDateTime(
+                    settings?.licenseExpiredDate,
+                    'dd.MM.yy hh:mm'
+                  )}`
+                : '') +
+              ' ' +
+              language(settings.language, 'для пользователя')}
+          </Text>
+          <Text
+            style={{
+              color: settings.isDarkTheme ? 'white' : 'black',
+              textAlign: 'center',
+              fontSize: 18,
+            }}
+          >
+            {settings.licenseUserName}
+          </Text>
+        </View>
+        {/* <Button
+          color="#aa77ff"
+          title={'тест'}
+          onPress={() => {
+            AsyncStorage.clear()
+            updateSettings({
+              isDarkTheme: true,
+              startCalcOnLoad: false,
+              separateChar: '.',
+              forceType: 'date',
+              forceNumber: '0',
+              forceDateDelay: 75,
+              highlightNumber: true,
+              dateFormat: 'dMMHHmm',
+              pressTriggerButtons: false,
+              screenOrientation: 'auto',
+              forceCryptotext: 'Force',
+              highlightNumberIntensity: 'normal',
+              theme: 'standart',
+              language: 'en',
+              licenseCode: undefined,
+              licenseUserName: undefined,
+              licenseExpiredDate: undefined,
+              // hoursFormat: '24',
+            })
+          }}
+        /> */}
         {/* <Button
           title="Запустить калькулятор"
           onPress={() => setScreen('calc')}
@@ -259,7 +314,72 @@ const SettingsMenu = ({ navigation, setScreen, settings, updateSettings }) => {
           onPress={() => setScreen('about')}
         /> */}
       </View>
-    </ScrollView>
+    </View>
+  )
+}
+
+const SettingsInstructions = ({
+  navigation,
+  setScreen,
+  settings,
+  updateSettings,
+  screenOrientation,
+}) => {
+  const textColor = settings.isDarkTheme ? 'white' : 'black'
+
+  return (
+    <View
+      style={{
+        ...styles.container,
+        backgroundColor: settings.isDarkTheme ? 'black' : 'white',
+      }}
+    >
+      <View
+        style={{
+          display: 'flex',
+          flex: 1,
+        }}
+      >
+        {settings.language === 'en' && (
+          <Text
+            style={{
+              marginBottom: 6,
+              fontSize: 16,
+              color: textColor,
+            }}
+          >
+            Unfortunately, the instructions is only available in Russian
+            language, but you can automatically turn on subtitles in your
+            language in the player
+          </Text>
+        )}
+        <Button
+          color="#aa77ff"
+          title={language(settings.language, 'Процесс демонстрации')}
+          onPress={() => Linking.openURL('https://youtu.be/OweGaDPZ4ww')}
+        />
+        <Button
+          color="#aa77ff"
+          title={language(settings.language, 'Настройки внешнего вида')}
+          onPress={() => Linking.openURL('https://youtu.be/rv2qo6Su7Xk')}
+        />
+        <Button
+          color="#aa77ff"
+          title={language(settings.language, 'Настройки форсирования')}
+          onPress={() => Linking.openURL('https://youtu.be/utp2f8YXZr0')}
+        />
+        <Button
+          color="#aa77ff"
+          title={language(settings.language, 'Горячие клавиши')}
+          onPress={() => Linking.openURL('https://youtu.be/ia7RCZ0wYKU')}
+        />
+        <Button
+          color="#aa77ff"
+          title={language(settings.language, 'Дополнительные фишки')}
+          onPress={() => Linking.openURL('https://youtu.be/bRrApIHdE5w')}
+        />
+      </View>
+    </View>
   )
 }
 
@@ -552,6 +672,10 @@ const SettingsTheme = ({ setScreen, settings, updateSettings }) => {
               <Picker.Item
                 label={language(settings.language, 'Низкий')}
                 value="light"
+              />
+              <Picker.Item
+                label={language(settings.language, 'Очень низкий')}
+                value="verylight"
               />
             </Picker>
           </View>
@@ -851,20 +975,20 @@ const SettingsForce = ({ setScreen, settings, updateSettings }) => {
 }
 
 export default function Settings(generalProps) {
-  const { settings } = generalProps
+  const { settings, setScreen } = generalProps
   const orientation =
-    generalProps.settings.screenOrientation === 'horizontal'
+    settings.screenOrientation === 'horizontal'
       ? 'landscape'
-      : generalProps.settings.screenOrientation === 'vertical'
+      : settings.screenOrientation === 'vertical'
       ? 'portrait'
       : 'default'
 
   const screenProps = {
     orientation,
     headerStyle: {
-      backgroundColor: generalProps.settings?.isDarkTheme ? '#202020' : 'white',
+      backgroundColor: settings?.isDarkTheme ? '#202020' : 'white',
     },
-    headerTintColor: generalProps.settings?.isDarkTheme ? 'white' : 'black',
+    headerTintColor: settings?.isDarkTheme ? 'white' : 'black',
     headerTitleStyle: {
       fontWeight: 'bold',
     },
@@ -875,7 +999,7 @@ export default function Settings(generalProps) {
     <View
       {...props}
       style={{
-        marginRight: -4,
+        // marginRight: -4,
         height: 40,
         width: 40,
         borderRadius: 40,
@@ -883,35 +1007,19 @@ export default function Settings(generalProps) {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        // borderWidth: 1,
       }}
-      // onPress={() => generalProps.setScreen('calc')}
     >
-      <Icon
-        // {...props}
-        // containerStyle={styles.icon}
-        type="ionicon"
-        name="calculator"
-        color="white"
+      <FontAwesome5
         style={{
           borderRadius: 40,
-          // alignItems: 'center',
-          // overflow: 'hidden',
-          // borderColor: 'blue',
-          // borderWidth: 1,
-          height: 40,
-          width: 40,
-          paddingTop: 7,
           overflow: 'hidden',
         }}
-        onPress={() => generalProps.setScreen('calc')}
+        name="calculator"
+        size={20}
+        color={settings?.isDarkTheme ? 'white' : '#202020'}
+        onPress={() => setScreen('calc')}
       />
     </View>
-    // <HeaderBackButton
-    //   {...props}
-    //   style={{ marginLeft: 0, marginRight: 25 }}
-    //   onPress={() => generalProps.setScreen('calc')}
-    // />
   )
 
   return (
@@ -927,7 +1035,7 @@ export default function Settings(generalProps) {
               <HeaderBackButton
                 {...props}
                 style={{ marginLeft: 0, marginRight: 25 }}
-                onPress={() => generalProps.setScreen('calc')}
+                onPress={() => setScreen('calc')}
               />
             ),
             headerRight,
@@ -957,6 +1065,16 @@ export default function Settings(generalProps) {
           {(props) => <SettingsForce {...props} {...generalProps} />}
         </Stack.Screen>
         <Stack.Screen
+          name="Instructions"
+          options={{
+            title: language(settings.language, 'Инструкция'),
+            headerRight,
+            ...screenProps,
+          }}
+        >
+          {(props) => <SettingsInstructions {...props} {...generalProps} />}
+        </Stack.Screen>
+        <Stack.Screen
           name="About"
           options={{
             title: language(settings.language, 'О приложении'),
@@ -965,6 +1083,16 @@ export default function Settings(generalProps) {
           }}
         >
           {(props) => <AboutScreen {...props} {...generalProps} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="License"
+          options={{
+            title: language(settings.language, 'Лицензия'),
+            headerRight,
+            ...screenProps,
+          }}
+        >
+          {(props) => <LicenseScreen {...props} {...generalProps} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

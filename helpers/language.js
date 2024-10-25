@@ -1,6 +1,30 @@
 const language = (lng, word) => {
   if (lng === 'ru') return word
   const obj = {
+    'Горячие клавиши': { en: 'Keyboard shortcuts' },
+    'Процесс демонстрации': { en: 'Demonstration process' },
+    'Настройки внешнего вида': { en: 'Appearance Settings' },
+    'Настройки форсирования': { en: 'Force Settings' },
+    Инструкция: { en: 'Instructions' },
+    'Срок вашей лецензии истек! Для продления и других вопросов обратитесь к разработчику':
+      {
+        en: 'Your license has expired! For renewal and other questions, contact the developer',
+      },
+    Режим: { en: 'Mode' },
+    'Проверте код и попробуйте еще раз': { en: 'Check the code and try again' },
+    'Код не верный': { en: 'The code is not correct' },
+    'Следующая попытка': { en: 'Next try after' },
+    'Слишком много попыток ввода кода': { en: 'Too many code attempts' },
+    'Спасибо что приобрели это замечательное приложение': {
+      en: 'Thank you for purchasing this wonderful application',
+    },
+    'Приветствую вас': { en: 'Greetings' },
+    'Начать пользоваться': { en: 'Start to use' },
+    'Введите выданный вам код': { en: 'Enter the code given to you' },
+    'Связаться с разработчиком': { en: 'Contact the developer' },
+    до: { en: 'until' },
+    'для пользователя': { en: 'for user' },
+    Лицензия: { en: 'License' },
     'Внешний вид': { en: 'Appearance' },
     'Параметры форсирования': { en: 'Force options' },
     'О приложении': { en: 'About app' },
@@ -33,6 +57,7 @@ const language = (lng, word) => {
     Высокий: { en: 'High' },
     Нормальный: { en: 'Normal' },
     Низкий: { en: 'Low' },
+    'Очень низкий': { en: 'Very Low' },
     'Внешний вид': { en: 'Appearance' },
     'Параметры форсирования': { en: 'Forcing parameters' },
     Настройки: { en: 'Settings' },
@@ -70,9 +95,10 @@ const language = (lng, word) => {
       {
         en: 'Attention! The word cannot end with the letter "O", since the forced result (number) starts from zero "O", "C", "D", "U" and "P", which cannot be displayed as a result of the calculation in the calculator.',
       },
+    'Дополнительные фишки': { en: 'Additional features' },
   }
 
-  return obj[word][lng]
+  return obj[word] ? obj[word][lng] : word
 }
 
 export default language

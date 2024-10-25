@@ -2,7 +2,7 @@
   "expo": {
     "name": "ForceCalc",
     "slug": "ForceCalc",
-    "version": "1.3.4",
+    "version": "1.5.0",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -32,13 +32,6 @@
         "projectId": "32f76ceb-abca-49d1-b334-c86dee3bdcbd"
       }
     },
-    "plugins": [
-      [
-        "expo-camera",
-        {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
-        }
-      ]
-    ]
+    "plugins": ["expo-font"]
   }
 }

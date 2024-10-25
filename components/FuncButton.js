@@ -1,11 +1,11 @@
-import React, { forwardRef, useState, useRef, useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
+  Animated,
   Text,
   TouchableOpacity,
   View,
-  StyleSheet,
-  Image,
-  Animated,
+  // StyleSheet,
+  // Image,
 } from 'react-native'
 
 import { useRecoilState, useRecoilValue } from 'recoil'
@@ -86,6 +86,7 @@ import {
   IconV18,
   IconV19,
 } from '../svgV'
+import settingsAtom from '../state/atoms/settingsAtom'
 
 const icons = {
   h: {
@@ -109,10 +110,10 @@ const icons = {
     // 8: <IconH18 fill="#000000" height="100%" />,
     // 9: <IconH19 fill="#000000" height="100%" />,
     // '*': <IconH20 fill="#000000" height="100%" />,
-    '1/x': (props) => <IconH21 height="100%" {...props} fill="#000000" />,
-    '2sqrx': (props) => <IconH22 height="100%" {...props} fill="#000000" />,
-    '3sqrx': (props) => <IconH23 height="100%" {...props} fill="#000000" />,
-    ysqrx: (props) => <IconH24 height="100%" {...props} fill="#000000" />,
+    '1/x': (props) => <IconH21 height="100%" {...props} />,
+    '2sqrx': (props) => <IconH22 height="100%" {...props} />,
+    '3sqrx': (props) => <IconH23 height="100%" {...props} />,
+    ysqrx: (props) => <IconH24 height="100%" {...props} />,
     // ln: <IconH25 fill="#000000" height="100%" />,
     // log10: <IconH26 fill="#000000" height="100%" />,
     // 4: <IconH27 fill="#000000" height="100%" />,
@@ -162,10 +163,20 @@ const icons = {
     '=': (props) => <IconV19 fill="#ffffff" height="100%" {...props} />,
   },
 }
-
+// Number and "," / C +- % / func / otherHorizontal
 const colors = {
-  classic: ['#d2d3d5', '#c4c5c7', '#f88a11'],
-  standart: ['#313131', '#9f9f9f', '#ee9800'],
+  classic: [
+    ['#d2d3d5', 'black'],
+    ['#c4c5c7', 'black'],
+    ['#f88a11', 'white'],
+    ['#c4c5c7', 'black'],
+  ],
+  standart: [
+    ['#313131', 'white'],
+    ['#9f9f9f', 'black'],
+    ['#ee9800', 'white'],
+    ['#202020', 'white'],
+  ],
 }
 
 const FuncButton = ({
@@ -174,23 +185,39 @@ const FuncButton = ({
   component,
   style = {},
   onPress,
+  onPressIn,
+  onPressOut,
   active = false,
   alt = false,
-  onLongPress,
+  onLongPress = () => {},
   square = false,
   colorNum = 0,
   big = false,
   orientation = 'v',
-  onTouchEnd,
   titleStyle = {},
   theme = 'standart',
+  // isDarkTheme,
+  width,
+  height,
+  shortLongPress = false,
 }) => {
-  // const [pressed, setPressed] = useRecoilState(pressedButtonAtomFamily(func))
+  const settings = useRecoilValue(settingsAtom)
   const [pressed, setPressed] = useState(false)
   const [pressedTriggeredButton, setPressedTriggeredButton] = useRecoilState(
     pressedTriggeredButtonAtom
   )
   const trigger = useRecoilValue(triggerAtom)
+
+  // const colorTheme = isDarkTheme ? 'dark' : 'light'
+
+  // const timer = useRef(null)
+  // const setTimer = () => {
+  //   timer.current = setTimeout(() => {
+  //     if (onLongPress) onLongPress()
+  //   }, 2000)
+  // }
+
+  // const clearTimer = () => timer?.current && clearTimeout(timer.current)
 
   const fadeAnim = useRef(new Animated.Value(1)).current
 
@@ -198,6 +225,7 @@ const FuncButton = ({
     // Will change fadeAnim value to 1 in 5 seconds
     // if (!trigger) {
     setPressed(true)
+    onPressIn && onPressIn()
     // }
     // else
     // {
@@ -211,8 +239,10 @@ const FuncButton = ({
     // }).start()
   }
 
-  // if (isButtonPressed === func) {
-  if ((!trigger && pressed) || (trigger && pressedTriggeredButton === func)) {
+  if (
+    ((!trigger || !settings.pressTriggerButtons) && pressed) ||
+    (settings.pressTriggerButtons && trigger && pressedTriggeredButton === func)
+  ) {
     Animated.timing(fadeAnim, {
       toValue: 0.84,
       duration: 0,
@@ -231,6 +261,7 @@ const FuncButton = ({
     if (trigger) {
       setPressedTriggeredButton(null)
     }
+    onPressOut && onPressOut()
     // setIsButtonPressed && setIsButtonPressed(null)
   }
 
@@ -252,43 +283,91 @@ const FuncButton = ({
     fadeOut()
   }, [iconName, func])
 
+  // console.log('fadeAnim :>> ', fadeAnim)
+  // console.log('func :>> ', func)
   return (
-    <Animated.View
+    <TouchableOpacity
+      activeOpacity={1}
       style={{
-        fontFamily: 'sf-regular',
         position: 'relative',
         flex: big ? 2 : 1,
-        justifyContent: 'center',
-
+        width: width,
+        height: height,
+        // width: '25%',
         aspectRatio: square ? (big ? 2 : 1) : null,
         // borderRadius: theme === 'standart' ? 200 : 0,
         // padding: theme === 'standart' ? 7 : 0,
         // opacity: isTouched ? 0.88 : 1,
         // borderColor: 'red',
         // borderWidth: 1,
-        opacity: fadeAnim,
       }}
-      onTouchStart={() => {
-        // onLongPress && setTimer()
-        fadeIn()
-        onPress && onPress()
+      //  style={[styles.modelView]}
+      onLongPress={typeof onLongPress === 'function' ? onLongPress : undefined}
+      onPress={() => {
+        onPress()
       }}
-      onTouchEnd={() => {
-        onTouchEnd && onTouchEnd()
-        // onLongPress && timer && clearTimeout(timer)
-        fadeOut()
-        // setIsTouched(false)
-      }}
-      // onLongPress={() => {
-      //   console.log('onLongPress')
-      //   onLongPress && setTimer()
+      onPressIn={fadeIn}
+      onPressOut={fadeOut}
+      // onTouchStart={() => {
+      //   fadeIn()
+      //   console.log('onTouchStart :>> ')
       // }}
-      // onPressOut={() => {
-      //   console.log('onPressOut')
-      //   onLongPress && timer && clearTimeout(timer)
+      // onTouchEnd={() => {
+      //   fadeOut()
+      //   console.log('onTouchEnd :>> ')
       // }}
+      delayLongPress={shortLongPress ? 500 : 3000}
     >
-      {/* <TouchableOpacity
+      <Animated.View
+        style={{
+          opacity: fadeAnim,
+        }}
+      >
+        {/* <View
+        // style={{
+          // fontFamily: 'sf-regular',
+          // position: 'relative',
+          // flex: big ? 2 : 1,
+          // justifyContent: 'center',
+
+          // aspectRatio: square ? (big ? 2 : 1) : null,
+          // borderRadius: theme === 'standart' ? 200 : 0,
+          // padding: theme === 'standart' ? 7 : 0,
+          // opacity: isTouched ? 0.88 : 1,
+          // borderColor: 'red',
+          // borderWidth: 1,
+          // opacity: fadeAnim,
+        // }}
+        // onTouchStart={() => {
+        //   // onLongPress && setTimer()
+        //   fadeIn()
+        //   // onPress && onPress()
+        //   // if (onLongPress) {
+        //   setTimer()
+        //   // }
+        // }}
+        // onTouchEnd={() => {
+        //   onTouchEnd && onTouchEnd()
+
+        //   // onLongPress && timer && clearTimeout(timer)
+        //   fadeOut()
+        //   // setIsTouched(false)
+        //   // if (onLongPress) {
+        //   console.log('timer.current :>> ', timer.current)
+        //   if (timer.current && onPress) onPress()
+        //   clearTimer()
+        //   // }
+        // }}
+        // onLongPress={() => {
+        //   console.log('onLongPress')
+        //   onLongPress && setTimer()
+        // }}
+        // onPressOut={() => {
+        //   console.log('onPressOut')
+        //   onLongPress && timer && clearTimeout(timer)
+        // }}
+      // > */}
+        {/* <TouchableOpacity
         // onPress={() => console.log('1')}
         // style={{
         //   ...styles.funcButton,
@@ -302,29 +381,32 @@ const FuncButton = ({
         //  onLongPress={ () => console.warn('STARTED LONG PRESS') }
         activeOpacity={0.88}
       > */}
-      <View
-        style={{
-          position: 'absolute',
-          borderWidth: theme === 'classic' ? (active ? 2 : 0.5) : 0,
-          width: '100%',
-          height: '100%',
-          // borderColor: active ? 'black' : '#666666',
-          // margin: 1,
-        }}
-      />
-      <View
-        style={{
-          // borderWidth: active ? 20 : 0.5,
-          width: '100%',
-          height: '100%',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          // borderColor: '#000000',
-          // borderColor: 'red',
-          padding: theme === 'standart' ? 7 : 0,
-        }}
-      >
-        {/* {imageSource && (
+        <View
+          style={{
+            position: 'absolute',
+            borderWidth: theme === 'classic' ? (active ? 2 : 0.5) : 0,
+            width: '100%',
+            height: '100%',
+            // borderColor: active ? 'black' : '#666666',
+            // margin: 1,
+          }}
+        />
+        <View
+          style={{
+            // borderWidth: active ? 20 : 0.5,
+            width: '100%',
+            height: '100%',
+            maxHeight: '100%',
+            maxWidth: '100%',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            // borderColor: '#000000',
+            // borderColor: 'red',
+            // borderWidth: 1,
+            padding: theme === 'standart' ? (orientation === 'h' ? 5 : 7) : 0,
+          }}
+        >
+          {/* {imageSource && (
           <Image
             style={{
               width: '100%',
@@ -336,101 +418,101 @@ const FuncButton = ({
           />
         )} */}
 
-        <View
-          style={{
-            // borderWidth: 1,
-            // display: 'flex',
-            width: '100%',
-            height: '100%',
-            // alignItems: 'center',
-            // justifyContent: 'flex-start',
-            // borderColor: 'red',
-            backgroundColor:
-              theme === 'standart'
-                ? active
-                  ? 'white'
-                  : colors[theme][colorNum]
-                : colors[theme][colorNum],
-            borderRadius: theme === 'standart' ? 200 : 0,
-            borderColor: theme === 'standart' ? null : 'black',
-            borderWidth: theme === 'standart' ? null : active ? 2 : 0,
-            ...style,
-          }}
-        >
           <View
             style={{
-              // alignItems: 'center',
-              justifyContent: 'center',
-              alignItems: 'center',
-              display: 'flex',
-              width: big ? '50%' : '100%',
+              // borderWidth: 1,
+              // display: 'flex',
+              width: '100%',
               height: '100%',
-              // borderColor: 'blue',
-              // borderWidth: 2,
-              // borderWidth: 2,
+
+              // alignItems: 'center',
+              // justifyContent: 'flex-start',
               // borderColor: 'red',
+              backgroundColor:
+                theme === 'standart'
+                  ? active
+                    ? 'white'
+                    : colors[theme][colorNum][0]
+                  : colors[theme][colorNum][0],
+              borderRadius: theme === 'standart' ? 200 : 0,
+              borderColor: theme === 'standart' ? null : 'black',
+              borderWidth: theme === 'standart' ? null : active ? 2 : 0,
+              ...style,
             }}
           >
-            {!component && !(iconName && orientation) && (
-              <Text
-                style={{
-                  fontFamily: 'sf-regular',
-                  fontSize: itsNumber ? 22 : 16,
-                  color: itsNumber
-                    ? theme === 'classic'
-                      ? 'black'
-                      : 'white'
-                    : colorNum === 2
-                    ? 'white'
-                    : 'black',
-                  // marginTop: itsNumber ? -6 : 0,
-                  // borderColor: 'red',
-                  // borderWidth: 2,
-                  height: '160%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  display: 'flex',
-                  textAlignVertical: 'center',
-                  textAlign: 'center',
-                  ...titleStyle,
-                }}
-              >
-                {func}
-              </Text>
-            )}
-            {component &&
-              component({
-                style: {
-                  fontFamily: 'sf-regular',
-                  fontSize: 16,
-                  color: colorNum === 2 ? 'white' : 'black',
-                  marginTop: -1,
-                },
-              })}
-            {iconName &&
-              orientation &&
-              icons[orientation][iconName]({
-                height: theme === 'standart' ? '120%' : '100%',
-                // width: '150%',
-                // marginTop: theme === 'standart' ? '-15%' : 0,
-                bold: theme === 'standart',
-                // marginTop: '-20%',
-                fill:
-                  theme === 'standart'
-                    ? ['c', '+-', '%'].includes(func)
-                      ? 'black'
-                      : active
-                      ? colors['standart'][2]
-                      : 'white'
-                    : ['/', '*', '-', '+', '='].includes(func)
-                    ? 'white'
-                    : 'black',
-              })}
+            <View
+              style={{
+                // alignItems: 'center',
+                justifyContent: 'center',
+                alignItems: 'center',
+                display: 'flex',
+                width: big ? '50%' : '100%',
+                height: '100%',
+                overflow: 'hidden',
+                // borderColor: 'blue',
+                // borderWidth: 2,
+                // borderWidth: 2,
+                // borderColor: 'red',
+              }}
+            >
+              {!component && !(iconName && orientation) && (
+                <Text
+                  style={{
+                    fontFamily: 'sf-regular',
+                    fontSize: itsNumber ? 22 : 16,
+                    color: colors[theme][colorNum][1],
+                    // marginTop: itsNumber ? -6 : 0,
+                    // borderColor: 'red',
+                    // borderWidth: 2,
+                    height: '160%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    display: 'flex',
+                    textAlignVertical: 'center',
+                    textAlign: 'center',
+                    ...titleStyle,
+                  }}
+                >
+                  {func}
+                </Text>
+              )}
+              {component &&
+                component({
+                  style: {
+                    fontFamily: 'sf-regular',
+                    fontSize: 16,
+                    // color: colorNum === 2 ? 'white' : 'black',
+                    color: colors[theme][colorNum][1],
+                    // fill: colors[theme][colorNum][1],
+                    marginTop: -1,
+                  },
+                })}
+              {iconName &&
+                orientation &&
+                icons[orientation][iconName]({
+                  height: theme === 'standart' ? '110%' : '90%',
+                  // width: '150%',
+                  // marginTop: theme === 'standart' ? '-15%' : 0,
+                  bold: theme === 'standart',
+                  // marginTop: '-20%',
+                  fill:
+                    theme === 'standart'
+                      ? ['c', '+-', '%'].includes(func)
+                        ? 'black'
+                        : active
+                        ? colors['standart'][2][0]
+                        : 'white'
+                      : ['/', '*', '-', '+', '='].includes(func)
+                      ? 'white'
+                      : 'black',
+                })}
+            </View>
           </View>
         </View>
-      </View>
-      {/* </TouchableOpacity> */}
-    </Animated.View>
+        {/* </TouchableOpacity> */}
+        {/* </View> */}
+      </Animated.View>
+    </TouchableOpacity>
   )
 }
 

@@ -19,9 +19,9 @@ function formatDateTime(dateTime = Date.now(), format = 'ddMMhhmm') {
     .replace(/H/g, hours)
     .replace(/mm/g, minutes.length < 2 ? '0' + minutes : minutes)
     .replace(/m/g, minutes)
-    .replace(/[^\d]/g, '')
+  // .replace(/[^\d]/g, '')
 
-  return String(parseInt(formatedData))
+  return String(formatedData)
 }
 
 export default formatDateTime
