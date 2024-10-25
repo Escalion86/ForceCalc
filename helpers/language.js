@@ -95,6 +95,7 @@ const language = (lng, word) => {
       {
         en: 'Attention! The word cannot end with the letter "O", since the forced result (number) starts from zero "O", "C", "D", "U" and "P", which cannot be displayed as a result of the calculation in the calculator.',
       },
+    'Дополнительные фишки': { en: 'Additional features' },
   }
 
   return obj[word] ? obj[word][lng] : word
