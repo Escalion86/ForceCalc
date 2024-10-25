@@ -186,6 +186,7 @@ const FuncButton = ({
   style = {},
   onPress,
   onPressIn,
+  onPressOut,
   active = false,
   alt = false,
   onLongPress = () => {},
@@ -198,6 +199,7 @@ const FuncButton = ({
   // isDarkTheme,
   width,
   height,
+  shortLongPress = false,
 }) => {
   const settings = useRecoilValue(settingsAtom)
   const [pressed, setPressed] = useState(false)
@@ -259,6 +261,7 @@ const FuncButton = ({
     if (trigger) {
       setPressedTriggeredButton(null)
     }
+    onPressOut && onPressOut()
     // setIsButtonPressed && setIsButtonPressed(null)
   }
 
@@ -313,7 +316,7 @@ const FuncButton = ({
       //   fadeOut()
       //   console.log('onTouchEnd :>> ')
       // }}
-      delayLongPress={3000}
+      delayLongPress={shortLongPress ? 500 : 3000}
     >
       <Animated.View
         style={{

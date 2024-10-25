@@ -41,7 +41,6 @@ export default function Calc({
   const [pressedTriggeredButton, setPressedTriggeredButton] = useRecoilState(
     pressedTriggeredButtonAtom
   )
-  console.log('pressedTriggeredButton :>> ', pressedTriggeredButton)
   const [trigger, setTrigger] = useRecoilState(triggerAtom)
 
   const [text, setText] = useState('0')
@@ -55,6 +54,12 @@ export default function Calc({
   const [triggerFirstCharIsSet, setTriggerFirstCharIsSet] = useState(false)
   const [neededFunc, setNeededFunc] = useState('+')
   const [neededNumber, setNeededNumber] = useState('')
+  const [rememberedNumbers, setRememberedNumbers] = useState([])
+  const [canSeeRememberedNumbers, setCanSeeRememberedNumbers] = useState(false)
+
+  const addRememberedNumber = (number) => {
+    setRememberedNumbers((state) => [...state, number])
+  }
 
   const timer = useRef(null)
   const setTimer = () => {
@@ -75,7 +80,6 @@ export default function Calc({
   }
 
   const btnStartPress = (char) => {
-    console.log('1 :>> ', 1)
     if (trigger) {
       if (!triggerFuncIsActive) {
         // Если до этого небыло набрано ни одной цифры
@@ -163,6 +167,8 @@ export default function Calc({
       case '*':
         return useFunc('*')
       case '=':
+        addRememberedNumber(text)
+        setCanSeeRememberedNumbers(true)
         return getResult()
       case ',': {
         if (!text.includes(',')) addChar(',')
@@ -221,12 +227,13 @@ export default function Calc({
     }
   }
 
-  const calcPercent = () =>
-    setText(
-      text
-        ? String(parseFloat(text.replace(',', '.')) / 100).replace('.', ',')
-        : '0'
-    )
+  const calcPercent = () => {
+    const newText = text
+      ? String(parseFloat(text.replace(',', '.')) / 100).replace('.', ',')
+      : '0'
+    setText(newText)
+    addRememberedNumber(text)
+  }
 
   const toggleMinus = () => {
     if (startNewNumber) {
@@ -238,6 +245,7 @@ export default function Calc({
       setSecondArg(Math.abs(secondArg) * (!minus ? -1 : 1))
     }
     setStartNewNumber(false)
+    addRememberedNumber(text)
   }
 
   const useFunc = (func) => {
@@ -249,6 +257,7 @@ export default function Calc({
     setHighlightFunc(func)
     setActiveFunc(func)
     setStartNewNumber(true)
+    addRememberedNumber(text)
   }
 
   const addChar = (char) => {
@@ -301,6 +310,8 @@ export default function Calc({
     setMinus(false)
     setFirstArg(0)
     setSecondArg(0)
+    setRememberedNumbers([])
+    setCanSeeRememberedNumbers(false)
   }
 
   var triggerColor
@@ -351,6 +362,8 @@ export default function Calc({
     clearTimer,
     updateSettings,
     startNewNumber,
+    rememberedNumbers,
+    canSeeRememberedNumbers,
   }
 
   return (

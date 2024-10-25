@@ -34,10 +34,13 @@ function CalcVertical({
   triggerColor,
   updateSettings,
   startNewNumber,
+  rememberedNumbers,
+  canSeeRememberedNumbers,
 }) {
   // const windowWidth = Dimensions.get('window').width
   // const btnSize = windowWidth / 4 + 10
   const [showCryptotext, setShowCryptotext] = useState(false)
+  const [seeRememberedNumbers, setSeeRememberedNumbers] = useState(false)
 
   return (
     <>
@@ -72,25 +75,36 @@ function CalcVertical({
             }}
           />
         )}
-        {/* <Text
+        <Text
           style={{
-            color: settings.isDarkTheme ? 'white' : 'black',
-            width: 'auto',
-            minHeight: 40,
-            marginHorizontal: 8,
-            fontSize: 34,
-            textAlign: 'right',
+            color: seeRememberedNumbers
+              ? settings.isDarkTheme
+                ? 'white'
+                : 'black'
+              : 'transparent',
+            width: '100%',
+            position: 'absolute',
+            top: 0,
+            bottom: 100,
+            zIndex: 10,
+            // minHeight: 20,
+            paddingHorizontal: 8,
+            fontSize: 12,
+            textAlign: 'left',
             fontFamily: 'helvetica-thin',
+            // borderColor: 'blue',
+            // borderWidth: 1,
           }}
-          onPress={() => setTrigger((state) => !state)}
+          // onPress={() => setTrigger((state) => !state)}
         >
-          {(startNewNumber ? 'true   ' : 'false   ') +
+          {rememberedNumbers.join('  |  ')}
+          {/* {(startNewNumber ? 'true   ' : 'false   ') +
             String(firstArg ?? 0) +
             ' ' +
             activeFunc +
             ' ' +
-            String(secondArg ?? 0)}
-        </Text> */}
+            String(secondArg ?? 0)} */}
+        </Text>
         <TouchableWithoutFeedback
           onPressOut={() => setShowCryptotext(false)}
           onLongPress={
@@ -438,13 +452,17 @@ function CalcVertical({
             }
             onPress={() => btnClick('0')}
             onPressIn={() => btnStartPress('0')}
+            onPressOut={() => setSeeRememberedNumbers(false)}
             func="0"
             iconName={'0'}
             square
             theme={settings.theme}
             big
+            shortLongPress={canSeeRememberedNumbers}
             onLongPress={() => {
-              if (!trigger && !secondArg && !firstArg)
+              if (canSeeRememberedNumbers) {
+                setSeeRememberedNumbers(true)
+              } else if (!trigger && !secondArg && !firstArg)
                 if (settings.forceType === 'date') {
                   ToastAndroid.show(
                     `${language(settings.language, 'Режим')}: ${language(
